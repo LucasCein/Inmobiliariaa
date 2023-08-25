@@ -1,25 +1,43 @@
 import { MDBBadge, MDBListGroupItem } from 'mdb-react-ui-kit';
-const PropertiesItems = ({img,name,description,status}) => {
-    //tomamos las props de la base de datos 
+import { useState } from 'react';
+import Popup from 'reactjs-popup';
+import AbmPropiedades from '../AbmPropiedades/AbmPropiedades';
+import { useNavigate } from 'react-router-dom';
+const PropertiesItems = ({ propiedades }) => {
+    const detail=(id, nombre, estado, descripcion, imagen, tipo, ubicacion)=>{
+        console.log('aa')
+        return(
+            <Popup open={true} modal>
+                        <AbmPropiedades propiedad={{id,nombre,estado,descripcion,imagen,tipo,ubicacion}} ></AbmPropiedades>
+            </Popup>
+        )
+    }
     return (
-    <MDBListGroupItem className='d-flex justify-content-between align-items-center'>
-                    <div className='d-flex align-items-center'>
-                        <img
-                            src='https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_1:1/stock%2F8ea241e96504a398f291a31939963e8ba948368c'
-                            alt=''
-                            style={{ width: '100px', height: '100px',marginLeft:'10px' }}
-                            className='rounded-circle'
-                        />
-                        <div className='ms-3'>
-                            <p className='fw-bold mb-1'>John Doe</p>
-                            <p className='text-muted mb-0'>john.doe@gmail.com</p>
+        <>
+            {
+                propiedades.map(({ id, nombre, estado, descripcion, imagen, tipo, ubicacion }) =>
+                    <MDBListGroupItem key={id} className='d-flex justify-content-between align-items-center' >
+                        <div className='d-flex align-items-center' onClick={()=>detail(id, nombre, estado, descripcion, imagen, tipo, ubicacion)}>
+                            <img
+                                src={imagen}
+                                alt={imagen}
+                                style={{ width: '100px', height: '100px', marginLeft: '10px' }}
+                                className='rounded-circle'
+                            />
+                            <div className='ms-3'>
+                                <p className='fw-bold mb-1'>{nombre}</p>
+                                <p className='text-muted mb-0'>{descripcion}</p>
+                            </div>
                         </div>
-                    </div>
-                    <MDBBadge pill light color='success' className='me-5'>
-                        Active
-                    </MDBBadge>
-                </MDBListGroupItem>
-  )
+                        {console.log(estado)}
+                        <MDBBadge pill light color={estado == 'ocupado' ? 'danger' : 'success'} className='me-5'>
+                            {estado}
+                        </MDBBadge>
+                    </MDBListGroupItem>
+                )
+            }
+        </>
+    )
 }
 
 export default PropertiesItems
