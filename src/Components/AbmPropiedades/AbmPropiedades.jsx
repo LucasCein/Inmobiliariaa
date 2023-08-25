@@ -22,8 +22,7 @@ const AbmPropiedades = (detailData) => {
 
     }
   }, [detailData])
-  console.log(propiedad)
-  console.log(propiedad.estado.length)
+
 
   const optionsStatus = [
     { value: 'ocupado', label: 'Ocupado' },
@@ -37,7 +36,9 @@ const AbmPropiedades = (detailData) => {
 
   const handleChange = (event => {
     const { name, value } = event.target
-
+    if(event.target.value == ""){
+      console.log("Completar datos")
+    }
     setPropiedad((propiedad) => {
       return { ...propiedad, [name]: value }
     })
@@ -91,12 +92,14 @@ const AbmPropiedades = (detailData) => {
       console.log(error.message)
     })
   }
+
   return (
       <div className='d-flex flex-column align-items-center containerAbm'>
         <h2 className="m-auto">{detailData.propiedad.nombre != '' ? 'Editar Propiedad' : 'Agregar Propiedad'}</h2>
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
           <p className='my-0'>Nombre</p>
-          <input type="text" name='nombre' value={propiedad.nombre} onChange={handleChange} />
+          <input type="text" name='nombre' value={propiedad.nombre} onChange={(handleChange)} />
+          
         </div>
         <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
           <p className='my-0'>Descripcion</p>

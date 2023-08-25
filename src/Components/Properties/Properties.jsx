@@ -34,7 +34,6 @@ const Properties = () => {
                             </Popup>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>
-
                             <PropertiesItems propiedades={propiedades} />
                         </MDBListGroup>
                     </div>
