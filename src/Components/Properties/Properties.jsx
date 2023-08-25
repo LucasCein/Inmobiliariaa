@@ -1,7 +1,7 @@
 import { MDBListGroup } from 'mdb-react-ui-kit';
 import PropertiesItems from '../PropertiesItems/PropertiesItems';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, getFirestore } from 'firebase/firestore'
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
 import CustomSpinner from '../CustomSpinner/CustomSpinner';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -14,7 +14,7 @@ const Properties = () => {
         const dbFirestore = getFirestore()
         const queryCollection = collection(dbFirestore, 'propiedades')
 
-        const queryCollectionFiltered = queryCollection
+        const queryCollectionFiltered = query(queryCollection,where('visible','==',true))
 
         getDocs(queryCollectionFiltered)
             .then(res => setPropiedades(res.docs.map(propiedades => ({ id: propiedades.id, ...propiedades.data() }))))
@@ -30,7 +30,7 @@ const Properties = () => {
                     <div className='mx-auto w-75 ' style={{ marginTop: '200px' }}>
                         <div className=' my-3 d-flex justify-content-end'>
                             <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
-                                <AbmPropiedades ></AbmPropiedades>
+                                <AbmPropiedades propiedad={{ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" }} status={'create'}></AbmPropiedades>
                             </Popup>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>
