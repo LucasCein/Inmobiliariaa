@@ -77,8 +77,9 @@ const AbmPropiedades = (detailData) => {
   const createDoc = () => {
     const prop={...propiedad,visible:true}
     const dbRef = collection(db, "propiedades");
-    addDoc(dbRef, prop).then(() => {
+    addDoc(dbRef, prop).then((savedDoc) => {
       console.log("Document has been added successfully")
+      alert(`Documento creado: ${savedDoc.id}`)
       navigate(0)
     })
       .catch(error => {
