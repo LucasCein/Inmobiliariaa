@@ -43,7 +43,7 @@ const AbmPropiedades = (detailData) => {
           <p className=' my-0'>Ubicacion</p>
           <input type="text" value={propiedad.ubicacion} name='ubicacion' onChange={handleChange} />
         </div>
-        <div className='w-100 d-flex'>
+        <div className='d-flex flex-column align-items-center'>
           <button className='btn btn-link' onClick={() => handleChangePage(2)} >Siguiente</button>
         </div>
     </div>
@@ -52,7 +52,8 @@ const AbmPropiedades = (detailData) => {
   const renderPageTwo = () => (
     <div>
       {/* Renderiza la segunda mitad de los elementos aquí */}
-      <div className='d-flex mt-3 gap-2 align-items-center  my-3'>
+      <div className='d-flex flex-column align-items-center containerAbm'>
+        <div className='d-flex mt-3 gap-2 align-items-center  my-3'>
           <p className='my-0'>Baños:</p>
           {/* <input type="text" name='cantBaños' value={propiedad.cantBaños} onChange={handleChange} /> */}
           <Select className='comboCss2' options={roomQty} defaultValue={(detailData.propiedad.cantBaños != '') ? detailData.propiedad.cantBaños : ""} onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })} ></Select>
@@ -75,9 +76,15 @@ const AbmPropiedades = (detailData) => {
           <p className='my-0'>Lavarropas:</p>
           <input name='lavarropa' type='checkbox' checked={propiedad.lavarropa} onChange={handleChange}/>
         </div>
-        <div className='w-100'>
+        <div className='d-flex flex-column align-items-center'>
           <button className='btn btn-link' onClick={() => handleChangePage(1)} >Atrás</button>
         </div>
+        <div className='d-flex gap-4 mt-3 '>
+          <button className='btn btn-success' onClick={detailData.propiedad.nombre != ''?editDoc:createDoc}>{detailData.propiedad.nombre != '' ? 'Editar' : 'Agregar'}</button>
+          <button className='btn btn-danger' onClick={() => navigate(0)} >Cancelar</button>
+          <button className={detailData.propiedad.nombre != ''? 'btn btn-dark':'d-none'} onClick={deleteDoc}>Eliminar</button>
+        </div>
+      </div>
     </div>
   );
  
@@ -90,7 +97,6 @@ const AbmPropiedades = (detailData) => {
 
     return () => {
 
-      
 
       if (detailData.propiedades !== '') {
         console.log('aa')
@@ -186,14 +192,7 @@ const AbmPropiedades = (detailData) => {
   return (
       <div className='d-flex flex-column align-items-center containerAbm'>
         <h2 className="m-auto">{detailData.propiedad.nombre != '' ? 'Editar Propiedad' : 'Agregar Propiedad'}</h2>
-
         {currentPage === 1 ? renderPageOne() : renderPageTwo()}
-        
-        <div className='d-flex gap-4 mt-3 '>
-          <button className='btn btn-success' onClick={detailData.propiedad.nombre != ''?editDoc:createDoc}>{detailData.propiedad.nombre != '' ? 'Editar' : 'Agregar'}</button>
-          <button className='btn btn-danger' onClick={() => navigate(0)} >Cancelar</button>
-          <button className={detailData.propiedad.nombre != ''? 'btn btn-dark':'d-none'} onClick={deleteDoc}>Eliminar</button>
-        </div>
       </div>
     )
   }
