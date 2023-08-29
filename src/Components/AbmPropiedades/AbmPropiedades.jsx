@@ -62,6 +62,10 @@ const AbmPropiedades = (detailData) => {
           <Select className='comboCss2' options={roomQty} defaultValue={(detailData.propiedad.cantCuarto != '') ? detailData.propiedad.cantCuarto : ""} onChange={(e) => setPropiedad({ ...propiedad, cantCuarto: e.value })} ></Select>
         </div>
         <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
+          <p className=' my-0'>Area cubierta</p>
+          <input type="text" value={propiedad.area} name='area' onChange={handleChange} /> m2
+        </div>
+        <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
           <p className='my-0'>WiFi:</p>
           <input name='wifi' type='checkbox' checked={propiedad.wifi} onChange={handleChange}/>
           <p className='my-0'>Aire Acondicionado:</p>
@@ -82,7 +86,7 @@ const AbmPropiedades = (detailData) => {
 
   useEffect(() => {
 
-    setPropiedad({ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" , cantBaños :"", cantCuarto: "", wifi:false, aire: false, estacionamiento:false, lavarropa:false })
+    setPropiedad({ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" , cantBaños :"", cantCuarto: "", wifi:false, aire: false, estacionamiento:false, lavarropa:false, area: 0 })
 
     return () => {
 
