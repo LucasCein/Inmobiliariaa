@@ -30,7 +30,7 @@ const Properties = () => {
                     <div className='mx-auto w-75 ' style={{ marginTop: '200px' }}>
                         <div className=' my-3 d-flex justify-content-end'>
                             <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
-                                <AbmPropiedades propiedad={{ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" }} status={'create'}></AbmPropiedades>
+                                <AbmPropiedades propiedad={{ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "", cantBaños :"", cantCuarto: "", wifi:"",aire: "", estacionamiento: "", lavarropa: "" }} status={'create'}></AbmPropiedades>
                             </Popup>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>

@@ -11,7 +11,8 @@ import { useNavigate } from 'react-router-dom'
 const AbmPropiedades = (detailData) => {
  
   const navigate = useNavigate();
-  const [propiedad, setPropiedad] = useState({ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" })
+  const [propiedad, setPropiedad] = useState({ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" , cantBaños :"", cantCuarto: "", wifi:false, aire: false, estacionamiento:false, lavarropa:false })
+
   useEffect(() => {
 
     return () => {
@@ -32,18 +33,30 @@ const AbmPropiedades = (detailData) => {
     { value: 'venta', label: 'Venta' },
     { value: 'alquiler', label: 'Alquiler' },
   ]
+  const roomQty = [
+    { value: 1, label: 1 },
+    { value: 2, label: 2 },
+    { value: 3, label: 3 },
+    { value: 4, label: 4 },
+    { value: 5, label: 5 },
+  ]
 
 
   const handleChange = (event => {
-    const { name, value } = event.target
-    if(event.target.value == ""){
+    let { name, value, type} = event.target
+    console.dir(event.target)
+    if(value == ""){
       console.log("Completar datos")
     }
+
+    if (type === 'checkbox'){
+      value  = event.target.checked
+    }
+    
     setPropiedad((propiedad) => {
       return { ...propiedad, [name]: value }
     })
-    console.log(propiedad.name)
-
+    
   })
 
   const [image, setImage] = useState('')
@@ -99,7 +112,6 @@ const AbmPropiedades = (detailData) => {
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
           <p className='my-0'>Nombre</p>
           <input type="text" name='nombre' value={propiedad.nombre} onChange={(handleChange)} />
-          
         </div>
         <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
           <p className='my-0'>Descripcion</p>
@@ -121,6 +133,24 @@ const AbmPropiedades = (detailData) => {
         <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
           <p className=' my-0'>Ubicacion</p>
           <input type="text" value={propiedad.ubicacion} name='ubicacion' onChange={handleChange} />
+        </div>
+        <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
+          <p className='my-0'>Baños:</p>
+          <input type="text" name='cantBaños' value={propiedad.cantBaños} onChange={handleChange} />
+        </div>
+        <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
+          <p className='my-0'>Cuartos:</p>
+          <Select className='comboCss2' options={roomQty} defaultValue={(detailData.propiedad.cantCuarto != '') ? detailData.propiedad.cantCuarto : ""} onChange={(e) => setPropiedad({ ...propiedad, cantCuarto: e.value })} ></Select>
+        </div>
+        <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
+          <p className='my-0'>WiFi:</p>
+          <input name='wifi' type='checkbox' checked={propiedad.wifi} onChange={handleChange}/>
+          <p className='my-0'>Aire Acondicionado:</p>
+          <input name='aire' type='checkbox' checked={propiedad.aire} onChange={handleChange}/>
+          <p className='my-0'>Estacionamiento:</p>
+          <input name='estacionamiento' type='checkbox' checked={propiedad.estacionamiento} onChange={handleChange}/>
+          <p className='my-0'>Lavarropas:</p>
+          <input name='lavarropa' type='checkbox' checked={propiedad.lavarropa} onChange={handleChange}/>
         </div>
         <div className='d-flex gap-4 mt-3 '>
           <button className='btn btn-success' onClick={detailData.propiedad.nombre != ''?editDoc:createDoc}>{detailData.propiedad.nombre != '' ? 'Editar' : 'Agregar'}</button>
