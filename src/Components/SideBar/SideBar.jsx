@@ -27,9 +27,9 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
+                <NavLink to={"/proveedores"}>
                     <BsFillGrid3X3GapFill className='icon'/> Providers
-                </a>
+                </NavLink>
             </li>
             <li className='sidebar-list-item'>
                 <a href="">

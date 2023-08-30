@@ -20,7 +20,7 @@ const AbmPropiedades = (detailData) => {
       {/* Renderiza la primera mitad de los elementos aquí */}
       <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
           <p className='my-0'>Nombre</p>
-          <input type="text" name='nombre' value={propiedad.nombre} onChange={(handleChange)} />
+          <input type="text" name='nombre' value={detailData.propiedad.nombre} onChange={(handleChange)} />
         </div>
         <div className='d-flex mt-3 gap-4 align-items-center  my-3'>
           <p className='my-0'>Descripcion</p>
@@ -99,7 +99,7 @@ const AbmPropiedades = (detailData) => {
 
 
       if (detailData.propiedades !== '') {
-        console.log('aa')
+        console.log(detailData)
         setPropiedad(detailData.propiedad)
       }
 
