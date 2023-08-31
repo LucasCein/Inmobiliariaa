@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Proveedor from './Components/Proveedor/Proveedor'
 import Header from './Components/Header/Header'
 import Sidebar from './Components/SideBar/SideBar'
 import Home from './Components/Home/Home'
@@ -31,6 +32,15 @@ function App() {
             <Header OpenSidebar={OpenSidebar} />
             <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
             <Properties />
+          </div>
+          }
+        />
+        <Route
+          path='/proveedores'
+          element={<div className='grid-container'>
+            <Header OpenSidebar={OpenSidebar} />
+            <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+            <Proveedor />
           </div>
           }
         />

@@ -5,11 +5,26 @@ import AbmPropiedades from '../AbmPropiedades/AbmPropiedades';
 import { useNavigate } from 'react-router-dom';
 import { BsPencil } from "react-icons/bs";
 const PropertiesItems = ({ propiedades }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = currentPage * itemsPerPage;
+    const currentItems = propiedades.slice(startIndex, endIndex);
+
+    const handlePreviousPage = () => {
+        setCurrentPage(Math.max(currentPage - 1, 1));
+    };
+
+    const handleNextPage = () => {
+        const totalPages = Math.ceil(propiedades.length / itemsPerPage);
+        setCurrentPage(Math.min(currentPage + 1, totalPages));
+    };
     
     return (
         <>
             {
-                propiedades.map(({ id, nombre, estado, descripcion, imagen, tipo, ubicacion }) =>
+                currentItems.map(({ id, nombre, estado, descripcion, imagen, tipo, ubicacion }) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between align-items-center' >
                         <div className='d-flex align-items-center'>
                             <img
@@ -36,6 +51,26 @@ const PropertiesItems = ({ propiedades }) => {
                     </MDBListGroupItem>
                 )
             }
+        <div className="d-flex flex-column align-items-center">
+            <p>
+        <button
+            style={{margin:'5px'}}
+          className="btn btn-secondary"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+            style={{margin:'5px'}}
+          className="btn btn-secondary"
+          onClick={handleNextPage}
+          disabled={endIndex >= propiedades.length}
+        >
+          Next
+        </button>
+        </p>
+      </div>
         </>
     )
 }

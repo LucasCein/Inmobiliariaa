@@ -6,9 +6,11 @@ import CustomSpinner from '../CustomSpinner/CustomSpinner';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import AbmPropiedades from '../AbmPropiedades/AbmPropiedades';
+
 const Properties = () => {
     const [propiedades, setPropiedades] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [search, setSearch] = useState("");
     useEffect(() => {
 
         const dbFirestore = getFirestore()
@@ -28,13 +30,16 @@ const Properties = () => {
             {isLoading ? <CustomSpinner></CustomSpinner> :
                 <>
                     <div className='mx-auto w-75 ' style={{ marginTop: '200px' }}>
+                        <div className='w-100 h-100' >
+                            <input type='text' id='buscador' value={search} onChange={e => setSearch(e.target.value)} placeholder='Filtrar' className='w-100 h-200'/>
+                        </div>
                         <div className=' my-3 d-flex justify-content-end'>
                             <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
-                                <AbmPropiedades propiedad={{ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "" }} status={'create'}></AbmPropiedades>
+                                <AbmPropiedades propiedad={{ nombre: "", descripcion: "", estado: "", tipo: "", imagen: "", ubicacion: "", cantBaños :"", cantCuarto: "", wifi:false,aire: false, estacionamiento:false, lavarropa:false }} status={'create'}></AbmPropiedades>
                             </Popup>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>
-                            <PropertiesItems propiedades={propiedades} />
+                            <PropertiesItems propiedades={propiedades.filter(propiedad => propiedad.nombre.toLowerCase().includes(search.toLowerCase()))} />
                         </MDBListGroup>
                     </div>
                 </>}
