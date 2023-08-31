@@ -17,7 +17,7 @@ import Popup from "reactjs-popup";
 const libraries = ["places"]
 export default function Mapa() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyCQqP1gLlB8UANpm9JrcRDH61cIZZ7dPlI',
+    
     libraries
   });
 

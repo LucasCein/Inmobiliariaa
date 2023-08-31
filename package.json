@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-free": "^6.4.2",
     "@googlemaps/react-wrapper": "^1.1.35",
+    "@mui/material": "^5.14.6",
+    "@mui/styled-engine-sc": "^5.14.6",
+    "@mui/x-data-grid": "^6.12.0",
     "@reach/combobox": "^0.18.0",
     "@react-google-maps/api": "^2.19.2",
     "bootstrap": "^5.3.1",
@@ -26,6 +31,7 @@
     "react-spinners": "^0.13.8",
     "reactjs-popup": "^2.0.5",
     "recharts": "^2.7.3",
+    "styled-components": "^6.0.7",
     "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {

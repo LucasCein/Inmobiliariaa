@@ -32,9 +32,9 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </a>
             </li>
             <li className='sidebar-list-item'>
-                <a href="">
+                <NavLink to={"/bill"}>
                     <BsPeopleFill className='icon'/> Customers
-                </a>
+                </NavLink>
             </li>
             <li className='sidebar-list-item'>
                 <a href="">

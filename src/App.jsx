@@ -5,6 +5,7 @@ import Sidebar from './Components/SideBar/SideBar'
 import Home from './Components/Home/Home'
 import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom'
 import Properties from './Components/Properties/Properties'
+import ComprobantesPago from './Components/ComprobantesPago/ComprobantesPago'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -30,6 +31,15 @@ function App() {
             <Header OpenSidebar={OpenSidebar} />
             <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
             <Properties />
+          </div>
+          }
+        />
+        <Route
+          path='/bill'
+          element={<div className='grid-container'>
+            <Header OpenSidebar={OpenSidebar} />
+            <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+            <ComprobantesPago />
           </div>
           }
         />
