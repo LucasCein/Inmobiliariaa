@@ -1,17 +1,25 @@
-import { MenuItem, Select } from "@mui/material"
-import { addDoc, collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
+import { Autocomplete, TextField } from "@mui/material"
+import { Firestore, Timestamp, addDoc, collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { app } from "../../FireBase/config";
-
+import "@reach/combobox/styles.css";
+import Popup from "reactjs-popup";
+import { MDBListGroup } from "mdb-react-ui-kit";
+import DetalleComp from "../DetalleComp/DetalleComp";
+import AbmProds from "../AbmProds/AbmProds";
 const AbmComprobantes = (detailData) => {
-  console.log(detailData.comprobante)
   const db = getFirestore(app);
   const navigate = useNavigate();
   const [comprobante, setComprobante] = useState({ Fecha: "", Tipo: "", idProv: "", idProp: "", pTotal: "", idDetalle: "" })
   const [proveedores, setProveedores] = useState([])
   const [propiedades, setPropiedades] = useState([])
-
+  const [prods, setProds] = useState([])
+  const [orginialDate, setOriginalDate] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
+  };
   useEffect(() => {
     const fetch = async () => {
 
@@ -29,6 +37,13 @@ const AbmComprobantes = (detailData) => {
         ...doc.data()
       }));
       setPropiedades(propiedadList)
+      const prodsCollection = collection(db, 'productos');
+      const prodsSnapshot = await getDocs(prodsCollection);
+      const prodsList = prodsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setProds(prodsList)
     }
     fetch()
     return () => {
@@ -39,33 +54,103 @@ const AbmComprobantes = (detailData) => {
     }
   }, [detailData, db])
 
-
-  const handleChange = (event => {
-    const { name, value } = event.target
-    if (event.target.value == "") {
+  const handleChangeTipo = (prop => {
+    if (prop.value == "") {
       console.log("Completar datos")
     }
-    comprobante((comp) => {
-      return { ...comp, [name]: value }
-    })
+    setComprobante({ ...comprobante, Tipo: prop.value })
 
   })
 
+  const renderPageOne = () => {
+    return (
 
+      <div>
+        <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
+          <p className='my-0'>Fecha</p>
+          <input type="date" name='Fecha' value={orginialDate} onChange={handleChangeFecha} />
 
-  const createDoc = () => {
-    const prop = { ...comprobante, visible: true }
-    const dbRef = collection(db, "comprobantes");
-    addDoc(dbRef, prop).then(() => {
-      console.log("Document has been added successfully")
-      navigate(0)
-    })
-      .catch(error => {
-        console.log(error)
-      })
+        </div>
+        <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
+          <p className='my-0'>Tipo</p>
+          <Autocomplete
+            disablePortal={true}
+            value={comprobante.Tipo === 'a' ? optionsType[0] : comprobante.Tipo === 'b' ? optionsType[1] : optionsType[2]}
+            onChange={(event, newValue) => handleChangeTipo(newValue)}
+            options={optionsType}
+            getOptionLabel={(option) => option.label}
+            renderInput={(params) => <TextField {...params} sx={{ width: 200 }} />}
+          />
 
-
+        </div>
+        <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
+          <p className='my-0'>Proveedor</p>
+          <Autocomplete
+            disablePortal={true}
+            value={proveedores.nombre}
+            onChange={(event, newValue) => handleChangeProv(newValue)}
+            options={proveedores}
+            getOptionLabel={(option) => option.nombre || ""}
+            renderInput={(params) => <TextField {...params} sx={{ width: 200 }} />}
+          />
+        </div>
+        <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
+          <p className='my-0'>Propiedad</p>
+          <Autocomplete
+            disablePortal={true}
+            value={propiedades.nombre}
+            onChange={(event, newValue) => handleChangeProp(newValue)}
+            options={propiedades}
+            getOptionLabel={(option) => option.nombre || ""}
+            renderInput={(params) => <TextField {...params} sx={{ width: 200 }} />}
+          />
+        </div>
+        <div className='d-flex flex-column align-items-center'>
+          <button className='btn btn-link' onClick={() => handleChangePage(2)} >Siguiente</button>
+        </div>
+      </div>
+    )
   }
+
+  const renderPageTwo = () => {
+    return (
+
+      <div>
+        <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
+          <p className='my-0'>Producto</p>
+          <Autocomplete
+            disablePortal={true}
+            value={productoSeleccionado}
+            onChange={(event, newValue) => handleChangeProducto(newValue)}
+            options={prods}
+            getOptionLabel={(option) => option.nombre || ""}
+            renderInput={(params) => <TextField {...params} sx={{ width: 200 }} />}
+          />
+        </div>
+
+        <MDBListGroup style={{ minWidth: '22rem' }} light>
+          <DetalleComp productos={productos} />
+        </MDBListGroup>
+        <div className="ms-3">
+          <p className='fw-bold mb-1'>Precio Total</p>
+          <p className='text-muted mb-0'>${precioF}</p>
+        </div>
+        <div className='d-flex flex-column align-items-center'>
+          <button className='btn btn-link' onClick={() => handleChangePage(1)} >Atrás</button>
+        </div>
+        <div className='d-flex gap-4 mt-3 '>
+          <button className='btn btn-success' onClick={createDetComp}>Agregar</button>
+          <button className='btn btn-danger' onClick={() => navigate(0)} >Cancelar</button>
+          <button className={detailData.comprobante?.Fecha != '' ? 'btn btn-dark' : 'd-none'} onClick={deleteDoc}>Eliminar</button>
+        </div>
+
+      </div>
+    )
+  }
+
+
+
+ 
   const editDoc = () => {
     const examcollref = doc(db, 'comprobantes', comprobante.id)
     updateDoc(examcollref, comprobante).then(() => {
@@ -85,84 +170,70 @@ const AbmComprobantes = (detailData) => {
       console.log(error.message)
     })
   }
+
+  const createDetComp = () => {
+    const prop = { productos }
+    const dbRef = collection(db, "detalleComprobante");
+    addDoc(dbRef, prop).then((docRef) => {
+      console.log("detalle has been added successfully")
+      setComprobante({ ...comprobante, idDetalle: docRef.id })
+      createDoc(docRef)
+    })
+  }
+
+  const createDoc = (idDet) => {
+    const prop = { ...comprobante, visible: true,idDetalle:idDet,pTotal:precioF }
+    const dbRef = collection(db, "comprobantes");
+    addDoc(dbRef, prop).then(() => {
+      console.log("Document has been added successfully")
+      navigate(0)
+    })
+      .catch(error => {
+        console.log(error)
+      })
+  }
   const optionsType = [
     { value: 'a', label: 'A' },
     { value: 'b', label: 'B' },
     { value: 'c', label: 'C' }
   ]
   const handleChangeProv = async (e) => {
-    const proveedorCollection = collection(db, 'proveedores');
-    const proveedorSnapshot = await getDocs(proveedorCollection);
-    const proveedorList = proveedorSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    const proveedor = proveedorList.find(prov => prov.nombre === e.value);
-    setComprobante({ ...comprobante, idProv: proveedor.id })
-
+    console.log(e)
+    setComprobante({ ...comprobante, idProv: e.id })
+  }
+  const handleChangeProp = async (e) => {
+    console.log(e)
+    setComprobante({ ...comprobante, idProp: e.id })
   }
 
+  const handleChangeFecha = async (e) => {
+    const partes = e.target.value.split("-");
 
+    const fechaComoTimestamp = Timestamp.fromDate(new Date(partes[0], partes[1], partes[2]));
 
+    setComprobante({ ...comprobante, Fecha: fechaComoTimestamp });
+    setOriginalDate(e.target.value)
+  }
+  const [productos, setProductos] = useState([])
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null)
+  const [precioF, setprecioF] = useState(0)
+  const handleChangeProducto = (producto) => {
+    if (!productos.includes(producto)) {
+      setprecioF(precioF + producto.precio)
+      setProductoSeleccionado(producto);
+      setProductos([...productos, producto]);
+
+    }
+  };
+
+  console.log(productos)
   return (
+
     <div className='d-flex flex-column align-items-center containerAbm'>
       <h2 className="m-auto">{detailData.comprobante.Fecha != '' ? 'Editar Factura' : 'Agregar Factura'}</h2>
-      <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
-        <p className='my-0'>Fecha</p>
-        <input type="date" name='Fecha' value={comprobante.Fecha} onChange={(handleChange)} />
-
-      </div>
-      <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
-        <p className='my-0'>Tipo Factura</p>
-        <Select
-          className='comboCss basic-single select'
-          value={comprobante.Tipo}
-          onChange={(e) => setComprobante({ ...comprobante, estado: e.target.value })}
-          name='tipo'
-        >
-          {optionsType.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
-        <p className='my-0'>Proveedor</p>
-        <Select
-          className='comboCss2'
-          value={comprobante.idProv}
-          onChange={(e) => handleChangeProv(e)}
-          name='nombreProveedor'
-        >
-          {proveedores.map((proveedor) => (
-            <MenuItem key={proveedor.id} value={proveedor.id}>
-              {proveedor.nombre}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
-        <p className='my-0'>Propiedad</p>
-        <Select
-          className='comboCss2'
-          value={comprobante.idProp}
-          onChange={(e) => setComprobante({ ...comprobante, idProp: e.target.value })}
-          name='nombrePropiedad'
-        >
-          {propiedades.map((propiedad) => (
-            <MenuItem key={propiedad.id} value={propiedad.id}>
-              {propiedad.nombre}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div className='d-flex gap-4 mt-3 '>
-        <button className='btn btn-success' onClick={detailData.comprobante?.Fecha != '' ? editDoc : createDoc}>{detailData.comprobante?.Fecha != '' ? 'Editar' : 'Agregar'}</button>
-        <button className='btn btn-danger' onClick={() => navigate(0)} >Cancelar</button>
-        <button className={detailData.comprobante?.Fecha != '' ? 'btn btn-dark' : 'd-none'} onClick={deleteDoc}>Eliminar</button>
-      </div>
+      {currentPage === 1 ? renderPageOne() : renderPageTwo()}
     </div>
+
   )
 }
 

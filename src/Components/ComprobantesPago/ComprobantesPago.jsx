@@ -9,7 +9,7 @@ import CustomSpinner from '../CustomSpinner/CustomSpinner';
 const ComprobantesPago = () => {
     const [comprobantes, setComprobantes] = useState([])
     const [isLoading, setIsLoading] = useState(true);
-    
+
     useEffect(() => {
 
         const dbFirestore = getFirestore()
@@ -20,7 +20,8 @@ const ComprobantesPago = () => {
                 id: comprobante.id,
                 ...comprobante.data(),
                 Fecha: comprobante.data().Fecha.toDate().toLocaleDateString(),
-                nombreProveedor:''
+                nombreProveedor: '',
+                originalDate:comprobante.data().Fecha
             }))))
             .catch(error => console.log(error))
             .finally(setIsLoading(false))
@@ -30,18 +31,22 @@ const ComprobantesPago = () => {
 
     return (
         <>
-        {isLoading ? <CustomSpinner></CustomSpinner> :
-        <div className='mx-auto w-75 ' style={{ marginTop: '200px' }}>
-            <div className=' my-3 d-flex justify-content-end'>
-                <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
-                    <AbmComprobantes comprobante={{ Fecha: "", Tipo: "", idProv: "", idProp: "", pTotal: "", idDetalle: "" }} ></AbmComprobantes>
-                </Popup>
-            </div>
-            <MDBListGroup style={{ minWidth: '22rem' }} light>
-                <ComprobantesItems comprobantes={comprobantes} />
-            </MDBListGroup>
-        </div>
-        }
+            {isLoading ? <CustomSpinner></CustomSpinner> :
+                <div className='d-flex flex-column align-items-center mt-5'>
+                    <h2 className='text-light'>Facturas</h2>
+                    <div className='mx-auto w-75 ' style={{ marginTop: '100px' }}>
+                        <div className=' my-3 d-flex justify-content-end'>
+                            <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
+                                <AbmComprobantes comprobante={{ Fecha: "", Tipo: "", idProv: "", idProp: "", pTotal: "", idDetalle: "" }} ></AbmComprobantes>
+                            </Popup>
+                        </div>
+                        <MDBListGroup style={{ minWidth: '22rem' }} light>
+                            <ComprobantesItems comprobantes={comprobantes} />
+                        </MDBListGroup>
+
+                    </div>
+                </div>
+            }
         </>
     )
 }

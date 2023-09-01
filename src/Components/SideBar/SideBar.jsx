@@ -23,17 +23,17 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
             </li>
             <li className='sidebar-list-item'>
                 <NavLink to={"/properties"}>
-                    <BsFillArchiveFill className='icon'/> Properties
+                    <BsFillArchiveFill className='icon'/> Propiedades
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
                 <NavLink to={"/proveedores"}>
-                    <BsFillGrid3X3GapFill className='icon'/> Providers
+                    <BsFillGrid3X3GapFill className='icon'/> Proveedores
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
                 <NavLink to={"/bill"}>
-                    <BsPeopleFill className='icon'/> Customers
+                    <BsPeopleFill className='icon'/> Facturas
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>

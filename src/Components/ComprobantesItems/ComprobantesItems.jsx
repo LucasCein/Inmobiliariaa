@@ -48,7 +48,7 @@ const ComprobantesItems = ({ comprobantes }) => {
     return (
         <>
             {
-                comprobantesConProveedores.map(({ id, Fecha, Tipo, pTotal, nombreProveedor }) =>
+                comprobantesConProveedores.map(({ id, Fecha, Tipo, pTotal, nombreProveedor,idDetalle,idProp,idProv,nombrePropiedad,originalDate}) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between' >
                         <div className='d-flex align-items-center '>
                             <div className="d-flex gap-4">
@@ -73,7 +73,7 @@ const ComprobantesItems = ({ comprobantes }) => {
 
                         <div className='d-flex align-items-center gap-2 me-3'>
                             <Popup trigger={<button className='btn btn-warning '><BsPencil></BsPencil></button>} modal>
-                                <AbmComprobantes comprobantes={comprobantesConProveedores}   status={'edit'}></AbmComprobantes>
+                                <AbmComprobantes comprobantes={{ id, Fecha, Tipo, pTotal, nombreProveedor,idDetalle,idProp,idProv,nombrePropiedad,originalDate }}   status={'edit'}></AbmComprobantes>
                             </Popup>
                         </div>
                     </MDBListGroupItem>
