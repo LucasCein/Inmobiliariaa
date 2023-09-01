@@ -26,7 +26,7 @@ const PropertiesItems = ({ propiedades }) => {
     return (
         <>
             {
-                currentItems.map(({ id, nombre, estado, descripcion, imagen, tipo, ciudad, barrio, calle, altrua, cp, piso, depto, cantBaños, cantCuarto, wifi, aire, estacionamiento, lavarropa, area  }) =>
+                currentItems.map(({ id, nombre, estado, descripcion, imagen, tipo, ciudad, barrio, calle, altura, cp, piso, depto, cantBaños, cantCuarto, wifi, aire, estacionamiento, lavarropa, area  }) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between align-items-center' >
                         <div className='d-flex align-items-center'>
                             <img
@@ -42,7 +42,7 @@ const PropertiesItems = ({ propiedades }) => {
                         </div>
                         <div className='d-flex align-items-center gap-3'>
                             <Popup trigger={<button  className='btn btn-warning '><BsPencil></BsPencil></button>} modal>
-                                <AbmPropiedades propiedad={{id, nombre, estado, descripcion, imagen, tipo, ciudad, barrio, calle, altrua, cp, piso, depto, cantBaños, cantCuarto, wifi, aire, estacionamiento, lavarropa, area }} status={'edit'}></AbmPropiedades>
+                                <AbmPropiedades propiedad={{id, nombre, estado, descripcion, imagen, tipo, ciudad, barrio, calle, altura, cp, piso, depto, cantBaños, cantCuarto, wifi, aire, estacionamiento, lavarropa, area }} status={'edit'}></AbmPropiedades>
                             </Popup>
                             
                             <MDBBadge pill light color={estado == 'ocupado' ? 'danger' : 'success'} className='me-5'>

@@ -65,6 +65,8 @@ const AbmPropiedades = (detailData) => {
     setPropiedad((propiedad) => {
       return { ...propiedad, [name]: value }
     })
+
+    console.log(propiedad)
     
   })
 
@@ -225,7 +227,7 @@ const AbmPropiedades = (detailData) => {
           <button className='btn btn-link' onClick={() => handleChangePage(2)} >Atrás</button>
         </div>
         <div className='d-flex gap-4 mt-3 '>
-          <button className='btn btn-success' onClick={detailData.propiedad.nombre != ''? editDoc : createDoc}>{propiedad.nombre != '' ? 'Editar' : 'Agregar'}</button>
+          <button className='btn btn-success' onClick={detailData.propiedad.nombre != ''? editDoc : createDoc}>{detailData.propiedad.nombre != '' ? 'Editar' : 'Agregar'}</button>
           <button className='btn btn-danger' onClick={() => navigate(0)} >Cancelar</button>
           <button className={detailData.propiedad.nombre != ''? 'btn btn-dark':'d-none'} onClick={deleteDoc}>Eliminar</button>
         </div>
