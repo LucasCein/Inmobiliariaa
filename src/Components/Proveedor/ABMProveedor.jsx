@@ -45,19 +45,6 @@ const ABMProveedor = (detailData) => {
     }
 
     const createDoc = () => {
-        let b={
-          value:0,
-        }
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => {
-          if(input.value == ""){
-            b={
-              value:1,
-              nombre:input.name
-            }
-          }
-        })
-        if(b.value == 0){
         const prov={...proveedor,Activo:true}
         const dbRef = collection(db, "proveedores");
         addDoc(dbRef, prov).then((savedDoc) => {
@@ -70,17 +57,15 @@ const ABMProveedor = (detailData) => {
             console.log(error)
         })
       }
-      else{
-        alert("Completar datos de "+b.nombre)
-      }
-    }
+    
 
   return (
     <div className='d-flex flex-column align-items-center'>
          <h2 className="m-auto">{detailData.proveedor.nombre !== ""? "Editar":"Agregar" } Proveedor</h2>
+         <form name="form">
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
         <p className='my-0'>Nombre</p>
-        <input type="text" name='nombre' onChange={handleChange} defaultValue={detailData.proveedor.nombre} required />
+        <input required type="text" name='nombre' onChange={handleChange} defaultValue={detailData.proveedor.nombre} required />
         </div>
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
         <p className='my-0'>Descripción</p>
@@ -90,6 +75,7 @@ const ABMProveedor = (detailData) => {
         <p className='my-0'>Dirección</p>
         <input type="text" name='direccion' onChange={handleChange} defaultValue={detailData.proveedor.direccion} />
         </div>
+        </form>
         <div className='d-flex gap-4 mt-3 '>
           <button className='btn btn-success' onClick={detailData.proveedor.nombre != ''?editDoc:createDoc}>{detailData.proveedor.nombre != '' ? 'Editar' : 'Agregar'}</button>
           <button className='btn btn-danger' onClick={() => navigate(0)}>Cancelar</button>
