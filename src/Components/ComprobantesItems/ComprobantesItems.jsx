@@ -73,7 +73,7 @@ const ComprobantesItems = ({ comprobantes }) => {
 
                         <div className='d-flex align-items-center gap-2 me-3'>
                             <Popup trigger={<button className='btn btn-warning '><BsPencil></BsPencil></button>} modal>
-                                <AbmComprobantes comprobantes={{ id, Fecha, Tipo, pTotal, nombreProveedor,idDetalle,idProp,idProv,nombrePropiedad,originalDate }}   status={'edit'}></AbmComprobantes>
+                                <AbmComprobantes detailData={{ id, Fecha, Tipo, pTotal, nombreProveedor,idDetalle,idProp,idProv,nombrePropiedad,originalDate }}   status={'edit'}></AbmComprobantes>
                             </Popup>
                         </div>
                     </MDBListGroupItem>
