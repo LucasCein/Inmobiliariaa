@@ -65,7 +65,7 @@ const ABMProveedor = (detailData) => {
          <form name="form">
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
         <p className='my-0'>Nombre</p>
-        <input required type="text" name='nombre' onChange={handleChange} defaultValue={detailData.proveedor.nombre} required />
+        <input required type="text" name='nombre' onChange={handleChange} defaultValue={detailData.proveedor.nombre}/>
         </div>
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
         <p className='my-0'>Descripción</p>

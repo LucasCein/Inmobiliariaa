@@ -61,7 +61,7 @@ const AbmComprobantes = (detailData) => {
     setComprobante({ ...comprobante, Tipo: prop.value })
 
   })
-
+  console.log(comprobante)
   const renderPageOne = () => {
     return (
 
