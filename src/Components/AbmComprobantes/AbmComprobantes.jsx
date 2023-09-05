@@ -11,12 +11,13 @@ import AbmProds from "../AbmProds/AbmProds";
 const AbmComprobantes = (detailData) => {
   const db = getFirestore(app);
   const navigate = useNavigate();
-  const [comprobante, setComprobante] = useState({ Fecha: "", Tipo: "", idProv: "", idProp: "", pTotal: "", idDetalle: "" })
+  const [comprobante, setComprobante] = useState({ Fecha: "", Tipo: "", idProv: "", idProp: "", pTotal: "", idDetalle: "", nombrePropiedad: "", nombreProveedor: "", originalDate: "", idDetalle: "" })
   const [proveedores, setProveedores] = useState([])
   const [propiedades, setPropiedades] = useState([])
   const [prods, setProds] = useState([])
   const [orginialDate, setOriginalDate] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
+  const [editDate, setEditDate] = useState([])
   const handleChangePage = (page) => {
     setCurrentPage(page);
   };
@@ -47,13 +48,17 @@ const AbmComprobantes = (detailData) => {
     }
     fetch()
     return () => {
-      if (detailData.comprobantes !== '') {
+      if (detailData.detailData !== '') {
         console.log('aa')
-        setComprobante(detailData.comprobante)
+        setComprobante(detailData.detailData)
+        // const part=detailData.detailData.Fecha.split("/")
+        // const dateF=part[2]+"-"+part[1]+"-"+part[0]
+        // const dateFormatted=new Date(dateF)
+        // setEditDate(dateF)
       }
     }
   }, [detailData, db])
-
+  console.log(editDate)
   const handleChangeTipo = (prop => {
     if (prop.value == "") {
       console.log("Completar datos")
@@ -68,14 +73,15 @@ const AbmComprobantes = (detailData) => {
       <div>
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
           <p className='my-0'>Fecha</p>
-          <input type="date" name='Fecha' value={orginialDate} onChange={handleChangeFecha} />
+          <input type="date" name='Fecha' defaultValue={""} value={orginialDate} onChange={handleChangeFecha} />
 
         </div>
         <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
           <p className='my-0'>Tipo</p>
           <Autocomplete
             disablePortal={true}
-            value={comprobante.Tipo === 'a' ? optionsType[0] : comprobante.Tipo === 'b' ? optionsType[1] : optionsType[2]}
+            defaultValue={""}
+            value={comprobante?.Tipo === 'a' ? optionsType[0] : comprobante?.Tipo === 'b' ? optionsType[1] : optionsType[2]}
             onChange={(event, newValue) => handleChangeTipo(newValue)}
             options={optionsType}
             getOptionLabel={(option) => option.label}
@@ -86,6 +92,7 @@ const AbmComprobantes = (detailData) => {
         <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
           <p className='my-0'>Proveedor</p>
           <Autocomplete
+            defaultValue={""}
             disablePortal={true}
             value={proveedores.nombre}
             onChange={(event, newValue) => handleChangeProv(newValue)}
@@ -97,6 +104,7 @@ const AbmComprobantes = (detailData) => {
         <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
           <p className='my-0'>Propiedad</p>
           <Autocomplete
+            defaultValue={""}
             disablePortal={true}
             value={propiedades.nombre}
             onChange={(event, newValue) => handleChangeProp(newValue)}
@@ -120,6 +128,7 @@ const AbmComprobantes = (detailData) => {
           <p className='my-0'>Producto</p>
           <Autocomplete
             disablePortal={true}
+            defaultValue={""}
             value={productoSeleccionado}
             onChange={(event, newValue) => handleChangeProducto(newValue)}
             options={prods}
@@ -141,7 +150,7 @@ const AbmComprobantes = (detailData) => {
         <div className='d-flex gap-4 mt-3 '>
           <button className='btn btn-success' onClick={createDetComp}>Agregar</button>
           <button className='btn btn-danger' onClick={() => navigate(0)} >Cancelar</button>
-          <button className={detailData.comprobante?.Fecha != '' ? 'btn btn-dark' : 'd-none'} onClick={deleteDoc}>Eliminar</button>
+          <button className={detailData.detailData?.Fecha != '' ? 'btn btn-dark' : 'd-none'} onClick={deleteDoc}>Eliminar</button>
         </div>
 
       </div>
@@ -150,7 +159,7 @@ const AbmComprobantes = (detailData) => {
 
 
 
- 
+
   const editDoc = () => {
     const examcollref = doc(db, 'comprobantes', comprobante.id)
     updateDoc(examcollref, comprobante).then(() => {
@@ -182,7 +191,7 @@ const AbmComprobantes = (detailData) => {
   }
 
   const createDoc = (idDet) => {
-    const prop = { ...comprobante, visible: true,idDetalle:idDet,pTotal:precioF }
+    const prop = { ...comprobante, visible: true, idDetalle: idDet, pTotal: precioF }
     const dbRef = collection(db, "comprobantes");
     addDoc(dbRef, prop).then(() => {
       console.log("Document has been added successfully")
@@ -213,6 +222,7 @@ const AbmComprobantes = (detailData) => {
 
     setComprobante({ ...comprobante, Fecha: fechaComoTimestamp });
     setOriginalDate(e.target.value)
+
   }
   const [productos, setProductos] = useState([])
   const [productoSeleccionado, setProductoSeleccionado] = useState(null)
@@ -226,11 +236,11 @@ const AbmComprobantes = (detailData) => {
     }
   };
 
-  console.log(productos)
+  console.log(orginialDate)
   return (
 
     <div className='d-flex flex-column align-items-center containerAbm'>
-      <h2 className="m-auto">{detailData.comprobante.Fecha != '' ? 'Editar Factura' : 'Agregar Factura'}</h2>
+      <h2 className="m-auto">{detailData.detailData?.Fecha != '' ? 'Editar Factura' : 'Agregar Factura'}</h2>
       {currentPage === 1 ? renderPageOne() : renderPageTwo()}
     </div>
 
