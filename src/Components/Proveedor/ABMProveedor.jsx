@@ -45,6 +45,22 @@ const ABMProveedor = (detailData) => {
     }
 
     const createDoc = () => {
+      let empty={
+        value:0,
+        name:""
+      }
+      const form=document.querySelectorAll('form[name="form_prov"]')
+      const inputElements = form[0].querySelectorAll('input');
+      inputElements.forEach((input) => {
+          if (input.value.trim()==""){
+            empty={
+              value:1,
+              name:input.name
+            }
+          }        
+      });
+      if(empty.value == 0){
+
         const prov={...proveedor,Activo:true}
         const dbRef = collection(db, "proveedores");
         addDoc(dbRef, prov).then((savedDoc) => {
@@ -57,12 +73,16 @@ const ABMProveedor = (detailData) => {
             console.log(error)
         })
       }
+      else{
+        alert("Completar datos de "+ empty.name)
+      }
+      }
     
 
   return (
     <div className='d-flex flex-column align-items-center'>
          <h2 className="m-auto">{detailData.proveedor.nombre !== ""? "Editar":"Agregar" } Proveedor</h2>
-         <form name="form">
+         <form name="form_prov">
         <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
         <p className='my-0'>Nombre</p>
         <input required type="text" name='nombre' onChange={handleChange} defaultValue={detailData.proveedor.nombre}/>
