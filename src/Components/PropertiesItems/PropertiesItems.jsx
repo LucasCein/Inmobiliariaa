@@ -41,7 +41,7 @@ const PropertiesItems = ({ propiedades }) => {
                             </div>
                         </div>
                         <div className='d-flex align-items-center gap-3'>
-                            <Popup trigger={<button  className='btn btn-warning '><BsPencil></BsPencil></button>} modal>
+                            <Popup className='w-100' trigger={<button  className='btn btn-warning '><BsPencil></BsPencil></button>} modal>
                                 <AbmPropiedades propiedad={{id, nombre, estado, descripcion, imagen, tipo, ciudad, barrio, calle, altura, cp, piso, depto, cantBaños, cantCuarto, wifi, aire, estacionamiento, lavarropa, area }} status={'edit'}></AbmPropiedades>
                             </Popup>
                             

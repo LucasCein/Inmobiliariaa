@@ -1,6 +1,7 @@
 .comboCss{
-    width: 190px; 
-    margin-left: 8px;
+    width: 190px;
+    
+    /* margin-left: 8px; */
 }
 .comboCss2{
     width: 190px; 
@@ -8,4 +9,14 @@
 }
 .imageAttachment{
     /* margin-left: 160px; */
+}
+
+.containerABMPropiedades{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Aquí defines el número de columnas */
+    grid-gap: 10px; /* Espacio entre los elementos */
+}
+
+.custom-checkbox{
+    transform: scale(1.5); /* Ajusta el tamaño del checkbox */
 }

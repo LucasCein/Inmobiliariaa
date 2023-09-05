@@ -19,6 +19,7 @@
     "@mui/x-data-grid": "^6.12.0",
     "@reach/combobox": "^0.18.0",
     "@react-google-maps/api": "^2.19.2",
+    "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
     "firebase": "^10.3.0",
     "mdb-react-ui-kit": "^6.2.0",
