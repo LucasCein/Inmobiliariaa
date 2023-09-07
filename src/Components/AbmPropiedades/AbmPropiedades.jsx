@@ -22,6 +22,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Form from "react-bootstrap/Form";
 
 const AbmPropiedades = (detailData) => {
   /* const [currentPage, setCurrentPage] = useState(1); */
@@ -367,6 +368,15 @@ const AbmPropiedades = (detailData) => {
           onChange={handleChange}
         />
         <br />
+        {/*         <Form>
+          <Form.Check // prettier-ignore
+            type="switch"
+            id="custom-switch"
+            label="Check this switch"
+            checked={propiedad.wifi || false}
+            onChange={handleChange}
+          />
+        </Form> */}
         <input
           name="wifi"
           className="custom-checkbox mb-3"

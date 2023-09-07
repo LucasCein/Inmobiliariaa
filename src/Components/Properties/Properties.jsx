@@ -12,6 +12,7 @@ import CustomSpinner from "../CustomSpinner/CustomSpinner";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import AbmPropiedades from "../AbmPropiedades/AbmPropiedades";
+import Form from "react-bootstrap/Form";
 
 const Properties = () => {
   const [propiedades, setPropiedades] = useState([]);
@@ -44,15 +45,16 @@ const Properties = () => {
         <CustomSpinner></CustomSpinner>
       ) : (
         <>
-          <div className="mx-auto w-75 " style={{ marginTop: "200px" }}>
+          <div className="mx-auto w-75 ">
             <div className="w-100 h-100">
-              <input
-                type="text"
-                id="buscador"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Filtrar"
+              <Form.Control
+                size="lg"
                 className="w-100 h-200"
+                type="text"
+                value={search}
+                id="buscador"
+                placeholder="Filtrar"
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <div className=" my-3 d-flex justify-content-end">
@@ -93,8 +95,14 @@ const Properties = () => {
             </div>
             <MDBListGroup style={{ minWidth: "22rem" }} light>
               <PropertiesItems
-                propiedades={propiedades.filter((propiedad) =>
-                  propiedad.nombre.toLowerCase().includes(search.toLowerCase())
+                propiedades={propiedades.filter(
+                  (propiedad) =>
+                    propiedad.nombre
+                      .toLowerCase()
+                      .includes(search.toLowerCase()) ||
+                    propiedad.descripcion
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
                 )}
               />
             </MDBListGroup>
