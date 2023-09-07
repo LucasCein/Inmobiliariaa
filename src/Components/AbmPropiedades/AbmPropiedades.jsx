@@ -33,6 +33,7 @@ const AbmPropiedades = (detailData) => {
   useEffect(() => {
     return () => {
       if (detailData.propiedades !== "") {
+        console.log("detailData", detailData.propiedad);
         setPropiedad(detailData.propiedad);
       } else {
         setPropiedad({
@@ -131,6 +132,7 @@ const AbmPropiedades = (detailData) => {
         visible: true,
         id: Math.floor(Math.random() * 100000000) + 1,
       };
+      console.log("prop", prop);
       const dbRef = collection(db, "propiedades");
       addDoc(dbRef, prop)
         .then((savedDoc) => {
@@ -311,17 +313,30 @@ const AbmPropiedades = (detailData) => {
           className="comboCss mb-2"
           options={roomQty}
           defaultValue={
-            propiedad.cantBaños != ""
+            propiedad.cantBaños !== 0
               ? roomQty.find((opcion) => opcion.label === propiedad.cantBaños)
               : ""
           }
           onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })}
         ></Select>
+
+        {/*         <Select
+          className="comboCss mb-2"
+          options={roomQty}
+          defaultValue={
+            propiedad.cantBaños !== 0
+              ? roomQty.find(
+                  (opcion) => opcion.label === Number(propiedad.cantBaños)
+                )
+              : ""
+          }
+          onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })}
+        ></Select> */}
         <Select
           className="comboCss mb-2"
           options={roomQty}
           defaultValue={
-            propiedad.cantCuarto != ""
+            propiedad.cantCuarto !== ""
               ? roomQty.find((opcion) => opcion.label === propiedad.cantCuarto)
               : ""
           }
@@ -339,7 +354,7 @@ const AbmPropiedades = (detailData) => {
           name="wifi"
           className="custom-checkbox mb-3"
           type="checkbox"
-          checked={propiedad.wifi}
+          checked={propiedad.wifi || false}
           onChange={handleChange}
         />
         <br />
@@ -347,7 +362,7 @@ const AbmPropiedades = (detailData) => {
           name="aire"
           className="custom-checkbox mb-3"
           type="checkbox"
-          checked={propiedad.aire}
+          checked={propiedad.aire || false}
           onChange={handleChange}
         />
         <br />
@@ -355,7 +370,7 @@ const AbmPropiedades = (detailData) => {
           name="estacionamiento"
           className="custom-checkbox mb-3"
           type="checkbox"
-          checked={propiedad.estacionamiento}
+          checked={propiedad.estacionamiento || false}
           onChange={handleChange}
         />
         <br />
@@ -363,7 +378,7 @@ const AbmPropiedades = (detailData) => {
           name="lavarropa"
           className="custom-checkbox"
           type="checkbox"
-          checked={propiedad.lavarropa}
+          checked={propiedad.lavarropa || false}
           onChange={handleChange}
         />
       </div>
