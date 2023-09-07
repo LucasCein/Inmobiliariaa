@@ -16,8 +16,11 @@ import Form from "react-bootstrap/Form";
 
 const Properties = () => {
   const [propiedades, setPropiedades] = useState([]);
+  const [propiedadesToShow, setPropiedadesToShow] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [searchTituloDesc, setsearchTituloDesc] = useState("");
+  const [checkDisponible, setCheckDisponible] = useState(false);
+
   useEffect(() => {
     const dbFirestore = getFirestore();
     const queryCollection = collection(dbFirestore, "propiedades");
@@ -39,6 +42,7 @@ const Properties = () => {
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
   }, []);
+
   return (
     <section>
       {isLoading ? (
@@ -49,12 +53,20 @@ const Properties = () => {
             <div className="w-100 h-100">
               <Form.Control
                 size="lg"
-                className="w-100 h-200"
+                className="w-100 h-200 mb-5"
                 type="text"
-                value={search}
+                value={searchTituloDesc}
                 id="buscador"
                 placeholder="Filtrar"
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setsearchTituloDesc(e.target.value)}
+              />
+              <Form.Check // prettier-ignore
+                type="switch"
+                id="custom-switch"
+                label="Disponible"
+                className="text-white"
+                checked={checkDisponible}
+                onChange={(e) => setCheckDisponible(e.target.checked)}
               />
             </div>
             <div className=" my-3 d-flex justify-content-end">
@@ -93,16 +105,21 @@ const Properties = () => {
                 ></AbmPropiedades>
               </Popup>
             </div>
+            {console.log(checkDisponible)}
             <MDBListGroup style={{ minWidth: "22rem" }} light>
               <PropertiesItems
                 propiedades={propiedades.filter(
                   (propiedad) =>
-                    propiedad.nombre
+                    (propiedad.nombre
                       .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    propiedad.descripcion
-                      .toLowerCase()
-                      .includes(search.toLowerCase())
+                      .includes(searchTituloDesc.toLowerCase()) ||
+                      propiedad.descripcion
+                        .toLowerCase()
+                        .includes(searchTituloDesc.toLowerCase())) &&
+                    (checkDisponible == true
+                      ? propiedad.estado == "disponible"
+                      : propiedad.estado == "disponible" ||
+                        propiedad.estado == "ocupado")
                 )}
               />
             </MDBListGroup>
