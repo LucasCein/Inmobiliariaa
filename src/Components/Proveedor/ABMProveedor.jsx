@@ -23,9 +23,17 @@ const ABMProveedor = (detailData) => {
         empty={
           value:0
         }
-        setProveedor((proveedor) => {
-          return { ...proveedor, [name]: value }
-        })
+        if([name] == "CUIT"){
+          const formattedNumber = `${value.slice(0, 2)}-${value.slice(2, 10)}-${value.slice(10, 11)}`;
+          setProveedor((proveedor) => {
+            return { ...proveedor, CUIT: formattedNumber }
+          })
+        }
+        else{
+          setProveedor((proveedor) => {
+            return { ...proveedor, [name]: value }
+          })
+        }
       }
     })
 
@@ -45,6 +53,7 @@ const ABMProveedor = (detailData) => {
     }
 
     const createDoc = () => {
+        console.log(proveedor)
         const prov={...proveedor,Activo:true}
         const dbRef = collection(db, "proveedores");
         addDoc(dbRef, prov).then((savedDoc) => {
@@ -58,25 +67,39 @@ const ABMProveedor = (detailData) => {
         })
       }
     
-
+     
   return (
     <div className='d-flex flex-column align-items-center'>
          <h2 className="m-auto">{detailData.proveedor.nombre !== ""? "Editar":"Agregar" } Proveedor</h2>
+         <div className="container mt-3">
          <form name="form">
-        <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
-        <p className='my-0'>Nombre</p>
-        <input required type="text" name='nombre' onChange={handleChange} defaultValue={detailData.proveedor.nombre}/>
-        </div>
-        <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
-        <p className='my-0'>Descripción</p>
-        <input type="text" name='descripcion' onChange={handleChange} defaultValue={detailData.proveedor.descripcion} />
-        </div>
-        <div className='d-flex mt-3 gap-5 align-items-center   my-3'>
-        <p className='my-0'>Dirección</p>
-        <input type="text" name='direccion' onChange={handleChange} defaultValue={detailData.proveedor.direccion} />
-        </div>
+         <div className="row">
+                <div className="col-md-6 mb-3">
+                    <label  className="form-label">Nombre:</label>
+                    <input type="text" className="form-control" defaultValue={detailData.proveedor.nombre} name="nombre" onChange={handleChange}></input>
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label  className="form-label">Descripción:</label>
+                    <input defaultValue={detailData.proveedor.descripcion} type="text" className="form-control" id="descripcion" name="descripcion" onChange={handleChange}></input>
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label  className="form-label">Telefono:</label>
+                    <input defaultValue={detailData.proveedor.telefono} type="text" className="form-control" name="telefono" onChange={handleChange}></input>
+                </div>
+                <div className="col-md-6 mb-3">
+                    <label className="form-label">Email:</label>
+                    <input defaultValue={detailData.proveedor.email} type="email" className="form-control" name="email" onChange={handleChange}></input>
+                </div>
+                <div className="col mb-3">
+                    <label className="form-label">CUIT:</label>
+                    <input defaultValue={detailData.proveedor.CUIT} type="number" className="form-control" name="CUIT" placeholder='Solo números' onChange={handleChange}></input>
+                </div>
+            </div>
+
+
         </form>
-        <div className='d-flex gap-4 mt-3 '>
+        </div>
+        <div className='d-flex gap-4 mt-2 mb-2 '>
           <button className='btn btn-success' onClick={detailData.proveedor.nombre != ''?editDoc:createDoc}>{detailData.proveedor.nombre != '' ? 'Editar' : 'Agregar'}</button>
           <button className='btn btn-danger' onClick={() => navigate(0)}>Cancelar</button>
         </div>
