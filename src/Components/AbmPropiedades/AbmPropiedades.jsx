@@ -24,40 +24,39 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const AbmPropiedades = (detailData) => {
-  const [currentPage, setCurrentPage] = useState(1); // Estado para controlar la página actual
+  /* const [currentPage, setCurrentPage] = useState(1); */
   const navigate = useNavigate();
-  const [propiedad, setPropiedad] = useState({});
+  const [propiedad, setPropiedad] = useState({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    estado: "",
+    tipo: "",
+    pais: "",
+    region: "",
+    cp: "",
+    calle: "",
+    altura: "",
+    piso: "",
+    dpto: "",
+    cantBaños: "",
+    cantCuarto: "",
+    area: "0",
+    wifi: false,
+    aire: false,
+    estacionamiento: false,
+    lavarropa: false,
+    imagen: "",
+  });
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     return () => {
       if (detailData.propiedades !== "") {
         console.log("detailData", detailData.propiedad);
         setPropiedad(detailData.propiedad);
-      } else {
-        setPropiedad({
-          id: "",
-          nombre: "",
-          descripcion: "",
-          estado: "",
-          tipo: "",
-          pais: "",
-          region: "",
-          cp: "",
-          calle: "",
-          altura: "",
-          piso: "",
-          dpto: "",
-          cantBaños: "",
-          cantCuarto: "",
-          area: "0",
-          wifi: false,
-          aire: false,
-          estacionamiento: false,
-          lavarropa: false,
-          imagen: "",
-        });
       }
     };
   }, [detailData]);
@@ -108,7 +107,6 @@ const AbmPropiedades = (detailData) => {
     });
   };
 
-  const [image, setImage] = useState("");
   const upload = async () => {
     if (image == null) return;
     const imageref = ref(storage, `/image/${image.name}`);
@@ -130,7 +128,6 @@ const AbmPropiedades = (detailData) => {
       const prop = {
         ...propiedad,
         visible: true,
-        id: Math.floor(Math.random() * 100000000) + 1,
       };
       console.log("prop", prop);
       const dbRef = collection(db, "propiedades");
@@ -139,6 +136,7 @@ const AbmPropiedades = (detailData) => {
           console.log("Document has been added successfully");
           alert(`Documento creado: ${savedDoc.id}`);
           navigate(0);
+          updateDoc(doc(db, "propiedades", savedDoc.id), { id: savedDoc.id });
         })
         .catch((error) => {
           console.log(error);
@@ -223,7 +221,7 @@ const AbmPropiedades = (detailData) => {
               : ""
           }
           onChange={(e) => setPropiedad({ ...propiedad, tipo: e.value })}
-        ></Select>
+        ></Select>{" "}
       </div>
       <div className="col-1">
         <p className=" my-0 mb-3">País</p>
@@ -309,29 +307,33 @@ const AbmPropiedades = (detailData) => {
         <p className="my-0 mb-2">Lavarropas:</p>
       </div>
       <div className="col-2">
+        {/*         <Select
+          className="comboCss basic-single select mb-2"
+          options={optionsStatus}
+          defaultValue={
+            propiedad.estado != ""
+              ? propiedad.estado == "ocupado"
+                ? optionsStatus[0]
+                : optionsStatus[1]
+              : ""
+          }
+          onChange={(e) => setPropiedad({ ...propiedad, estado: e.value })}
+        ></Select> */}
+        {console.log("roomQty", roomQty)}
+        {console.log("propiedad.cantBaños", propiedad.cantBaños)}
+        {console.log(
+          "roomQty[propiedad.cantBaños]",
+          roomQty[propiedad.cantBaños]
+        )}
         <Select
           className="comboCss mb-2"
           options={roomQty}
+          id="select"
           defaultValue={
-            propiedad.cantBaños !== 0
-              ? roomQty.find((opcion) => opcion.label === propiedad.cantBaños)
-              : ""
+            propiedad.cantBaños !== 0 ? roomQty[propiedad.cantBaños] : ""
           }
           onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })}
         ></Select>
-
-        {/*         <Select
-          className="comboCss mb-2"
-          options={roomQty}
-          defaultValue={
-            propiedad.cantBaños !== 0
-              ? roomQty.find(
-                  (opcion) => opcion.label === Number(propiedad.cantBaños)
-                )
-              : ""
-          }
-          onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })}
-        ></Select> */}
         <Select
           className="comboCss mb-2"
           options={roomQty}
