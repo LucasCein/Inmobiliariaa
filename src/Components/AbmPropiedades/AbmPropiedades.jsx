@@ -201,25 +201,27 @@ const AbmPropiedades = (detailData) => {
         <Select
           className="comboCss basic-single select mb-2"
           options={optionsStatus}
-          defaultValue={
+          value={
             propiedad.estado != ""
               ? propiedad.estado == "ocupado"
                 ? optionsStatus[0]
                 : optionsStatus[1]
               : ""
           }
+          defaultValue={""}
           onChange={(e) => setPropiedad({ ...propiedad, estado: e.value })}
         ></Select>
         <Select
           className="comboCss mb-10"
           options={optionsType}
-          defaultValue={
+          value={
             propiedad.tipo != ""
               ? propiedad.tipo == "venta"
                 ? optionsType[0]
                 : optionsType[1]
               : ""
           }
+          defaultValue={""}
           onChange={(e) => setPropiedad({ ...propiedad, tipo: e.value })}
         ></Select>{" "}
       </div>
@@ -325,23 +327,36 @@ const AbmPropiedades = (detailData) => {
           "roomQty[propiedad.cantBaños]",
           roomQty[propiedad.cantBaños]
         )}
-        <Select
-          className="comboCss mb-2"
-          options={roomQty}
-          id="select"
-          defaultValue={
-            propiedad.cantBaños !== 0 ? roomQty[propiedad.cantBaños] : ""
-          }
-          onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })}
-        ></Select>
-        <Select
-          className="comboCss mb-2"
-          options={roomQty}
-          defaultValue={
-            propiedad.cantCuarto !== ""
-              ? roomQty.find((opcion) => opcion.label === propiedad.cantCuarto)
+        {/* <Select
+          className="comboCss basic-single select mb-2"
+          options={optionsStatus}
+          value={
+            propiedad.estado != -1
+              ? propiedad.estado == "ocupado"
+                ? optionsStatus[0]
+                : optionsStatus[1]
               : ""
           }
+          defaultValue={""}
+          onChange={(e) => setPropiedad({ ...propiedad, estado: e.value })}
+        /> */}
+        <Select
+          className="comboCss mb-2"
+          options={roomQty}
+          value={
+            propiedad.cantBaños != -1 ? roomQty[propiedad.cantBaños - 1] : ""
+          }
+          defaultValue={""}
+          onChange={(e) => setPropiedad({ ...propiedad, cantBaños: e.value })}
+        ></Select>
+        {console.log("propiedad.cantCuarto", propiedad.cantCuarto)}
+        <Select
+          className="comboCss mb-2"
+          options={roomQty}
+          value={
+            propiedad.cantCuarto != -1 ? roomQty[propiedad.cantCuarto - 1] : ""
+          }
+          defaultValue={""}
           onChange={(e) => setPropiedad({ ...propiedad, cantCuarto: e.value })}
         ></Select>
         <input
