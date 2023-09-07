@@ -1,5 +1,9 @@
 import Select from "react-select";
-
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
 import "./AbmPropiedades.css";
 import { useEffect, useMemo, useState } from "react";
 import { app, storage } from "../../FireBase/config";
@@ -23,6 +27,8 @@ const AbmPropiedades = (detailData) => {
   const [currentPage, setCurrentPage] = useState(1); // Estado para controlar la página actual
   const navigate = useNavigate();
   const [propiedad, setPropiedad] = useState({});
+  const [country, setCountry] = useState("");
+  const [region, setRegion] = useState("");
 
   useEffect(() => {
     return () => {
@@ -32,24 +38,24 @@ const AbmPropiedades = (detailData) => {
         setPropiedad({
           id: "",
           nombre: "",
-          estado: "",
           descripcion: "",
-          imagen: "",
+          estado: "",
           tipo: "",
-          ciudad: "",
-          barrio: "",
+          pais: "",
+          region: "",
+          cp: "",
           calle: "",
           altura: "",
-          cp: "",
           piso: "",
-          depto: "",
+          dpto: "",
           cantBaños: "",
           cantCuarto: "",
+          area: "0",
           wifi: false,
           aire: false,
           estacionamiento: false,
           lavarropa: false,
-          area: "0",
+          imagen: "",
         });
       }
     };
@@ -86,7 +92,19 @@ const AbmPropiedades = (detailData) => {
       return { ...propiedad, [name]: value };
     });
 
-    console.log(propiedad);
+    console.log("propiedad", propiedad);
+  };
+
+  const handlePaisChange = (valor) => {
+    setPropiedad((propiedad) => {
+      return { ...propiedad, ["pais"]: valor };
+    });
+  };
+
+  const handleRegionChange = (valor) => {
+    setPropiedad((propiedad) => {
+      return { ...propiedad, ["region"]: valor };
+    });
   };
 
   const [image, setImage] = useState("");
@@ -108,7 +126,11 @@ const AbmPropiedades = (detailData) => {
   const createDoc = () => {
     console.log("nombre: ", propiedad.nombre);
     if (propiedad.nombre != "") {
-      const prop = { ...propiedad, visible: true };
+      const prop = {
+        ...propiedad,
+        visible: true,
+        id: Math.floor(Math.random() * 100000000) + 1,
+      };
       const dbRef = collection(db, "propiedades");
       addDoc(dbRef, prop)
         .then((savedDoc) => {
@@ -187,7 +209,6 @@ const AbmPropiedades = (detailData) => {
               : ""
           }
           onChange={(e) => setPropiedad({ ...propiedad, estado: e.value })}
-          name="estado"
         ></Select>
         <Select
           className="comboCss mb-10"
@@ -205,7 +226,7 @@ const AbmPropiedades = (detailData) => {
       <div className="col-1">
         <p className=" my-0 mb-3">País</p>
         <p className=" my-0 mb-2">Región</p>
-        <p className=" my-0 mb-3">Barrio</p>
+        <p className=" my-0 mb-3">CP</p>
         <p className=" my-0 mb-3">Calle</p>
         <p className=" my-0 mb-3">Altura</p>
         <p className=" my-0 mb-3">Piso</p>
@@ -213,25 +234,25 @@ const AbmPropiedades = (detailData) => {
         <p className="my-0">Imagen</p>
       </div>
       <div className="col-2">
-        <input
-          className="mb-2"
-          type="text"
-          value={propiedad.ciudad}
-          name="ciudad"
-          onChange={handleChange}
+        <CountryDropdown
+          className="comboCss  mb-3"
+          value={propiedad.pais}
+          onChange={(val) => handlePaisChange(val)}
+          name="pais"
+        />
+        <RegionDropdown
+          disableWhenEmpty={true}
+          value={propiedad.region}
+          country={propiedad.pais}
+          name="region"
+          onChange={(val) => handleRegionChange(val)}
+          className="comboCss mb-2"
         />
         <input
           className="mb-2"
           type="text"
           value={propiedad.cp}
           name="cp"
-          onChange={handleChange}
-        />
-        <input
-          className="mb-2"
-          type="text"
-          value={propiedad.barrio}
-          name="barrio"
           onChange={handleChange}
         />
         <input
@@ -345,6 +366,25 @@ const AbmPropiedades = (detailData) => {
           checked={propiedad.lavarropa}
           onChange={handleChange}
         />
+      </div>
+      <div className="d-flex gap-4 mt-3 ">
+        <button
+          className="btn btn-success"
+          onClick={detailData.propiedad.nombre != "" ? editDoc : createDoc}
+        >
+          {detailData.propiedad.nombre != "" ? "Editar" : "Agregar"}
+        </button>
+        <button className="btn btn-danger" onClick={() => navigate(0)}>
+          Cancelar
+        </button>
+        <button
+          className={
+            detailData.propiedad.nombre != "" ? "btn btn-dark" : "d-none"
+          }
+          onClick={deleteDoc}
+        >
+          Eliminar
+        </button>
       </div>
     </div>
   );
