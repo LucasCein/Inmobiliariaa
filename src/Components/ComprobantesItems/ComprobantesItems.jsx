@@ -1,54 +1,36 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import { MDBBadge, MDBListGroupItem } from "mdb-react-ui-kit"
+
+import { MDBListGroupItem } from "mdb-react-ui-kit"
 import Popup from "reactjs-popup"
-import AbmPropiedades from "../AbmPropiedades/AbmPropiedades"
-import { collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore"
+import { collection, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { BsPencil } from "react-icons/bs"
-import AbmComprobantes from "../AbmComprobantes/AbmComprobantes"
+import { BsArchiveFill, BsEyeFill } from "react-icons/bs"
+import DetalleComprobante from "../DetalleComprobante/DetalleComprobante"
+import CustomSpinner from "../CustomSpinner/CustomSpinner"
+import { app } from "../../FireBase/config"
+
 
 const ComprobantesItems = ({ comprobantes }) => {
-    const [comprobantesConProveedores, setComprobantesConProveedores] = useState([]);
-    const db = getFirestore();
-
-    useEffect(() => {
-        const fetchProveedor = async () => {
-            const proveedorCollection = collection(db, 'proveedores');
-            const proveedorSnapshot = await getDocs(proveedorCollection);
-            const proveedorList = proveedorSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            const propiedadCollection = collection(db, 'propiedades');
-            const propiedadSnapshot = await getDocs(propiedadCollection);
-            const propiedadList = propiedadSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            
-            const comprobantesConProveedoresTemp = comprobantes.map(comprobante => {
-                const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
-                const propiedad=propiedadList.find(prop => prop.id === comprobante.idProp)
-                return {
-                    ...comprobante,
-                    nombreProveedor: proveedor ? proveedor.nombre : '',
-                    nombrePropiedad: propiedad ? propiedad.nombre : ''
-                };
-            });
-
-            setComprobantesConProveedores(comprobantesConProveedoresTemp);
-
-        }
-
-        fetchProveedor();
-    }, [comprobantes, db]);
-
     console.log(comprobantes)
-    console.log(comprobantesConProveedores)
+    const db = getFirestore(app);
+    const deleteDoc = (id,idDetalle) => {
+        const examcollref = doc(db, 'comprobantes', id)
+        updateDoc(examcollref, { visible: false }).then(() => {
+            alert("Deleted")
+        }).catch(error => {
+            console.log(error.message)
+        })
+        const examcollref1 = doc(db, 'detalleComprobante', idDetalle)
+        updateDoc(examcollref1, { visible: false }).then(() => {
+            alert("Deleted")
+        }).catch(error => {
+            console.log(error.message)
+        })
+    }
+
     return (
         <>
             {
-                comprobantesConProveedores.map(({ id, Fecha, Tipo, pTotal, nombreProveedor,idDetalle,idProp,idProv,nombrePropiedad,originalDate}) =>
+                comprobantes.map(({ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, nombrePropiedad, cuit, numSuc }) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between' >
                         <div className='d-flex align-items-center '>
                             <div className="d-flex gap-4">
@@ -72,8 +54,9 @@ const ComprobantesItems = ({ comprobantes }) => {
                         </div>
 
                         <div className='d-flex align-items-center gap-2 me-3'>
-                            <Popup trigger={<button className='btn btn-warning '><BsPencil></BsPencil></button>} modal>
-                                <AbmComprobantes detailData={{ id, Fecha, Tipo, pTotal, nombreProveedor,idDetalle,idProp,idProv,nombrePropiedad,originalDate }}   status={'edit'}></AbmComprobantes>
+                            <button className="btn btn-danger" onClick={deleteDoc} ><BsArchiveFill></BsArchiveFill></button>
+                            <Popup className="position-absolute" trigger={<button className='btn btn-info '><BsEyeFill></BsEyeFill></button>} modal>
+                                <DetalleComprobante item={{ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, nombrePropiedad, cuit, numSuc }}></DetalleComprobante>
                             </Popup>
                         </div>
                     </MDBListGroupItem>

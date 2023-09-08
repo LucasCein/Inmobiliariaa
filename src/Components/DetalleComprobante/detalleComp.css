@@ -1,0 +1,60 @@
+.detailCont{
+    display: grid;
+    grid-template-areas: 
+    "tipoComp tipoComp tipoComp tipoComp"
+    "provName provNameInp numSucTitle numSucInp"
+    "provCuit provCuitInp numCompTitle numCompInp"
+    "prodsTitle prodsTitle prodsTitle prodsTitle"
+    "prodsDesc prodsDesc prodsDesc prodsDesc"
+    "pTotName pTotName pTotName pTotName"
+    ;
+    gap: 10px;
+    justify-content: center;
+    align-items: start;
+}
+.mainTitle{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.tipoComp{
+    grid-area: tipoComp;
+    width: 40px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.numSucTitle{
+    grid-area: numSucTitle;
+}
+.numSucInp{
+    grid-area: numSucInp;
+}
+.numCompTitle{
+    grid-area: numCompTitle;
+}
+.numCompInp{
+    grid-area: numCompInp;
+}
+.provName{
+    grid-area: provName;
+}
+.provNameInp{
+    grid-area: provNameInp;
+}
+.provCuit{
+    grid-area: provCuit;
+}
+.provCuitInp{
+    grid-area: provCuitInp;
+}
+.prodsTitle{
+    grid-area: prodsTitle;
+}
+.prodsDesc{
+    grid-area: prodsDesc;
+}
+.pTotName{
+    grid-area: pTotName;
+    text-align: end;
+}
