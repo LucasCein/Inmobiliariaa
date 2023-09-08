@@ -41,10 +41,10 @@ const ProveedoresItem = ({proveedores}) => {
   return (
     <>
     {
-        currentProveedores.map(({id,nombre , descripcion, direccion }) =>
+        currentProveedores.map(({id,nombre , descripcion, CUIT, email, telefono }) =>
             <MDBListGroupItem key={id} className='d-flex justify-content-between align-items-center' >
                 <div className='d-flex align-items-center'>
-                    <div className="d-flex gap-5">
+                    <div className="d-flex gap-2">
                         <div className="ms-3">
                             <p className='fw-bold mb-1'>Nombre</p>
                             <p className='text-muted mb-0'>{nombre}</p>
@@ -54,14 +54,22 @@ const ProveedoresItem = ({proveedores}) => {
                             <p className='text-muted mb-0'>{descripcion}</p>
                         </div>
                         <div className="ms-3">
-                            <p className='fw-bold mb-1'>Direccion</p>
-                            <p className='text-muted mb-0'>{direccion}</p>
+                            <p className='fw-bold mb-1'>CUIT</p>
+                            <p className='text-muted mb-0'>{CUIT}</p>
+                        </div>
+                        <div className="ms-3">
+                            <p className='fw-bold mb-1'>E-mail</p>
+                            <p className='text-muted mb-0'>{email}</p>
+                        </div>
+                        <div className="ms-3">
+                            <p className='fw-bold mb-1'>Telefono</p>
+                            <p className='text-muted mb-0'>{telefono}</p>
                         </div>
                     </div>
                 </div>
                 <div className='d-flex align-items-center gap-3'>
                     <Popup trigger={<button  className='btn btn-warning ' style={{marginRight:'20px'}}><BsPencil ></BsPencil></button>} modal>
-                        <ABMProveedor proveedor={{id,nombre,descripcion,direccion}}></ABMProveedor>
+                        <ABMProveedor proveedor={{id,nombre,descripcion,CUIT, email, telefono}}></ABMProveedor>
                     </Popup>
                     <button className='btn btn-danger' style={{marginRight:'20px'}} onClick={()=>deleteDoc(id)}><BsTrash></BsTrash></button>
                 </div>
