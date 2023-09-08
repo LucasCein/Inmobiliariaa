@@ -20,6 +20,8 @@ const Properties = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTituloDesc, setsearchTituloDesc] = useState("");
   const [checkDisponible, setCheckDisponible] = useState(false);
+  const [checkVenta, setCheckVenta] = useState(false);
+  const [checkEstacionamiento, setCheckEstacionamiento] = useState(false);
 
   useEffect(() => {
     const dbFirestore = getFirestore();
@@ -62,11 +64,27 @@ const Properties = () => {
               />
               <Form.Check // prettier-ignore
                 type="switch"
-                id="custom-switch"
+                id="disponibleSwitch"
                 label="Disponible"
                 className="text-white"
                 checked={checkDisponible}
                 onChange={(e) => setCheckDisponible(e.target.checked)}
+              />
+              <Form.Check // prettier-ignore
+                type="switch"
+                id="ventaSwitch"
+                label="Venta"
+                className="text-white"
+                checked={checkVenta}
+                onChange={(e) => setCheckVenta(e.target.checked)}
+              />
+              <Form.Check // prettier-ignore
+                type="switch"
+                id="estacionamientoSwitch"
+                label="Estacionamiento"
+                className="text-white"
+                checked={checkEstacionamiento}
+                onChange={(e) => setCheckEstacionamiento(e.target.checked)}
               />
             </div>
             <div className=" my-3 d-flex justify-content-end">
@@ -119,7 +137,15 @@ const Properties = () => {
                     (checkDisponible == true
                       ? propiedad.estado == "disponible"
                       : propiedad.estado == "disponible" ||
-                        propiedad.estado == "ocupado")
+                        propiedad.estado == "ocupado") &&
+                    (checkVenta == true
+                      ? propiedad.tipo == "venta"
+                      : propiedad.tipo == "venta" ||
+                        propiedad.tipo == "alquiler") &&
+                    (checkEstacionamiento == true
+                      ? propiedad.estacionamiento == true
+                      : propiedad.estacionamiento == true ||
+                        propiedad.estacionamiento == false)
                 )}
               />
             </MDBListGroup>
