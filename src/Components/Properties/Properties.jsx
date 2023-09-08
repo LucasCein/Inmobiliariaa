@@ -13,6 +13,7 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import AbmPropiedades from "../AbmPropiedades/AbmPropiedades";
 import Form from "react-bootstrap/Form";
+import ListaDeFiltro from "../listaDeFiltro/ListaDeFiltro";
 
 const Properties = () => {
   const [propiedades, setPropiedades] = useState([]);
@@ -55,13 +56,14 @@ const Properties = () => {
             <div className="w-100 h-100">
               <Form.Control
                 size="lg"
-                className="w-100 h-200 mb-5"
+                className="w-100 h-200"
                 type="text"
                 value={searchTituloDesc}
                 id="buscador"
                 placeholder="Filtrar"
                 onChange={(e) => setsearchTituloDesc(e.target.value)}
               />
+              <ListaDeFiltro />
               <Form.Check // prettier-ignore
                 type="switch"
                 id="disponibleSwitch"
