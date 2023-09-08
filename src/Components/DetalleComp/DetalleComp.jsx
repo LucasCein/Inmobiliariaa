@@ -2,11 +2,11 @@ import { MDBListGroupItem } from "mdb-react-ui-kit"
 import Popup from "reactjs-popup"
 
 const DetalleComp = ({productos}) => {
-    
+ console.log(productos)
   return (
     <>
             {
-                productos.map(({ id,nombre,descripcion,precio }) =>
+                productos?.map(({ id,nombre,descripcion,precio }) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between' >
                         <div className='d-flex align-items-center '>
                             <div className="d-flex gap-4">
