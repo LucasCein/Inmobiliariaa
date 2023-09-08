@@ -56,7 +56,7 @@ const Properties = () => {
             <div className="w-100 h-100">
               <Form.Control
                 size="lg"
-                className="w-100 h-200"
+                className="w-100 h-200 mb-3 mt-4"
                 type="text"
                 value={searchTituloDesc}
                 id="buscador"
@@ -64,30 +64,32 @@ const Properties = () => {
                 onChange={(e) => setsearchTituloDesc(e.target.value)}
               />
               {/* <ListaDeFiltro /> */}
-              <Form.Check // prettier-ignore
-                type="switch"
-                id="disponibleSwitch"
-                label="Disponible"
-                className="text-white"
-                checked={checkDisponible}
-                onChange={(e) => setCheckDisponible(e.target.checked)}
-              />
-              <Form.Check // prettier-ignore
-                type="switch"
-                id="ventaSwitch"
-                label="Venta"
-                className="text-white"
-                checked={checkVenta}
-                onChange={(e) => setCheckVenta(e.target.checked)}
-              />
-              <Form.Check // prettier-ignore
-                type="switch"
-                id="estacionamientoSwitch"
-                label="Estacionamiento"
-                className="text-white"
-                checked={checkEstacionamiento}
-                onChange={(e) => setCheckEstacionamiento(e.target.checked)}
-              />
+              <div className="d-flex justify-content-around mb-4">
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="disponibleSwitch"
+                  label="Disponible"
+                  className="text-white"
+                  checked={checkDisponible}
+                  onChange={(e) => setCheckDisponible(e.target.checked)}
+                />
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="ventaSwitch"
+                  label="Venta"
+                  className="text-white"
+                  checked={checkVenta}
+                  onChange={(e) => setCheckVenta(e.target.checked)}
+                />
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="estacionamientoSwitch"
+                  label="Estacionamiento"
+                  className="text-white"
+                  checked={checkEstacionamiento}
+                  onChange={(e) => setCheckEstacionamiento(e.target.checked)}
+                />
+              </div>
             </div>
             <div className=" my-3 d-flex justify-content-end">
               <Popup
