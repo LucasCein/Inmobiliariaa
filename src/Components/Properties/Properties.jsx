@@ -63,7 +63,7 @@ const Properties = () => {
                 placeholder="Filtrar"
                 onChange={(e) => setsearchTituloDesc(e.target.value)}
               />
-              <ListaDeFiltro />
+              {/* <ListaDeFiltro /> */}
               <Form.Check // prettier-ignore
                 type="switch"
                 id="disponibleSwitch"
