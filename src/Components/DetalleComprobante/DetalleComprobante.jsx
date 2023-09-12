@@ -3,13 +3,14 @@ import './detalleComp.css'
 import { useEffect, useState } from 'react';
 import { MDBListGroup } from 'mdb-react-ui-kit';
 import DetalleComp from '../DetalleComp/DetalleComp';
+import { app } from '../../FireBase/config';
 
 const DetalleComprobante = ({ item }) => {
     console.log(item.idDetalle.id)
     const [products, setProducts] = useState([])
     useEffect(() => {
         const fetch = async () => {
-            const db = getFirestore();
+            const db = getFirestore(app);
             const docRef = doc(db, "detalleComprobante", item.idDetalle.id);
             const docSnap = await getDoc(docRef).then(res => setProducts(res.data().productos));
         }

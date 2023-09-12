@@ -1,5 +1,5 @@
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ComprobantesItems from '../ComprobantesItems/ComprobantesItems';
 import Popup from 'reactjs-popup';
 import { MDBListGroup } from 'mdb-react-ui-kit';
@@ -13,12 +13,44 @@ const ComprobantesPago = () => {
     const [inpFilter, setInpFilter] = useState()
     const [compFiltered, setCompFiltered] = useState([])
     const [filterSelected, setFilterSelected] = useState([])
-    const [ComprobantesConProveedores, setComprobantesConProveedores] = useState([])
-    useEffect(() => {
+    const [comprobantesConProveedores, setComprobantesConProveedores] = useState([])
 
+    useEffect(() => {
         const dbFirestore = getFirestore()
         const queryCollection = collection(dbFirestore, 'comprobantes')
         const queryCollectionFiltered = query(queryCollection, where('visible', '==', true))
+
+        const fetchProveedor = async () => {
+
+            const proveedorCollection = collection(dbFirestore, 'proveedores');
+            const proveedorSnapshot = await getDocs(proveedorCollection);
+            const proveedorList = proveedorSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            const propiedadCollection = collection(dbFirestore, 'propiedades');
+            const propiedadSnapshot = await getDocs(propiedadCollection);
+            const propiedadList = propiedadSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            setComprobantesConProveedores(comprobantes.map(comprobante => {
+                const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
+                const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
+
+                return {
+                    ...comprobante,
+                    nombreProveedor: proveedor ? proveedor.nombre : '',
+                    nombrePropiedad: propiedad ? propiedad.nombre : '',
+                    cuit: proveedor ? proveedor.CUIT : '',
+                };
+            }))
+
+        }
+
+        fetchProveedor();
+
         getDocs(queryCollectionFiltered)
             .then(res => setComprobantes(res.docs.map(comprobante => ({
                 id: comprobante.id,
@@ -28,41 +60,10 @@ const ComprobantesPago = () => {
                 originalDate: comprobante.data().Fecha
             }))))
             .catch(error => console.log(error))
-            .finally(setIsLoading(false))
-            const fetchProveedor = async () => {
+            .finally(setIsLoading(false));
 
-                const proveedorCollection = collection(dbFirestore, 'proveedores');
-                const proveedorSnapshot = await getDocs(proveedorCollection);
-                const proveedorList = proveedorSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                const propiedadCollection = collection(dbFirestore, 'propiedades');
-                const propiedadSnapshot = await getDocs(propiedadCollection);
-                const propiedadList = propiedadSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-    
-                const comprobantesConProveedoresTemp = comprobantes.map(comprobante => {
-                    const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
-                    const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
-    
-                    return {
-                        ...comprobante,
-                        nombreProveedor: proveedor ? proveedor.nombre : '',
-                        nombrePropiedad: propiedad ? propiedad.nombre : '',
-                        cuit: proveedor ? proveedor.CUIT : '',
-                    };
-                });
-    
-                setComprobantesConProveedores(comprobantesConProveedoresTemp);
-    
-            }
-    
-            fetchProveedor();
-
-    }, [])
+        
+    }, []);
 
     const filterOptions = [
         { value: 'date', label: 'Fecha' },
@@ -88,7 +89,7 @@ const ComprobantesPago = () => {
 
         if (filterSelected == 'date') {
 
-            setCompFiltered(ComprobantesConProveedores.filter((comp) => {
+            setCompFiltered(comprobantesConProveedores.filter((comp) => {
                 const partsfechaComp = comp.Fecha.split("/")
                 const reverse = partsfechaComp[2] + "-" + partsfechaComp[1] + "-" + (partsfechaComp[0].length == 1 ? '0' + partsfechaComp[0] : partsfechaComp[0])
                 console.log(reverse)
@@ -99,20 +100,21 @@ const ComprobantesPago = () => {
         }
         else if (filterSelected == 'prov') {
             console.log(e.target.value)
-            setCompFiltered(ComprobantesConProveedores.filter((comp) => {
+            setCompFiltered(comprobantesConProveedores.filter((comp) => {
                 console.log(comp.nombreProveedor)
                 return comp.nombreProveedor.toLowerCase().includes(e.target.value.toLowerCase())
             }))
         }
         else if (filterSelected == 'tipo') {
-            setCompFiltered(ComprobantesConProveedores.filter((comp) => {
+            setCompFiltered(comprobantesConProveedores.filter((comp) => {
                 if (comp.Tipo == e.target.value) {
                     return comp
                 }
             }))
         }
     }
-    console.log(compFiltered)
+
+    console.log(comprobantesConProveedores)
     return (
         <>
             {isLoading ? <CustomSpinner></CustomSpinner> :
@@ -129,7 +131,7 @@ const ComprobantesPago = () => {
                             </Popup>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>
-                            <ComprobantesItems comprobantes={compFiltered != "" ? compFiltered : ComprobantesConProveedores} />
+                            <ComprobantesItems comprobantes={compFiltered != "" ? compFiltered : comprobantesConProveedores} />
                         </MDBListGroup>
 
                     </div>

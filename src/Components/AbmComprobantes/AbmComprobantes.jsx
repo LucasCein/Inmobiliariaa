@@ -77,7 +77,7 @@ const AbmComprobantes = () => {
   }
 
   const createDetComp = () => {
-    const prop = {...productos,visible:true }
+    const prop = {productos}
     const dbRef = collection(db, "detalleComprobante");
     addDoc(dbRef, prop).then((docRef) => {
       console.log("detalle has been added successfully")
