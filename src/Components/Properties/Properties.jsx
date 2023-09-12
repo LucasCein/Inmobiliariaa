@@ -13,6 +13,7 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import AbmPropiedades from "../AbmPropiedades/AbmPropiedades";
 import Form from "react-bootstrap/Form";
+import ListaDeFiltro from "../listaDeFiltro/ListaDeFiltro";
 
 const Properties = () => {
   const [propiedades, setPropiedades] = useState([]);
@@ -20,6 +21,8 @@ const Properties = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTituloDesc, setsearchTituloDesc] = useState("");
   const [checkDisponible, setCheckDisponible] = useState(false);
+  const [checkVenta, setCheckVenta] = useState(false);
+  const [checkEstacionamiento, setCheckEstacionamiento] = useState(false);
 
   useEffect(() => {
     const dbFirestore = getFirestore();
@@ -53,21 +56,40 @@ const Properties = () => {
             <div className="w-100 h-100">
               <Form.Control
                 size="lg"
-                className="w-100 h-200 mb-5"
+                className="w-100 h-200 mb-3 mt-4"
                 type="text"
                 value={searchTituloDesc}
                 id="buscador"
                 placeholder="Filtrar"
                 onChange={(e) => setsearchTituloDesc(e.target.value)}
               />
-              <Form.Check // prettier-ignore
-                type="switch"
-                id="custom-switch"
-                label="Disponible"
-                className="text-white"
-                checked={checkDisponible}
-                onChange={(e) => setCheckDisponible(e.target.checked)}
-              />
+              {/* <ListaDeFiltro /> */}
+              <div className="d-flex justify-content-around mb-4">
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="disponibleSwitch"
+                  label="Disponible"
+                  className="text-white"
+                  checked={checkDisponible}
+                  onChange={(e) => setCheckDisponible(e.target.checked)}
+                />
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="ventaSwitch"
+                  label="Venta"
+                  className="text-white"
+                  checked={checkVenta}
+                  onChange={(e) => setCheckVenta(e.target.checked)}
+                />
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="estacionamientoSwitch"
+                  label="Estacionamiento"
+                  className="text-white"
+                  checked={checkEstacionamiento}
+                  onChange={(e) => setCheckEstacionamiento(e.target.checked)}
+                />
+              </div>
             </div>
             <div className=" my-3 d-flex justify-content-end">
               <Popup
@@ -119,7 +141,15 @@ const Properties = () => {
                     (checkDisponible == true
                       ? propiedad.estado == "disponible"
                       : propiedad.estado == "disponible" ||
-                        propiedad.estado == "ocupado")
+                        propiedad.estado == "ocupado") &&
+                    (checkVenta == true
+                      ? propiedad.tipo == "venta"
+                      : propiedad.tipo == "venta" ||
+                        propiedad.tipo == "alquiler") &&
+                    (checkEstacionamiento == true
+                      ? propiedad.estacionamiento == true
+                      : propiedad.estacionamiento == true ||
+                        propiedad.estacionamiento == false)
                 )}
               />
             </MDBListGroup>

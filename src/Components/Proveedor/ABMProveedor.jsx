@@ -53,7 +53,6 @@ const ABMProveedor = (detailData) => {
     }
 
     const createDoc = () => {
-        console.log(proveedor)
         const prov={...proveedor,Activo:true}
         const dbRef = collection(db, "proveedores");
         addDoc(dbRef, prov).then((savedDoc) => {
@@ -67,7 +66,6 @@ const ABMProveedor = (detailData) => {
         })
       }
     
-     
   return (
     <div className='d-flex flex-column align-items-center'>
          <h2 className="m-auto">{detailData.proveedor.nombre !== ""? "Editar":"Agregar" } Proveedor</h2>
@@ -95,8 +93,6 @@ const ABMProveedor = (detailData) => {
                     <input defaultValue={detailData.proveedor.CUIT} type="number" className="form-control" name="CUIT" placeholder='Solo números' onChange={handleChange}></input>
                 </div>
             </div>
-
-
         </form>
         </div>
         <div className='d-flex gap-4 mt-2 mb-2 '>
