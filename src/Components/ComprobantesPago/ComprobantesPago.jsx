@@ -14,6 +14,7 @@ const ComprobantesPago = () => {
     const [compFiltered, setCompFiltered] = useState([])
     const [filterSelected, setFilterSelected] = useState([])
     const [comprobantesConProveedores, setComprobantesConProveedores] = useState([])
+    
 
     useEffect(() => {
         const dbFirestore = getFirestore()
@@ -34,8 +35,7 @@ const ComprobantesPago = () => {
                 id: doc.id,
                 ...doc.data()
             }));
-
-            setComprobantesConProveedores(comprobantes.map(comprobante => {
+            setComprobantesConProveedores (comprobantes.map(comprobante => {
                 const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
                 const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
 
@@ -46,23 +46,22 @@ const ComprobantesPago = () => {
                     cuit: proveedor ? proveedor.CUIT : '',
                 };
             }))
-
         }
-
-        fetchProveedor();
-
-        getDocs(queryCollectionFiltered)
+        
+        const fetchDocs= async ()=>{
+            await getDocs(queryCollectionFiltered)
             .then(res => setComprobantes(res.docs.map(comprobante => ({
                 id: comprobante.id,
                 ...comprobante.data(),
                 Fecha: comprobante.data().Fecha.toDate().toLocaleDateString(),
-                nombreProveedor: '',
                 originalDate: comprobante.data().Fecha
             }))))
             .catch(error => console.log(error))
             .finally(setIsLoading(false));
+        }
+        fetchDocs()
+        fetchProveedor()
 
-        
     }, []);
 
     const filterOptions = [

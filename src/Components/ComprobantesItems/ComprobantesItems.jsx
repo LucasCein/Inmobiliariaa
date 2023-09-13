@@ -10,22 +10,18 @@ import { app } from "../../FireBase/config"
 
 
 const ComprobantesItems = ({ comprobantes }) => {
-    console.log(comprobantes)
+    console.log(comprobantes.id)
+
     const db = getFirestore(app);
-    const deleteDoc = (id,idDetalle) => {
+    const deleteDoc = (id) => {
         const examcollref = doc(db, 'comprobantes', id)
         updateDoc(examcollref, { visible: false }).then(() => {
             alert("Deleted")
         }).catch(error => {
             console.log(error.message)
         })
-        const examcollref1 = doc(db, 'detalleComprobante', idDetalle)
-        updateDoc(examcollref1, { visible: false }).then(() => {
-            alert("Deleted")
-        }).catch(error => {
-            console.log(error.message)
-        })
     }
+    
 
     return (
         <>
@@ -54,7 +50,7 @@ const ComprobantesItems = ({ comprobantes }) => {
                         </div>
 
                         <div className='d-flex align-items-center gap-2 me-3'>
-                            <button className="btn btn-danger" onClick={deleteDoc} ><BsArchiveFill></BsArchiveFill></button>
+                            <button className="btn btn-danger" onClick={()=>deleteDoc(id)} ><BsArchiveFill></BsArchiveFill></button>
                             <Popup className="position-absolute" trigger={<button className='btn btn-info '><BsEyeFill></BsEyeFill></button>} modal>
                                 <DetalleComprobante item={{ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, nombrePropiedad, cuit, numSuc }}></DetalleComprobante>
                             </Popup>
