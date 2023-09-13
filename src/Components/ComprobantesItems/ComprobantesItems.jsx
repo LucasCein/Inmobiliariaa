@@ -9,8 +9,11 @@ import CustomSpinner from "../CustomSpinner/CustomSpinner"
 import { app } from "../../FireBase/config"
 
 
-const ComprobantesItems = ({ comprobantes }) => {
-    console.log(comprobantes.id)
+const ComprobantesItems = ( {comprobantes} ) => {
+    console.log(comprobantes[0])
+    const [proveedorName, setProveedorName] = useState(null)
+    const [propiedadName, setPropiedadName] = useState(null)
+    const [proveedorCuit, setProveedorCuit] = useState(null)
 
     const db = getFirestore(app);
     const deleteDoc = (id) => {
@@ -21,7 +24,37 @@ const ComprobantesItems = ({ comprobantes }) => {
             console.log(error.message)
         })
     }
-    
+    useEffect(()=> {
+        
+        const nombreProv = async (id) => {
+            const dbFirestore = getFirestore()
+            const proveedorCollection = collection(dbFirestore, 'proveedores');
+            const proveedorSnapshot = await getDocs(proveedorCollection);
+            const proveedorList = proveedorSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            const proveedor = proveedorList.find(prov => prov.id === id)
+            setProveedorName(proveedor.nombre)
+            setProveedorCuit(proveedor.CUIT)
+        }
+        nombreProv(comprobantes[0]?.idProv)
+        const nombreProp = async (id) => {
+            const dbFirestore = getFirestore()
+            const propiedadCollection = collection(dbFirestore, 'propiedades');
+            const propiedadSnapshot = await getDocs(propiedadCollection);
+            const propiedadList = propiedadSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            const propiedad = propiedadList.find(prop => prop.id === id)
+            setPropiedadName(propiedad.nombre)
+
+            
+        }
+        nombreProp(comprobantes[0]?.idProp)
+        
+    })
 
     return (
         <>
@@ -32,7 +65,7 @@ const ComprobantesItems = ({ comprobantes }) => {
                             <div className="d-flex gap-4">
                                 <div className='ms-3'>
                                     <p className='fw-bold mb-1'>Nombre Prov</p>
-                                    <p className='text-muted mb-0'>{nombreProveedor}</p>
+                                    <p className='text-muted mb-0'>{proveedorName}</p>
                                 </div>
                                 <div className="ms-3">
                                     <p className='fw-bold mb-1'>Fecha</p>
@@ -50,9 +83,9 @@ const ComprobantesItems = ({ comprobantes }) => {
                         </div>
 
                         <div className='d-flex align-items-center gap-2 me-3'>
-                            <button className="btn btn-danger" onClick={()=>deleteDoc(id)} ><BsArchiveFill></BsArchiveFill></button>
+                            <button className="btn btn-danger" onClick={() => deleteDoc(id)} ><BsArchiveFill></BsArchiveFill></button>
                             <Popup className="position-absolute" trigger={<button className='btn btn-info '><BsEyeFill></BsEyeFill></button>} modal>
-                                <DetalleComprobante item={{ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, nombrePropiedad, cuit, numSuc }}></DetalleComprobante>
+                                <DetalleComprobante item={{ id, Fecha, Tipo, pTotal, proveedorName, idDetalle, idProp, idProv, propiedadName, proveedorCuit, numSuc }}></DetalleComprobante>
                             </Popup>
                         </div>
                     </MDBListGroupItem>

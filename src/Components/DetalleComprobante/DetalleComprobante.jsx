@@ -6,7 +6,7 @@ import DetalleComp from '../DetalleComp/DetalleComp';
 import { app } from '../../FireBase/config';
 
 const DetalleComprobante = ({ item }) => {
-    console.log(item.idDetalle.id)
+    console.log(item)
     const [products, setProducts] = useState([])
     useEffect(() => {
         const fetch = async () => {
@@ -32,9 +32,9 @@ const DetalleComprobante = ({ item }) => {
                 <p className="numCompTitle">N° Comprobante</p>
                 <input type="text" className="numCompInp" disabled value={item.id} />
                 <p className="provName">Nombre Proveedor</p>
-                <input type="text" className="provNameInp" disabled value={item.nombreProveedor} />
+                <input type="text" className="provNameInp" disabled value={item.proveedorName} />
                 <p className="provCuit">Cuit Proveedor</p>
-                <input type="text" className="provCuitInp" disabled value={item.cuit} />
+                <input type="text" className="provCuitInp" disabled value={item.proveedorCuit} />
                 <h2 className='prodsTitle'>Productos</h2>
                 <MDBListGroup className='prodsDesc' style={{ minWidth: '22rem' }} light>
                     <DetalleComp productos={products} />

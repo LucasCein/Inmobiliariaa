@@ -14,40 +14,12 @@ const ComprobantesPago = () => {
     const [compFiltered, setCompFiltered] = useState([])
     const [filterSelected, setFilterSelected] = useState([])
     const [comprobantesConProveedores, setComprobantesConProveedores] = useState([])
-    
+     
 
     useEffect(() => {
         const dbFirestore = getFirestore()
         const queryCollection = collection(dbFirestore, 'comprobantes')
         const queryCollectionFiltered = query(queryCollection, where('visible', '==', true))
-
-        const fetchProveedor = async () => {
-
-            const proveedorCollection = collection(dbFirestore, 'proveedores');
-            const proveedorSnapshot = await getDocs(proveedorCollection);
-            const proveedorList = proveedorSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            const propiedadCollection = collection(dbFirestore, 'propiedades');
-            const propiedadSnapshot = await getDocs(propiedadCollection);
-            const propiedadList = propiedadSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setComprobantesConProveedores (comprobantes.map(comprobante => {
-                const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
-                const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
-
-                return {
-                    ...comprobante,
-                    nombreProveedor: proveedor ? proveedor.nombre : '',
-                    nombrePropiedad: propiedad ? propiedad.nombre : '',
-                    cuit: proveedor ? proveedor.CUIT : '',
-                };
-            }))
-        }
-        
         const fetchDocs= async ()=>{
             await getDocs(queryCollectionFiltered)
             .then(res => setComprobantes(res.docs.map(comprobante => ({
@@ -60,10 +32,10 @@ const ComprobantesPago = () => {
             .finally(setIsLoading(false));
         }
         fetchDocs()
-        fetchProveedor()
+        
 
     }, []);
-
+    console.log(comprobantes)
     const filterOptions = [
         { value: 'date', label: 'Fecha' },
         { value: 'prov', label: 'Nombre Prov' },
@@ -130,7 +102,7 @@ const ComprobantesPago = () => {
                             </Popup>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>
-                            <ComprobantesItems comprobantes={compFiltered != "" ? compFiltered : comprobantesConProveedores} />
+                            <ComprobantesItems comprobantes={compFiltered != "" ? compFiltered : comprobantes} />
                         </MDBListGroup>
 
                     </div>
