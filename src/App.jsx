@@ -38,7 +38,7 @@ function App() {
         <Route
           path='/proveedores'
           element={<div className='grid-container'>
-            <Header OpenSidebar={OpenSidebar} />
+            
             <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
             <Proveedor />
           </div>

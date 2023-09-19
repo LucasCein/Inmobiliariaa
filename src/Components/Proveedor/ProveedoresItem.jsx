@@ -42,44 +42,42 @@ const ProveedoresItem = ({proveedores}) => {
     <>
     {
         currentProveedores.map(({id,nombre , descripcion, CUIT, email, telefono }) =>
-            <MDBListGroupItem key={id} className='d-flex justify-content-between align-items-center' >
-                <div className='d-flex align-items-center'>
-                    <div className="d-flex gap-2">
-                        <div className="ms-3">
+            <MDBListGroupItem key={id} className='container align-items-center justify-content-center'>
+                <div className='row '>
+                        <div className='col'>
                             <p className='fw-bold mb-1'>Nombre</p>
                             <p className='text-muted mb-0'>{nombre}</p>
                         </div>
-                        <div className="ms-3" >
+                        <div className="col" >
                             <p className='fw-bold mb-1'>Descripción</p>
                             <p className='text-muted mb-0'>{descripcion}</p>
                         </div>
-                        <div className="ms-3">
+                        <div className="col">
                             <p className='fw-bold mb-1'>CUIT</p>
                             <p className='text-muted mb-0'>{CUIT}</p>
                         </div>
-                        <div className="ms-3">
+                        <div className="col-3">
                             <p className='fw-bold mb-1'>E-mail</p>
                             <p className='text-muted mb-0'>{email}</p>
                         </div>
-                        <div className="ms-3">
+                        <div className="col">
                             <p className='fw-bold mb-1'>Telefono</p>
                             <p className='text-muted mb-0'>{telefono}</p>
                         </div>
+                    <div className='col d-flex align-items-center'>
+                        <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
+                            <ABMProveedor proveedor={{id,nombre,descripcion,CUIT, email, telefono}}></ABMProveedor>
+                        </Popup>
+                        <button className='btn btn-danger ms-2' onClick={()=>deleteDoc(id)}><BsTrash></BsTrash></button>
                     </div>
-                </div>
-                <div className='d-flex align-items-center gap-3'>
-                    <Popup trigger={<button  className='btn btn-warning ' style={{marginRight:'20px'}}><BsPencil ></BsPencil></button>} modal>
-                        <ABMProveedor proveedor={{id,nombre,descripcion,CUIT, email, telefono}}></ABMProveedor>
-                    </Popup>
-                    <button className='btn btn-danger' style={{marginRight:'20px'}} onClick={()=>deleteDoc(id)}><BsTrash></BsTrash></button>
-                </div>
+              </div>
+            
             </MDBListGroupItem>
         )  
     }
-     <div className="d-flex flex-column align-items-center">
+     <div className="d-flex flex-column align-items-center m-3">
             <p>
         <button
-            style={{margin:'5px'}}
           className="btn btn-secondary"
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
@@ -87,8 +85,7 @@ const ProveedoresItem = ({proveedores}) => {
           Previous
         </button>
         <button
-            style={{margin:'5px'}}
-          className="btn btn-secondary"
+          className="btn btn-secondary ms-2"
           onClick={handleNextPage}
           disabled={endIndex >= proveedores.length}
         >
