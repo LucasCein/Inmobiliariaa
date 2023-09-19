@@ -43,7 +43,7 @@ const Proveedor = () => {
         <section>
             {isLoading ? <CustomSpinner></CustomSpinner> :
             <>
-            <div className='mx-auto w-75 ' style={{ marginTop: '20px' }}>
+            <div className='mx-auto w-100 m-1 p-3' style={{ marginTop: '20px' }}>
             <h1 className='mb-4' style={{color: "white"}}>Proveedores</h1>
             <div className='row align-items-center justify-content-center'>
                 <div className='col d-flex align-items-center justify-content-start'>
@@ -66,7 +66,7 @@ const Proveedor = () => {
                         <ABMProveedor proveedor={{nombre:"", descripcion:"",direccion:""}}></ABMProveedor>
                     </Popup>
                 </div>
-                <MDBListGroup style={{ minWidth: '22rem' }} light>
+                <MDBListGroup className='w-100'>
                     <ProveedoresItem proveedores={proveedores} />
                 </MDBListGroup>
             </div>
