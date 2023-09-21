@@ -87,7 +87,7 @@ const AbmComprobantes = () => {
   }
 
   const createDoc = (idDet) => {
-    const prop = { ...comprobante, visible: true, idDetalle: idDet, pTotal: precioF }
+    const prop = { ...comprobante, visible: true, idDetalle: idDet, pTotal: precioF, pagada: false }
     const dbRef = collection(db, "comprobantes");
     addDoc(dbRef, prop).then(() => {
       console.log("Document has been added successfully")

@@ -13,28 +13,58 @@ const ComprobantesPago = () => {
     const [inpFilter, setInpFilter] = useState()
     const [compFiltered, setCompFiltered] = useState([])
     const [filterSelected, setFilterSelected] = useState([])
-    const [comprobantesConProveedores, setComprobantesConProveedores] = useState([])
-     
-
+    const [ComprobantesConProveedores, setComprobantesConProveedores] = useState([])
     useEffect(() => {
-        const dbFirestore = getFirestore()
-        const queryCollection = collection(dbFirestore, 'comprobantes')
-        const queryCollectionFiltered = query(queryCollection, where('visible', '==', true))
-        const fetchDocs= async ()=>{
-            await getDocs(queryCollectionFiltered)
-            .then(res => setComprobantes(res.docs.map(comprobante => ({
-                id: comprobante.id,
-                ...comprobante.data(),
-                Fecha: comprobante.data().Fecha.toDate().toLocaleDateString(),
-                originalDate: comprobante.data().Fecha
-            }))))
-            .catch(error => console.log(error))
-            .finally(setIsLoading(false));
+        async function fetchData() {
+          try {
+            const dbFirestore = getFirestore();
+            const queryCollection = collection(dbFirestore, 'comprobantes');
+            const queryCollectionFiltered = query(queryCollection, where('visible', '==', true));
+            const res = await getDocs(queryCollectionFiltered);
+            const comprobantesData = res.docs.map(comprobante => ({
+              id: comprobante.id,
+              ...comprobante.data(),
+              Fecha: comprobante.data().Fecha.toDate().toLocaleDateString(),
+              nombreProveedor: '',
+              originalDate: comprobante.data().Fecha
+            }));
+      
+            // Procesa los proveedores y propiedades aquí
+            const proveedorCollection = collection(dbFirestore, 'proveedores');
+            const proveedorSnapshot = await getDocs(proveedorCollection);
+            const proveedorList = proveedorSnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+            const propiedadCollection = collection(dbFirestore, 'propiedades');
+            const propiedadSnapshot = await getDocs(propiedadCollection);
+            const propiedadList = propiedadSnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }));
+      
+            const comprobantesConProveedoresTemp = comprobantesData.map(comprobante => {
+              const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
+              const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
+      
+              return {
+                ...comprobante,
+                nombreProveedor: proveedor ? proveedor.nombre : '',
+                nombrePropiedad: propiedad ? propiedad.nombre : '',
+                cuit: proveedor ? proveedor.CUIT : '',
+              };
+            });
+      
+            setComprobantesConProveedores(comprobantesConProveedoresTemp);
+            setIsLoading(false);
+          } catch (error) {
+            console.error(error);
+          }
         }
-        fetchDocs()
-        
+      
+        fetchData();
+      }, []);
 
-    }, []);
     console.log(comprobantes)
     const filterOptions = [
         { value: 'date', label: 'Fecha' },

@@ -7,6 +7,7 @@ import Home from './Components/Home/Home'
 import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom'
 import Properties from './Components/Properties/Properties'
 import ComprobantesPago from './Components/ComprobantesPago/ComprobantesPago'
+import Pagos from './Components/Pagos/Pagos'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -38,9 +39,17 @@ function App() {
         <Route
           path='/proveedores'
           element={<div className='grid-container'>
-            
+            <Header OpenSidebar={OpenSidebar} />
             <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
             <Proveedor />
+          </div>
+          }
+        />
+          <Route
+          path='/pagos'
+          element={<div className='grid-container'>
+            <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+            <Pagos />
           </div>
           }
         />
