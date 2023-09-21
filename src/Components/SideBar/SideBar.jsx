@@ -32,6 +32,11 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
+                <NavLink to={"/pagos"}>
+                    <BsFillGrid3X3GapFill className='icon'/> Pagos
+                </NavLink>
+            </li>
+            <li className='sidebar-list-item'>
                 <NavLink to={"/bill"}>
                     <BsPeopleFill className='icon'/> Facturas
                 </NavLink>
