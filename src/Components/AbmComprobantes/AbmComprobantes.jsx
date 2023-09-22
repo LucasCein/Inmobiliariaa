@@ -130,6 +130,10 @@ const AbmComprobantes = () => {
       setProductos([...productos, producto]);
       setComprobante({...comprobante,pTotal:comprobante.pTotal+precioF})
     }
+    const elemento = document.getElementById("elemento");
+    elemento.blur();
+    setProductoSeleccionado("");
+
   };
   const handleChangeSuc=(e)=>{
     setComprobante({...comprobante,numSuc:e.target.value})
