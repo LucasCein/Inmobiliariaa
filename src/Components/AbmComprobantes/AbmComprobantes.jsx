@@ -210,6 +210,7 @@ const AbmComprobantes = () => {
         <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
           <p className='my-0'>Producto</p>
           <Autocomplete
+            id="elemento"
             disablePortal={true}
             defaultValue={""}
             value={productoSeleccionado}
