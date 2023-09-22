@@ -1,7 +1,8 @@
 import { MDBListGroupItem } from "mdb-react-ui-kit"
 import Popup from "reactjs-popup"
+import { CloseButton } from "react-bootstrap"
 
-const DetalleComp = ({productos}) => {
+const DetalleComp = ({productos, handleDeleteProduct }) => {
  console.log(productos)
   return (
     <>
@@ -22,7 +23,15 @@ const DetalleComp = ({productos}) => {
                                     <p className='fw-bold mb-1'>Precio</p>
                                     <p className='text-muted mb-0'>${precio}</p>
                                 </div>
-                                
+                                <div className="ms-3">
+                <p className="fw-bold mb-1">Eliminar</p>
+                <CloseButton
+                  onClick={() => {
+                    handleDeleteProduct(id);
+                  }}
+                />
+              </div>
+
                             </div>
                             
                         </div>

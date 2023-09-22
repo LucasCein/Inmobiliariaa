@@ -134,6 +134,25 @@ const AbmComprobantes = () => {
   const handleChangeSuc=(e)=>{
     setComprobante({...comprobante,numSuc:e.target.value})
   }
+
+  const handleDeleteProduct = (idProduct) => {
+    console.log(idProduct);
+    console.log(productos);
+
+    const newProducts = [...productos];
+    const indiceObjetoModificar = newProducts.findIndex(
+      (product) => product.id === idProduct
+    );
+    const newPrice = precioF - productos[indiceObjetoModificar].precio;
+    newProducts.splice(indiceObjetoModificar, 1);
+    setProductos(newProducts);
+
+    setprecioF(newPrice);
+  };
+
+
+
+
   console.log(orginialDate)
   return (
 
@@ -198,7 +217,7 @@ const AbmComprobantes = () => {
         </div>
 
         <MDBListGroup style={{ minWidth: '22rem' }} light>
-          <DetalleComp productos={productos} />
+          <DetalleComp productos={productos} handleDeleteProduct={handleDeleteProduct} />
         </MDBListGroup>
         <div className="ms-3">
           <p className='fw-bold mb-1'>Precio Total</p>
