@@ -38,7 +38,7 @@ const ComprobantesItems = ( {comprobantes} ) => {
     useEffect(()=> {
         
         const nombreProv = async (id) => {
-            const dbFirestore = getFirestore()
+            const dbFirestore = getFirestore();
             const proveedorCollection = collection(dbFirestore, 'proveedores');
             const proveedorSnapshot = await getDocs(proveedorCollection);
             const proveedorList = proveedorSnapshot.docs.map(doc => ({
@@ -46,14 +46,21 @@ const ComprobantesItems = ( {comprobantes} ) => {
               ...doc.data()
             }));
             const proveedor = proveedorList.find(prov => prov.id == id);
-            return proveedor.nombre;
+            return {
+              nombre: proveedor.nombre,
+              cuit: proveedor.CUIT
+            };
           }
-          
+        
           const actualizarComprobantes = async () => {
             const nuevosComprobantes = await Promise.all(
               comprobantes.map(async (comprobante) => {
-                const nombre = await nombreProv(comprobante.idProv);
-                return { ...comprobante, nombreProveedor: nombre };
+                const proveedorInfo = await nombreProv(comprobante.idProv);
+                return { 
+                  ...comprobante, 
+                  nombreProveedor: proveedorInfo.nombre,
+                  cuitProveedor: proveedorInfo.cuit
+                };
               })
             );
           
@@ -94,7 +101,7 @@ const ComprobantesItems = ( {comprobantes} ) => {
     return (
         <>
             {
-                currentComprobnates.map(({ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, nombrePropiedad, cuit, numSuc }) =>
+                currentComprobnates.map(({ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, nombrePropiedad, cuitProveedor, numSuc }) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between' >
                         <div className='d-flex align-items-center '>
                             <div className="d-flex gap-4">
@@ -120,7 +127,7 @@ const ComprobantesItems = ( {comprobantes} ) => {
                         <div className='d-flex align-items-center gap-2 me-3'>
                             <button className="btn btn-danger" onClick={() => deleteDoc(id)} ><BsArchiveFill></BsArchiveFill></button>
                             <Popup className="position-absolute" trigger={<button className='btn btn-info '><BsEyeFill></BsEyeFill></button>} modal>
-                                <DetalleComprobante item={{ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, propiedadName, proveedorCuit, numSuc }}></DetalleComprobante>
+                                <DetalleComprobante item={{ id, Fecha, Tipo, pTotal, nombreProveedor, idDetalle, idProp, idProv, propiedadName, cuitProveedor, numSuc }}></DetalleComprobante>
                             </Popup>
                         </div>
                     </MDBListGroupItem>
