@@ -192,7 +192,7 @@ const AbmComprobantes = () => {
           className="typeInp"
           disablePortal={true}
           defaultValue={""}
-          value={comprobante?.Tipo === 'a' ? optionsType[0] : comprobante?.Tipo === 'b' ? optionsType[1] : optionsType[2]}
+          value={comprobante?.Tipo === 'a' ? optionsType[0] : comprobante?.Tipo === 'b' ? optionsType[1] : comprobante?.Tipo === 'c' ? optionsType[2] : ""}
           onChange={(event, newValue) => handleChangeTipo(newValue)}
           options={optionsType}
           getOptionLabel={(option) => option.label}

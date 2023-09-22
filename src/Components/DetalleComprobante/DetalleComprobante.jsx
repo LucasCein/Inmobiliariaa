@@ -32,9 +32,9 @@ const DetalleComprobante = ({ item }) => {
                 <p className="numCompTitle">N° Comprobante</p>
                 <input type="text" className="numCompInp" disabled value={item.id} />
                 <p className="provName">Nombre Proveedor</p>
-                <input type="text" className="provNameInp" disabled value={item.proveedorName} />
+                <input type="text" className="provNameInp" disabled value={item.nombreProveedor} />
                 <p className="provCuit">Cuit Proveedor</p>
-                <input type="text" className="provCuitInp" disabled value={item.proveedorCuit} />
+                <input type="text" className="provCuitInp" disabled value={item.CUITProveedor} />
                 <h2 className='prodsTitle'>Productos</h2>
                 <MDBListGroup className='prodsDesc' style={{ minWidth: '22rem' }} light>
                     <DetalleComp productos={products} />
