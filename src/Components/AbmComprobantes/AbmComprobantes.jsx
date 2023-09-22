@@ -130,10 +130,52 @@ const AbmComprobantes = () => {
       setProductos([...productos, producto]);
       setComprobante({...comprobante,pTotal:comprobante.pTotal+precioF})
     }
+    const elemento = document.getElementById("elemento");
+    elemento.blur();
+    setProductoSeleccionado("");
+
   };
   const handleChangeSuc=(e)=>{
     setComprobante({...comprobante,numSuc:e.target.value})
   }
+
+  const handleDeleteProduct = (idProduct) => {
+    console.log(idProduct);
+    console.log(productos);
+
+    const newProducts = [...productos];
+    const indiceObjetoModificar = newProducts.findIndex(
+      (product) => product.id === idProduct
+    );
+    const newPrice = precioF - productos[indiceObjetoModificar].precio;
+    newProducts.splice(indiceObjetoModificar, 1);
+    setProductos(newProducts);
+
+    setprecioF(newPrice);
+  };
+
+  const handlePriceChange = (idProduct, newPrice) => {
+    
+    console.log("entro", idProduct);
+
+    const newProducts = [...productos];
+    const indiceObjetoModificar = newProducts.findIndex(
+      (product) => product.id === idProduct
+    );
+    newProducts[indiceObjetoModificar].precio = newPrice;
+    
+    setProductos(newProducts);
+    
+    console.log("newProducts",newProducts)
+    
+    const newFinalPrice = newProducts.reduce((acc, product) => parseInt(acc) + parseInt(product.precio), 0);
+    
+    console.log("newFinalPrice",newFinalPrice)
+    
+    setprecioF(newFinalPrice)
+  }
+
+
   console.log(orginialDate)
   return (
 
@@ -187,6 +229,7 @@ const AbmComprobantes = () => {
         <div className='d-flex mt-3 gap-5 align-items-center  my-3'>
           <p className='my-0'>Producto</p>
           <Autocomplete
+            id="elemento"
             disablePortal={true}
             defaultValue={""}
             value={productoSeleccionado}
@@ -198,7 +241,7 @@ const AbmComprobantes = () => {
         </div>
 
         <MDBListGroup style={{ minWidth: '22rem' }} light>
-          <DetalleComp productos={productos} />
+          <DetalleComp productos={productos} handleDeleteProduct={handleDeleteProduct} handlePriceChange={handlePriceChange} />
         </MDBListGroup>
         <div className="ms-3">
           <p className='fw-bold mb-1'>Precio Total</p>

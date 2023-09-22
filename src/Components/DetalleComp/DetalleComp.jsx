@@ -1,11 +1,25 @@
 import { MDBListGroupItem } from "mdb-react-ui-kit"
 import Popup from "reactjs-popup"
+import { CloseButton } from "react-bootstrap"
 
-const DetalleComp = ({productos}) => {
+const DetalleComp = ({productos, handleDeleteProduct, handlePriceChange }) => {
  console.log(productos)
   return (
     <>
             {
+/*                 <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Precio</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody><tr>{}</tr></tbody>
+                </table> */
+
+
                 productos?.map(({ id,nombre,descripcion,precio }) =>
                     <MDBListGroupItem key={id} className='d-flex justify-content-between' >
                         <div className='d-flex align-items-center '>
@@ -20,9 +34,18 @@ const DetalleComp = ({productos}) => {
                                 </div>
                                 <div className="ms-3">
                                     <p className='fw-bold mb-1'>Precio</p>
-                                    <p className='text-muted mb-0'>${precio}</p>
+                                    <input type="number" value={precio} onChange={(e) => handlePriceChange(id, e.target.value)}></input>
+                                    {/* <p className='text-muted mb-0'>${precio}</p> */}
                                 </div>
-                                
+                                <div className="ms-3">
+                <p className="fw-bold mb-1">Eliminar</p>
+                <CloseButton
+                  onClick={() => {
+                    handleDeleteProduct(id);
+                  }}
+                />
+              </div>
+
                             </div>
                             
                         </div>
