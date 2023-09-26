@@ -1,62 +1,62 @@
 .containerAbm{
-    display: grid ;
-    grid-template-areas: 
-    "titleGrid titleGrid"
-    "gridCol1 gridCol2"
-    ;
-    margin-left: 20px;
-    justify-content: center;
-    margin-bottom: 20px;
-    column-gap: 50px;
-}
-.TitleGrid{
-    grid-area: titleGrid;
-}
-.gridCol1{
-    grid-area: gridCol1;
     display: grid;
-    grid-template-areas: 
-    "dateTitle dateInp"
-    "numSucTitle numSucInp"
-    "typeTitle typeInp"
-    "provTitle provInp"
-    "propTitle propInp"
-    ;
-    gap: 5px;
-    align-items: center;
-    margin-top: 20px;
 }
-.gridCol2{
-    grid-area: gridCol2;
+
+.containerTitulo{
+    padding: 10px;
+    text-align: center;
 }
-.dateTitle{
-    grid-area:dateTitle ;
+
+.gridColumn1{
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    background-color: rgb(226, 20, 20); /* Puedes ajustar los estilos según tus preferencias */
+    padding: 10px;
+    text-align: center;
 }
-.dateInp{
-    grid-area:dateInp ;
-    width: 200px;
+
+.gridColumn2{
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    background-color: rgb(226, 20, 185);
+    padding: 10px;
+    text-align: center;
 }
-.typeTitle{
-    grid-area:typeTitle ;
+
+.gridColumn3{
+    grid-column:  1 / span 2;
+    grid-row: 4;
+    background-color: rgb(20, 226, 47);
+    padding: 10px;
+    text-align: center;
 }
-.typeInp{
-    grid-area:typeInp ;
+ 
+.gridColumn4{
+    grid-column:3 / span 4;
+    grid-row: 2;
+    background-color: rgb(20, 226, 205);
+    padding: 10px;
+    text-align: center;
 }
-.provTitle{
-    grid-area:provTitle ;
+.gridColumn5{
+    grid-column:3 / span 4;
+    grid-row: 3;
+    background-color: rgb(226, 20, 123);
+    padding: 10px;
+    text-align: center;
 }
-.provInp{
-    grid-area:provInp ;
+.gridColumn6{
+    grid-column:3 / span 4;
+    grid-row: 4;
+    background-color: rgb(239, 108, 0);
+    padding: 10px;
+    text-align: center;
 }
-.propTitle{
-    grid-area:propTitle ;
-}
-.propInp{
-    grid-area:propInp ;
-}
-.numSucTitle{
-    grid-area: numSucTitle;
-}
-.numSucInp{
-    grid-area: numSucInp;
+
+.gridDetalle{
+    grid-column: 1 / span 4;
+    grid-row: 5;
+    background-color: rgb(128, 0, 255);
+    padding: 10px;
+    text-align: center;
 }
