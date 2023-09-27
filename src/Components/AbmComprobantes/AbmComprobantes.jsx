@@ -315,7 +315,7 @@ const AbmComprobantes = () => {
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Precio</th>
-            <th>Eliminar</th>
+            <th className="text-center">Eliminar</th>
           </tr>
         </thead>
         <tbody>
@@ -332,7 +332,7 @@ const AbmComprobantes = () => {
                   }
                 ></input>
               </td>
-              <td>
+              <td className="text-center">
                 {" "}
                 <CloseButton
                   onClick={() => {
