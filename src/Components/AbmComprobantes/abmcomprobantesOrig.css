@@ -1,0 +1,71 @@
+.containerAbm{
+    display: grid ;
+    grid-template-areas: 
+    "titleGrid titleGrid"
+    "gridCol1 gridCol2"
+    "gridCol3 gridCol3"
+    ;
+    margin-left: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+    column-gap: 50px;
+}
+.TitleGrid{
+    grid-area: titleGrid;
+}
+.gridCol1{
+    grid-area: gridCol1;
+    display: grid;
+    grid-template-areas: 
+    "dateTitle dateInp"
+    "numSucTitle numSucInp"
+    "typeTitle typeInp"
+    ;
+    gap: 5px;
+    align-items: center;
+    margin-top: 20px;
+}
+.gridCol2{
+    grid-area: gridCol2;
+    display: grid;
+    grid-template-areas:
+    "provTitle provInp"
+    "propTitle propInp";
+    gap: 5px;
+    align-items: center;
+    margin-top: 20px;
+}
+.gridCol3{
+    grid-area: gridCol3;
+}
+.dateTitle{
+    grid-area:dateTitle ;
+}
+.dateInp{
+    grid-area:dateInp ;
+    width: 200px;
+}
+.typeTitle{
+    grid-area:typeTitle ;
+}
+.typeInp{
+    grid-area:typeInp ;
+}
+.provTitle{
+    grid-area:provTitle ;
+}
+.provInp{
+    grid-area:provInp ;
+}
+.propTitle{
+    grid-area:propTitle ;
+}
+.propInp{
+    grid-area:propInp ;
+}
+.numSucTitle{
+    grid-area: numSucTitle;
+}
+.numSucInp{
+    grid-area: numSucInp;
+}
