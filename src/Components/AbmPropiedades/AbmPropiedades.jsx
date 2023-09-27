@@ -4,7 +4,7 @@ import {
   RegionDropdown,
   CountryRegionData,
 } from "react-country-region-selector";
-import "./AbmPropiedades.css";
+import "./abmPropiedades.css";
 import { useEffect, useMemo, useState } from "react";
 import { app, storage } from "../../FireBase/config";
 import {
