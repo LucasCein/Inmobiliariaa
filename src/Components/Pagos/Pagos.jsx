@@ -5,6 +5,8 @@ import CustomSpinner from '../CustomSpinner/CustomSpinner';
 import { MDBListGroup } from 'mdb-react-ui-kit';
 import ABMPagos from './ABMPagos';
 import PagosItem from './PagosItem';
+import { dark } from '@mui/material/styles/createPalette';
+import { red } from '@mui/material/colors';
 
 
 
@@ -57,10 +59,30 @@ const Pagos = () => {
                   </Popup>
             </div>
                   <MDBListGroup className='w-100'>
+            <div className='container align-items-center justify-content-center pt-1 rounded' style={{backgroundColor:"black"}} >
+            <div className='row '>
+                <div className='col mx-2'>
+                  <p className='fw-bold  text-light'>Proveedor</p>
+                  </div>
+                 <div className="col ps-4" >
+                    <p className='fw-bold text-light'>Monto</p>
+         
+                  </div>
+                  <div className="col ms-4">
+                    <p className='fw-bold  text-light'>Fecha</p>
+                  
+                 </div>
+                  <div className="col pe-4">
+                   <p className='fw-bold text-white'>Forma de Pago</p>       
+                  </div>
+                  <div className='col d-flex align-items-center ps-5'>
+                    <p className='fw-bold text-light'>Opciones</p>    
+                  </div>
+            </div>
+          </div>
                     <PagosItem facturas={facturas}></PagosItem>
                   </MDBListGroup>
-          </div>
-          
+        </div>
         }
     </> 
   )

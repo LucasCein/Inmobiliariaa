@@ -30,23 +30,19 @@ const PagosItem = ({facturas}) => {
     <>
     {
         facturas.map(({id,nombreProveedor , monto, fecha, metodo, idDetalle }) =>
-            <MDBListGroupItem key={id} className='container align-items-center justify-content-center'>
-                <div className='row '>
+            <MDBListGroupItem key={id} className='container align-items-center justify-content-center '>
+                <div className='row'>
                         <div className='col'>
-                            <p className='fw-bold mb-1'>Proveedor</p>
-                            <p className='text-muted mb-0'>{nombreProveedor}</p>
+                            <p className='mb-0 text-dark'>{nombreProveedor}</p>
                         </div>
                         <div className="col" >
-                            <p className='fw-bold mb-1'>Monto</p>
-                            <p className='text-muted mb-0'>${monto}</p>
+                            <p className=' mb-0 text-dark'>${monto}</p>
                         </div>
                         <div className="col">
-                            <p className='fw-bold mb-1'>Fecha</p>
-                            <p className='text-muted mb-0'>{fecha}</p>
+                            <p className=' mb-0 text-dark'>{fecha}</p>
                         </div>
-                        <div className="col">
-                            <p className='fw-bold mb-1'>Forma de Pago</p>
-                            <p className='text-muted mb-0'>{metodo}</p>
+                        <div className="col ">
+                            <p className='mb-0 text-dark'>{metodo}</p>
                         </div>
                         <div className='col d-flex align-items-center'>
                         <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
