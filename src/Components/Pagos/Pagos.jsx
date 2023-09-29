@@ -14,6 +14,8 @@ const Pagos = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [facturas, setFacturas] = useState ([])
+  const [facturas_og, setFacturasOg] = useState([])
+
   
   useEffect(()=>{
     const fetchFacturas = async () =>{
@@ -43,16 +45,75 @@ const Pagos = () => {
     });
 
       setFacturas(facturasData);
+      setFacturasOg(facturasData)
       setIsLoading(false)
       }
       fetchFacturas()
   },[])
 
+  const handleChange = (event => {
+    let {name, value} = event.target
+    if( value == ""){
+        setFacturas(facturas_og)
+    }
+    else{
+      if(name == "nombreProveedor"){
+        setFacturas(facturas_og.filter(fac=>(fac.nombreProveedor.toLowerCase().includes(value.toLowerCase()))))
+      }else if (name == "fechaDesde"){
+          setFacturas(facturas_og.filter(fac=>(fac.fecha>=value)))
+          
+      }else if(name == "fechaHasta"){
+          setFacturas(facturas_og.filter(fac=>(fac.fecha<=value)))
+      }else if (name == "FormaPago"){
+        setFacturas(facturas_og.filter(fac=>(fac.metodo.includes(value))))
+      }else if (name == "montoDesde"){
+        setFacturas(facturas_og.filter(fac=>(fac.monto>=value)))
+      }else if(name == "montoHasta"){
+        setFacturas(facturas_og.filter(fac=>(fac.monto<=value)))
+      
+      }
+    }
+
+  })
+
   return (
     <>
         {isLoading ? <CustomSpinner></CustomSpinner>:
         <div className='mx-auto w-100 m-1 p-3' style={{ marginTop: '20px' }}>
-          <h1 className='mb-4' style={{color: "white"}}>Pagos</h1>  
+          <h1 className='mb-4' style={{color: "white"}}>Pagos</h1>
+          <div className='row align-items-center justify-content-center'>
+                <div className='col d-flex align-items-center justify-content-start'>
+                    <div className='mb-3'>
+                        <label className='me-1' style={{ color: "white" }}>Proveedor:</label>
+                        <input type='text' name='nombreProveedor' onChange={handleChange} placeholder='Filtrar' style={{ height: '26px' }}  />
+                    </div>
+                    <div className='mb-3 ms-4'>
+                        <label className='me-2' style={{ color: "white" }}>Fecha Desde:</label>
+                        <input type='date' name='fechaDesde' onChange={handleChange} placeholder='Filtrar'  />
+                    </div>
+                    <div className='mb-3 ms-4'>
+                        <label className='me-2' style={{ color: "white" }}>Fecha Hasta:</label>
+                        <input type='date' name='fechaHasta' onChange={handleChange} placeholder='Filtrar'  />
+                    </div>
+                </div> 
+                <div className='d-flex align-items-center justify-content-start '>
+                    <label className='me-2' style={{ color: "white" }}>Forma de Pago:</label>
+                    <select className='ms-4' name='FormaPago' onChange={handleChange}>
+                      <option value="tarjeta">Tarjeta</option>
+                      <option value="Transferencia">Transferencia</option>
+                      <option value="Efectivo">Efectivo</option>
+                      <option value = ""></option>
+                    </select>
+                    <div className='ms-4'>
+                        <label className='' style={{ color: "white" }}>Monto Desde: $</label>
+                        <input type='number' name='montoDesde' onChange={handleChange} placeholder='Filtrar' style={{ height: '26px', width:'150px'}}  />
+                    </div>
+                    <div className='ms-3'>
+                        <label className='' style={{ color: "white" }}>Monto Hasta: $</label>
+                        <input type='number' name='montoHasta' onChange={handleChange} placeholder='Filtrar' style={{ height: '26px', width:'150px'}}  />
+                    </div>
+                </div>  
+            </div>  
             <div className=' my-3 d-flex justify-content-end'>
                   <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
                     <ABMPagos factura={{id:"",nombreProveedor:"",monto:"",fecha:"",metodo:"",idDetalle:""}}></ABMPagos>
