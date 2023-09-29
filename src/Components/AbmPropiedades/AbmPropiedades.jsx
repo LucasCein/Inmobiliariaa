@@ -2,17 +2,15 @@ import Select from "react-select";
 import {
   CountryDropdown,
   RegionDropdown,
-  CountryRegionData,
 } from "react-country-region-selector";
 import "./AbmPropiedades.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { app, storage } from "../../FireBase/config";
 import {
   getDownloadURL,
   ref,
   updateMetadata,
   uploadBytes,
-  uploadBytesResumable,
 } from "firebase/storage";
 import {
   addDoc,
@@ -22,7 +20,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
 
 const AbmPropiedades = (detailData) => {
   /* const [currentPage, setCurrentPage] = useState(1); */

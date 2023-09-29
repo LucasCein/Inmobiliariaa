@@ -9,7 +9,7 @@ import React from 'react'
 import ABMProveedor from './ABMProveedor';
 import { getValueFromValueOptions } from '@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils';
  
-const Proveedor = () => {
+const Proveedor = ({forSelect,setNomProv,setOpenModal}) => {
     const [proveedores, setProveedores] = useState([])
     const [proveedores_og, setProveedoresOG] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -44,20 +44,20 @@ const Proveedor = () => {
             {isLoading ? <CustomSpinner></CustomSpinner> :
             <>
             <div className='mx-auto w-100 m-1 p-3' style={{ marginTop: '20px' }}>
-            <h1 className='mb-4' style={{color: "white"}}>Proveedores</h1>
+            <h1 className={forSelect!=""?'mb-4 text-dark':'mb-4 text-white'}>Proveedores</h1>
             <div className='row align-items-center justify-content-center'>
                 <div className='col d-flex align-items-center justify-content-start'>
                     <div className='mb-3'>
-                        <label className='me-2' style={{ color: "white" }}>Nombre:</label>
+                        <label className={forSelect!=""?'me-2 text-dark':'me-2 text-white'}>Nombre:</label>
                         <input type='text' name='nombre' onChange={handleChange} placeholder='Filtrar'  />
                     </div>
                     <div className='mb-3 ms-4'>
-                        <label className='me-2' style={{ color: "white" }}>Descripción:</label>
+                        <label className={forSelect!=""?'me-2 text-dark':'me-2 text-white'}>Descripción:</label>
                         <input type='text' name='descripcion' onChange={handleChange} placeholder='Filtrar'  />
                     </div>
                 </div>
                 <div className='d-flex align-items-center justify-content-start'>
-                    <label className='me-2' style={{ color: "white" }}>CUIT:</label>
+                    <label className={forSelect!=""?'me-2 text-dark':'me-2 text-white'}>CUIT:</label>
                     <input className='ms-4' type='text' name='CUIT' onChange={handleChange} placeholder='Filtrar' />
                 </div>    
             </div>
@@ -67,7 +67,7 @@ const Proveedor = () => {
                     </Popup>
                 </div>
                 <MDBListGroup className='w-100'>
-                    <ProveedoresItem proveedores={proveedores} />
+                    <ProveedoresItem proveedores={proveedores} forSelected={forSelect} setNomProv={setNomProv} setOpenModal={setOpenModal}/>
                 </MDBListGroup>
             </div>
             </>}

@@ -47,8 +47,8 @@ const ComprobantesItems = ( {comprobantes} ) => {
             }));
             const proveedor = proveedorList.find(prov => prov.id == id);
             return {
-              nombre: proveedor.nombre,
-              cuit: proveedor.CUIT
+              nombre: proveedor?.nombre,
+              cuit: proveedor?.CUIT
             };
           }
         
@@ -81,7 +81,7 @@ const ComprobantesItems = ( {comprobantes} ) => {
                 ...doc.data()
             }));
             const propiedad = propiedadList.find(prop => prop.id === id)
-            setPropiedadName(propiedad.nombre)
+            setPropiedadName(propiedad?.nombre)
 
             
         }

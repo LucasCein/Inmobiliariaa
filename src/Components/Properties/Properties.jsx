@@ -15,7 +15,7 @@ import AbmPropiedades from "../AbmPropiedades/AbmPropiedades";
 import Form from "react-bootstrap/Form";
 import ListaDeFiltro from "../listaDeFiltro/ListaDeFiltro";
 
-const Properties = () => {
+const Properties = ({forSelect,setNomProp,setModalProp}) => {
   const [propiedades, setPropiedades] = useState([]);
   const [propiedadesToShow, setPropiedadesToShow] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,7 @@ const Properties = () => {
   const [checkDisponible, setCheckDisponible] = useState(false);
   const [checkVenta, setCheckVenta] = useState(false);
   const [checkEstacionamiento, setCheckEstacionamiento] = useState(false);
-
+  console.log(forSelect)
   useEffect(() => {
     const dbFirestore = getFirestore();
     const queryCollection = collection(dbFirestore, "propiedades");
@@ -50,7 +50,8 @@ const Properties = () => {
     <section>
       {isLoading ? (
         <CustomSpinner></CustomSpinner>
-      ) : (
+      ) :
+        (
         <>
           <div className="mx-auto w-75 ">
             <div className="w-100 h-100">
@@ -69,7 +70,7 @@ const Properties = () => {
                   type="switch"
                   id="disponibleSwitch"
                   label="Disponible"
-                  className="text-white"
+                  className={forSelect!=""? 'text-dark':'text-white'}
                   checked={checkDisponible}
                   onChange={(e) => setCheckDisponible(e.target.checked)}
                 />
@@ -77,7 +78,7 @@ const Properties = () => {
                   type="switch"
                   id="ventaSwitch"
                   label="Venta"
-                  className="text-white"
+                  className={forSelect!=""? 'text-dark':'text-white'}
                   checked={checkVenta}
                   onChange={(e) => setCheckVenta(e.target.checked)}
                 />
@@ -85,7 +86,7 @@ const Properties = () => {
                   type="switch"
                   id="estacionamientoSwitch"
                   label="Estacionamiento"
-                  className="text-white"
+                  className={forSelect!=""? 'text-dark':'text-white'}
                   checked={checkEstacionamiento}
                   onChange={(e) => setCheckEstacionamiento(e.target.checked)}
                 />
@@ -128,8 +129,11 @@ const Properties = () => {
               </Popup>
             </div>
             {console.log(checkDisponible)}
-            <MDBListGroup style={{ minWidth: "22rem" }} light>
+            <MDBListGroup style={{ minWidth: "22rem",border:"1px solid black" }} light>
               <PropertiesItems
+              setModalProp={setModalProp}
+                setNomProp={setNomProp}
+                forSelect={forSelect}
                 propiedades={propiedades.filter(
                   (propiedad) =>
                     (propiedad.nombre

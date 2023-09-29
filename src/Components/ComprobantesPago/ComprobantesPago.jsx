@@ -7,6 +7,7 @@ import AbmComprobantes from '../AbmComprobantes/AbmComprobantes';
 import CustomSpinner from '../CustomSpinner/CustomSpinner';
 import './comprobantes.css'
 import Select, { components } from 'react-select'
+import { Link } from 'react-router-dom';
 const ComprobantesPago = () => {
     const [comprobantes, setComprobantes] = useState([])
     const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +15,7 @@ const ComprobantesPago = () => {
     const [compFiltered, setCompFiltered] = useState([])
     const [filterSelected, setFilterSelected] = useState([])
     const [comprobantesConProveedores, setComprobantesConProveedores] = useState([])
-     
+
 
     useEffect(() => {
 
@@ -31,38 +32,38 @@ const ComprobantesPago = () => {
             }))))
             .catch(error => console.log(error))
             .finally(setIsLoading(false))
-            const fetchProveedor = async () => {
+        const fetchProveedor = async () => {
 
-                const proveedorCollection = collection(dbFirestore, 'proveedores');
-                const proveedorSnapshot = await getDocs(proveedorCollection);
-                const proveedorList = proveedorSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                const propiedadCollection = collection(dbFirestore, 'propiedades');
-                const propiedadSnapshot = await getDocs(propiedadCollection);
-                const propiedadList = propiedadSnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-    
-                const comprobantesConProveedoresTemp = comprobantes.map(comprobante => {
-                    const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
-                    const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
-    
-                    return {
-                        ...comprobante,
-                        nombreProveedor: proveedor ? proveedor.nombre : '',
-                        nombrePropiedad: propiedad ? propiedad.nombre : '',
-                        cuit: proveedor ? proveedor.CUIT : '',
-                    };
-                });
-    
-                setComprobantesConProveedores(comprobantesConProveedoresTemp);
-    
-            }
-    
-            fetchProveedor();
+            const proveedorCollection = collection(dbFirestore, 'proveedores');
+            const proveedorSnapshot = await getDocs(proveedorCollection);
+            const proveedorList = proveedorSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            const propiedadCollection = collection(dbFirestore, 'propiedades');
+            const propiedadSnapshot = await getDocs(propiedadCollection);
+            const propiedadList = propiedadSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            const comprobantesConProveedoresTemp = comprobantes.map(comprobante => {
+                const proveedor = proveedorList.find(prov => prov.id === comprobante.idProv);
+                const propiedad = propiedadList.find(prop => prop.id === comprobante.idProp)
+
+                return {
+                    ...comprobante,
+                    nombreProveedor: proveedor ? proveedor.nombre : '',
+                    nombrePropiedad: propiedad ? propiedad.nombre : '',
+                    cuit: proveedor ? proveedor.CUIT : '',
+                };
+            });
+
+            setComprobantesConProveedores(comprobantesConProveedoresTemp);
+
+        }
+
+        fetchProveedor();
 
     }, [])
 
@@ -113,9 +114,11 @@ const ComprobantesPago = () => {
                 }
             }))
         }
+        console.log(compFiltered)
     }
 
     console.log(comprobantesConProveedores)
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <>
             {isLoading ? <CustomSpinner></CustomSpinner> :
@@ -127,9 +130,9 @@ const ComprobantesPago = () => {
                             <Select className='comboCss basic-single select' options={filterOptions} placeholder={"Filtros"} name='filter' onChange={handleChangeFilter} ></Select>
                         </div>
                         <div className=' my-3 d-flex justify-content-end'>
-                            <Popup className='popPupCompb' trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
-                                <AbmComprobantes comprobante={{ Fecha: "", Tipo: "", idProv: "", idProp: "", pTotal: "", idDetalle: "" }} ></AbmComprobantes>
-                            </Popup>
+                            <Link to={"/AbmComprobantes"}>
+                                <button className='btn btn-success'>Add New</button>
+                            </Link>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>
                             <ComprobantesItems comprobantes={compFiltered != "" ? compFiltered : comprobantes} />

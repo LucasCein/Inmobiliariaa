@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
 import {
-  Firestore,
+
   Timestamp,
   addDoc,
   collection,
@@ -9,23 +9,26 @@ import {
   getFirestore,
   updateDoc,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { app } from "../../FireBase/config";
 import "@reach/combobox/styles.css";
 import Popup from "reactjs-popup";
-import { MDBListGroup } from "mdb-react-ui-kit";
-import DetalleComp from "../DetalleComp/DetalleComp";
-import AbmProds from "../AbmProds/AbmProds";
 import "./abmcomprobantes.css";
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Table } from "react-bootstrap";
 import { CloseButton } from "react-bootstrap";
+import { BsSearch } from "react-icons/bs";
+import Proveedor from "../Proveedor/Proveedor";
+import { ProvContext } from "../ProveedorContext/ProveedorContext";
+import { useUpdateContext } from "../../Context/updateContext";
+import Properties from "../Properties/Properties";
+import Productos from "../Productos/Productos"
 const AbmComprobantes = () => {
+
   const db = getFirestore(app);
   const navigate = useNavigate();
   const [comprobante, setComprobante] = useState({
@@ -103,7 +106,7 @@ const AbmComprobantes = () => {
   };
 
   const createDetComp = () => {
-    const prop = { productos };
+    const prop = { prodsSelec };
     const dbRef = collection(db, "detalleComprobante");
     addDoc(dbRef, prop).then((docRef) => {
       console.log("detalle has been added successfully");
@@ -115,6 +118,8 @@ const AbmComprobantes = () => {
   const createDoc = (idDet) => {
     const prop = {
       ...comprobante,
+      idProv: nomProv.idProv,
+      idProp: nomProp.idProp,
       visible: true,
       idDetalle: idDet,
       pTotal: precioF,
@@ -135,14 +140,7 @@ const AbmComprobantes = () => {
     { value: "b", label: "B" },
     { value: "c", label: "C" },
   ];
-  const handleChangeProv = async (e) => {
-    console.log(e);
-    setComprobante({ ...comprobante, idProv: e.id });
-  };
-  const handleChangeProp = async (e) => {
-    console.log(e);
-    setComprobante({ ...comprobante, idProp: e.id });
-  };
+
 
   const handleChangeFecha = async (e) => {
     const partes = e.target.value.split("-");
@@ -154,7 +152,7 @@ const AbmComprobantes = () => {
     setComprobante({ ...comprobante, Fecha: fechaComoTimestamp });
     setOriginalDate(e.target.value);
   };
-  const [productos, setProductos] = useState([]);
+  const [prodsSelec, setprodsSelec] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [precioF, setprecioF] = useState(0);
   const handleChangeProducto = (producto) => {
@@ -171,13 +169,13 @@ const AbmComprobantes = () => {
   };
 
   const handleDeleteProduct = (idProduct) => {
-    const newProducts = [...productos];
+    const newProducts = [...prodsSelec];
     const indiceObjetoModificar = newProducts.findIndex(
       (product) => product.id === idProduct
     );
-    const newPrice = precioF - productos[indiceObjetoModificar].precio;
+    const newPrice = precioF - prodsSelec[indiceObjetoModificar].precio;
     newProducts.splice(indiceObjetoModificar, 1);
-    setProductos(newProducts);
+    setprodsSelec(newProducts);
 
     setprecioF(newPrice);
   };
@@ -185,13 +183,13 @@ const AbmComprobantes = () => {
   const handlePriceChange = (idProduct, newPrice) => {
     console.log("entro", idProduct);
 
-    const newProducts = [...productos];
+    const newProducts = [...prodsSelec];
     const indiceObjetoModificar = newProducts.findIndex(
       (product) => product.id === idProduct
     );
     newProducts[indiceObjetoModificar].precio = newPrice;
 
-    setProductos(newProducts);
+    setprodsSelec(newProducts);
 
     console.log("newProducts", newProducts);
 
@@ -206,15 +204,33 @@ const AbmComprobantes = () => {
   };
 
   console.log(orginialDate);
+  // const value=useContext(ProvContext)
+  // console.log(value)
+  const [nomProv, setNomProv] = useState()
+  const [nomProp, setNomProp] = useState()
+  const [nomProd, setNomProd] = useState()
+
+  const [openModal, setOpenModal] = useState(false)
+  const [modalProp, setModalProp] = useState(false)
+  console.log(nomProv?.idProv)
+  const handleChangeProv = async (e) => {
+    console.log(e);
+    setComprobante({ ...comprobante, idProv: nomProv.idProv });
+  };
+  const handleChangeProp = async (e) => {
+    console.log(e);
+    setComprobante({ ...comprobante, idProp: nomProp.idProp });
+  };
+  console.log(prodsSelec)
   return (
     <Container className="containerAbm">
-      <div className="containerTitulo">
+      <div className="containerTitulo text-white">
         <h2>Comprobantes</h2>
       </div>
       <Form>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formGridEmail">
-            <Form.Label>Fecha</Form.Label>
+            <Form.Label className="text-white">Fecha</Form.Label>
             <Form.Control
               type="date"
               placeholder="Enter email"
@@ -225,7 +241,7 @@ const AbmComprobantes = () => {
             />
           </Form.Group>
           <Form.Group as={Col} controlId="formGridPassword">
-            <Form.Label>N° Sucursal</Form.Label>
+            <Form.Label className="text-white">N° Sucursal</Form.Label>
             <Form.Control
               placeholder="N° Sucursal"
               value={comprobante.numSuc}
@@ -237,18 +253,19 @@ const AbmComprobantes = () => {
           <Form.Group>
             <div className="d-flex flex-row">
               <div className="me-3 flex-grow-1">
-                <Form.Label>Letra</Form.Label>
+                <Form.Label className="text-white">Letra</Form.Label>
                 <Autocomplete
+                  style={{ backgroundColor: 'white', width: "200px" }}
                   disablePortal={true}
                   defaultValue={""}
                   value={
                     comprobante?.Tipo === "a"
                       ? optionsType[0]
                       : comprobante?.Tipo === "b"
-                      ? optionsType[1]
-                      : comprobante?.Tipo === "c"
-                      ? optionsType[2]
-                      : ""
+                        ? optionsType[1]
+                        : comprobante?.Tipo === "c"
+                          ? optionsType[2]
+                          : ""
                   }
                   onChange={(event, newValue) => handleChangeTipo(newValue)}
                   options={optionsType}
@@ -259,8 +276,21 @@ const AbmComprobantes = () => {
                 />
               </div>
               <div className="me-3 flex-grow-1">
-                <Form.Label>Proveedor</Form.Label>
-                <Autocomplete
+                <Form.Label className="text-white">Proveedor</Form.Label>
+                <div className="d-flex gap-1">
+                  <Form.Control
+                    className="w-50 "
+                    placeholder="Nombre Proveedor"
+                    value={nomProv?.nomProv}
+                    disabled
+                    readOnly
+                    onChange={handleChangeProv}
+                  />
+                  <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
+                    <Proveedor forSelect={"forSelect"} setNomProv={setNomProv} setOpenModal={setOpenModal}></Proveedor>
+                  </Popup>
+                </div>
+                {/* <Autocomplete
                   className="provInp"
                   defaultValue={""}
                   disablePortal={true}
@@ -271,45 +301,46 @@ const AbmComprobantes = () => {
                   renderInput={(params) => (
                     <TextField {...params} sx={{ width: 200 }} />
                   )}
-                />
+                /> */}
               </div>
               <div className="me-3 flex-grow-1">
-                <Form.Label>Propiedad</Form.Label>
-                <Autocomplete
-                  className="propInp"
-                  defaultValue={""}
-                  disablePortal={true}
-                  value={propiedades.nombre}
-                  onChange={(event, newValue) => handleChangeProp(newValue)}
-                  options={propiedades}
-                  getOptionLabel={(option) => option.nombre || ""}
-                  renderInput={(params) => (
-                    <TextField {...params} sx={{ width: 200 }} />
-                  )}
-                />
+                <Form.Label className="text-white">Propiedad</Form.Label>
+                <div className="d-flex gap-1">
+                  <Form.Control
+                    className="w-50"
+                    placeholder="Nombre Propiedad"
+                    value={nomProp?.nomProp}
+                    disabled
+                    readOnly
+                    onChange={handleChangeProp}
+                  />
+                  <Popup open={modalProp} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
+                    <Properties forSelect={"forSelect"} setNomProp={setNomProp} setModalProp={setModalProp}></Properties>
+                  </Popup>
+                </div>
               </div>
             </div>
           </Form.Group>
         </Row>
         <Row>
           <Form.Group>
-            <Form.Label>Producto</Form.Label>
-            <Autocomplete
-              id="elemento"
-              disablePortal={true}
-              defaultValue={""}
-              value={productoSeleccionado}
-              onChange={(event, newValue) => handleChangeProducto(newValue)}
-              options={prods}
-              getOptionLabel={(option) => option.nombre || ""}
-              renderInput={(params) => (
-                <TextField {...params} sx={{ width: 200 }} />
-              )}
-            />
+            <Form.Label className="text-white mt-2">Producto</Form.Label>
+            <div className="d-flex gap-1 w-25">
+              <Form.Control
+                className=""
+                placeholder="Producto"
+                value={nomProd?.nomProd}
+                disabled
+                readOnly
+              />
+              <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
+                <Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec}></Productos>
+              </Popup>
+            </div>
           </Form.Group>
         </Row>
       </Form>
-      <Table striped>
+      <Table striped className="bg-white">
         <thead>
           <tr>
             <th>Nombre</th>
@@ -319,7 +350,7 @@ const AbmComprobantes = () => {
           </tr>
         </thead>
         <tbody>
-          {productos.map((producto) => (
+          {prodsSelec.map((producto) => (
             <tr key={producto.id}>
               <td>{producto.nombre}</td>
               <td>{producto.descripcion}</td>
@@ -352,14 +383,14 @@ const AbmComprobantes = () => {
         />
       </MDBListGroup> */}
       <div className="ms-3">
-        <p className="fw-bold mb-1">Precio Total</p>
-        <p className="text-muted mb-0">${precioF}</p>
+        <p className="fw-bold mb-1 text-white">Precio Total</p>
+        <p className="text-white mb-0 ">${precioF}</p>
       </div>
-      <div className="d-flex justify-content-center gap-4 mt-3 ">
-        <button className="btn btn-success" onClick={createDetComp}>
+      <div className="d-flex justify-content-center gap-4 mt-1 mb-5  ">
+        <button className="btn btn-success h-50" onClick={createDetComp}>
           Agregar
         </button>
-        <button className="btn btn-danger" onClick={() => navigate(0)}>
+        <button className="btn btn-danger h-50" onClick={() => navigate('/bill')}>
           Cancelar
         </button>
       </div>
