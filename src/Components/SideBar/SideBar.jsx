@@ -1,7 +1,7 @@
 
 import 
 {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
-  BsListCheck, BsMenuButtonWideFill, BsFillGearFill}
+  BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsCashCoin,BsFileEarmarkText, BsHouse}
  from 'react-icons/bs'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -23,7 +23,7 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
             </li>
             <li className='sidebar-list-item'>
                 <NavLink to={"/properties"}>
-                    <BsFillArchiveFill className='icon'/> Propiedades
+                    <BsHouse className='icon'/> Propiedades
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
@@ -33,12 +33,12 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
             </li>
             <li className='sidebar-list-item'>
                 <NavLink to={"/pagos"}>
-                    <BsFillGrid3X3GapFill className='icon'/> Pagos
+                    <BsCashCoin className='icon'/> Pagos
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
                 <NavLink to={"/bill"}>
-                    <BsPeopleFill className='icon'/> Facturas
+                    <BsFileEarmarkText className='icon'/> Facturas
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>

@@ -143,16 +143,28 @@ const ABMPagos = (detailData) => {
     <div className='m-3'>
       <h1>Generar Pago</h1>
       <div className='d-flex align-items-center'>
-      <p className='mt-3 me-1'>Proveedor:</p>
-        <Select
-            className="comboCss basic-single select"
-            options={proveedores}
-            value={proveedorSeleccionado}
-            onChange={(selectedOption) => {setProveedorSeleccionado(selectedOption)}}
-          ></Select>
-          </div>
+      <div className='d-flex justify-content-start align-items-center'>
+              <p className='m-1'>Forma de pago:</p>
+                <Select
+                className="comboCss basic-single select px-2"
+                value={selectedOption}
+                onChange={handleChangePay}
+                options={method_Pay}
+                ></Select>
+                <p className='m-1'>Fecha de Pago:</p>
+                <input className="dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
+                <p className='m-2'>Proveedor:</p>
+                <Select
+                    className="comboCss basic-single select "
+                    options={proveedores}
+                    value={proveedorSeleccionado}
+                    onChange={(selectedOption) => {setProveedorSeleccionado(selectedOption)}}
+                  ></Select>
+                  </div>
+            </div>
+
           <div className='mt-2'>
-          <MDBListGroup className='w-100'>
+         
           {comprobantes.map((comprobante) => (
           <MDBListGroupItem key={comprobante.id}>
                 <div className='row d-flex justify-content-center'>
@@ -180,7 +192,7 @@ const ABMPagos = (detailData) => {
             </div>
           </MDBListGroupItem>
         ))}
-          </MDBListGroup>
+      
           </div>
         
             {comprobantesSeleccionados.length>0?
@@ -188,17 +200,6 @@ const ABMPagos = (detailData) => {
             <div className='d-flex align-items-start justify-content-between m-1'>
               <h3 >Total: ${comprobantesSeleccionados.reduce((acc,com) =>{return acc+com.pTotal},0)}</h3>
               </div>
-              <div className='d-flex justify-content-start align-items-between'>
-              <p className='m-1'>Forma de pago:</p>
-                <Select
-                className="comboCss basic-single select px-2"
-                value={selectedOption}
-                onChange={handleChangePay}
-                options={method_Pay}
-                ></Select>
-                <p className='m-1'>Fecha de Pago:</p>
-                <input className="dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
-                </div>
                 <div className='d-flex align-items-center justify-content-center pt-3'>
                   <button className='btn btn-success' onClick={createDetPag}>{detailData.length > 0? 'Actualizar':'Pagar'}</button>
                 </div>
