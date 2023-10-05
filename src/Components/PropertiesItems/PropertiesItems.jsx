@@ -5,7 +5,7 @@ import AbmPropiedades from "../AbmPropiedades/AbmPropiedades";
 import { useNavigate } from "react-router-dom";
 import { BsPencil } from "react-icons/bs";
 
-const PropertiesItems = ({ propiedades, forSelect,setNomProp,setModalProp }) => {
+const PropertiesItems = ({ propiedades, forSelect,setNomProp,setModalProp,close }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -110,7 +110,7 @@ const PropertiesItems = ({ propiedades, forSelect,setNomProp,setModalProp }) => 
           </MDBBadge>
         </div> :
           <div className='col d-flex align-items-center justify-content-end me-5'>
-            <button onClick={() => { setNomProp({ nomProp: nombre, idProp: id }),setModalProp(false) }} className='btn btn-success' >Seleccionar</button>
+            <button onClick={() => { setNomProp({ nomProp: nombre, idProp: id }),close() }} className='btn btn-success' >Seleccionar</button>
           </div>
         }
 

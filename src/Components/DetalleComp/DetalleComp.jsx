@@ -24,12 +24,12 @@ const DetalleComp = ({productos, handleDeleteProduct, handlePriceChange }) => {
                     <MDBListGroupItem key={id} className='d-flex justify-content-between' >
                         <div className='d-flex align-items-center '>
                             <div className="d-flex gap-4">
-                                <div className='ms-3'>
+                                <div className='ms-3 ' style={{width:"150px"}}>
                                     <p className='fw-bold mb-1'>Nombre</p>
                                     <p className='text-muted mb-0'>{nombre}</p>
                                 </div>
                                 <div className="ms-3">
-                                    <p className='fw-bold mb-1'>Descripcion</p>
+                                    <p className='fw-bold mb-1' style={{width:"150px"}}>Descripcion</p>
                                     <p className='text-muted mb-0'>{descripcion}</p>
                                 </div>
                                 <div className="ms-3">

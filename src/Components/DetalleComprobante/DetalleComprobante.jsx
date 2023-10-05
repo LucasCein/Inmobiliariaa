@@ -12,7 +12,7 @@ const DetalleComprobante = ({ item }) => {
         const fetch = async () => {
             const db = getFirestore(app);
             const docRef = doc(db, "detalleComprobante", item.idDetalle.id);
-            const docSnap = await getDoc(docRef).then(res => setProducts(res.data().productos));
+            const docSnap = await getDoc(docRef).then(res => setProducts(res.data().prodsSelec));
         }
         fetch()
 
@@ -27,8 +27,8 @@ const DetalleComprobante = ({ item }) => {
 
                 <h2 className="tipoComp border border-dark ">{(item.Tipo).toUpperCase()}</h2>
 
-                <p className="numSucTitle">N° Sucursal</p>
-                <input className="numSucInp" type="text" disabled value={item.numSuc} />
+                <p className="numSucTitle">Sucursal y Numero</p>
+                <input className="numSucInp" type="text" disabled value={`${item.Suc}-${item.numComp}`} />
                 <p className="numCompTitle">N° Comprobante</p>
                 <input type="text" className="numCompInp" disabled value={item.id} />
                 <p className="provName">Nombre Proveedor</p>

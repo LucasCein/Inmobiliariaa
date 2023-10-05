@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import { useUpdateContext } from '../../Context/updateContext';
 import { MyProvider, ProvContext } from '../ProveedorContext/ProveedorContext';
 
-const ProveedoresItem = ({proveedores,forSelected,setNomProv,setOpenModal}) => {
+const ProveedoresItem = ({proveedores,forSelected,setNomProv,setOpenModal,close}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
@@ -68,7 +68,7 @@ const ProveedoresItem = ({proveedores,forSelected,setNomProv,setOpenModal}) => {
                         </div>
                     {forSelected!=""? 
                     <div className='col d-flex align-items-center'>
-                      <button onClick={()=>{setNomProv({nomProv:nombre,idProv:id}),setOpenModal(false)}} className='btn btn-success' >Seleccionar</button>
+                      <button onClick={()=>{setNomProv({nomProv:nombre,idProv:id}),close()}} className='btn btn-success' >Seleccionar</button>
                     </div>
                     :<div className='col d-flex align-items-center'>
                         <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>

@@ -9,7 +9,7 @@ import React from 'react'
 import ABMProveedor from './ABMProveedor';
 import { getValueFromValueOptions } from '@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils';
  
-const Proveedor = ({forSelect,setNomProv,setOpenModal}) => {
+const Proveedor = ({forSelect,setNomProv,setOpenModal,close}) => {
     const [proveedores, setProveedores] = useState([])
     const [proveedores_og, setProveedoresOG] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -91,7 +91,7 @@ const Proveedor = ({forSelect,setNomProv,setOpenModal}) => {
                   </div>
             </div>
             </div>
-                    <ProveedoresItem proveedores={proveedores} forSelected={forSelect} setNomProv={setNomProv} setOpenModal={setOpenModal}/>
+                    <ProveedoresItem proveedores={proveedores} forSelected={forSelect} setNomProv={setNomProv} setOpenModal={setOpenModal} close={close}/>
                 </MDBListGroup>
             </div>
             </>}

@@ -33,7 +33,8 @@ const AbmComprobantes = () => {
   const navigate = useNavigate();
   const [comprobante, setComprobante] = useState({
     Fecha: "",
-    numSuc: "",
+    Suc: "",
+    numComp:"",
     Tipo: "",
     idProv: "",
     idProp: "",
@@ -165,9 +166,11 @@ const AbmComprobantes = () => {
     console.log("producto", productos);
   };
   const handleChangeSuc = (e) => {
-    setComprobante({ ...comprobante, numSuc: e.target.value });
+    setComprobante({ ...comprobante, Suc: e.target.value });
   };
-
+  const handleChangeNumComp = (e) => {
+    setComprobante({ ...comprobante, numComp: e.target.value });
+  };
   const handleDeleteProduct = (idProduct) => {
     const newProducts = [...prodsSelec];
     const indiceObjetoModificar = newProducts.findIndex(
@@ -241,11 +244,19 @@ const AbmComprobantes = () => {
             />
           </Form.Group>
           <Form.Group as={Col} controlId="formGridPassword">
-            <Form.Label className="text-white">N° Sucursal</Form.Label>
+            <Form.Label className="text-white">Sucursal</Form.Label>
             <Form.Control
-              placeholder="N° Sucursal"
-              value={comprobante.numSuc}
+              placeholder="Sucursal"
+              value={comprobante.Suc}
               onChange={handleChangeSuc}
+            />
+          </Form.Group>
+          <Form.Group as={Col} controlId="formGridPassword">
+            <Form.Label className="text-white">Numero</Form.Label>
+            <Form.Control
+              placeholder="Numero"
+              value={comprobante.numComp}
+              onChange={handleChangeNumComp}
             />
           </Form.Group>
         </Row>
@@ -287,7 +298,7 @@ const AbmComprobantes = () => {
                     onChange={handleChangeProv}
                   />
                   <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-                    <Proveedor forSelect={"forSelect"} setNomProv={setNomProv} setOpenModal={setOpenModal}></Proveedor>
+                    {close => <Proveedor forSelect={"forSelect"} setNomProv={setNomProv} close={close}></Proveedor>}
                   </Popup>
                 </div>
                 {/* <Autocomplete
@@ -315,7 +326,7 @@ const AbmComprobantes = () => {
                     onChange={handleChangeProp}
                   />
                   <Popup open={modalProp} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-                    <Properties forSelect={"forSelect"} setNomProp={setNomProp} setModalProp={setModalProp}></Properties>
+                    {close=><Properties forSelect={"forSelect"} setNomProp={setNomProp} close={close}></Properties>}
                   </Popup>
                 </div>
               </div>
@@ -334,7 +345,7 @@ const AbmComprobantes = () => {
                 readOnly
               />
               <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-                <Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec}></Productos>
+                {close=><Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec} close={close}></Productos>}
               </Popup>
             </div>
           </Form.Group>

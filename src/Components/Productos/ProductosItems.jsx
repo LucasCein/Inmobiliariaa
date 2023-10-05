@@ -6,7 +6,7 @@ import { doc, getFirestore, updateDoc } from 'firebase/firestore'
 import { app } from '../../FireBase/config'
 import { Checkbox } from '@mui/material';
 
-const ProductoItem = ({ productos, setNomProd, setprodsSelec }) => {
+const ProductoItem = ({ productos, setNomProd, setprodsSelec,close }) => {
     // const navigate = useNavigate();
 
     // const db = getFirestore(app);
@@ -37,7 +37,7 @@ const ProductoItem = ({ productos, setNomProd, setprodsSelec }) => {
         setprodsSelec(checkedItems.map((id)=>{
             return productos.find((prod)=>prod.id==id)
           }));
-       
+       close()
     };
 
    

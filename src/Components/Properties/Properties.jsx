@@ -15,7 +15,7 @@ import AbmPropiedades from "../AbmPropiedades/AbmPropiedades";
 import Form from "react-bootstrap/Form";
 import ListaDeFiltro from "../listaDeFiltro/ListaDeFiltro";
 
-const Properties = ({forSelect,setNomProp,setModalProp}) => {
+const Properties = ({forSelect,setNomProp,setModalProp,close}) => {
   const [propiedades, setPropiedades] = useState([]);
   const [propiedadesToShow, setPropiedadesToShow] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -131,6 +131,7 @@ const Properties = ({forSelect,setNomProp,setModalProp}) => {
             {console.log(checkDisponible)}
             <MDBListGroup style={{ minWidth: "22rem",border:"1px solid black" }} light>
               <PropertiesItems
+              close={close}
               setModalProp={setModalProp}
                 setNomProp={setNomProp}
                 forSelect={forSelect}
