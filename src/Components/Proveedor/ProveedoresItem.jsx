@@ -52,24 +52,19 @@ const ProveedoresItem = ({proveedores,forSelected,setNomProv,setOpenModal}) => {
             <MDBListGroupItem key={id} className='container align-items-center justify-content-center'>
                 <div className='row '>
                         <div className='col'>
-                            <p className='fw-bold mb-1'>Nombre</p>
-                            <p className='text-muted mb-0'>{nombre}</p>
+                            <p className='mb-0 text-dark'>{nombre}</p>
                         </div>
                         <div className="col" >
-                            <p className='fw-bold mb-1'>Descripción</p>
-                            <p className='text-muted mb-0'>{descripcion}</p>
+                            <p className='mb-0 text-dark'>{descripcion}</p>
                         </div>
                         <div className="col">
-                            <p className='fw-bold mb-1'>CUIT</p>
-                            <p className='text-muted mb-0'>{CUIT}</p>
+                            <p className='mb-0 text-dark'>{CUIT}</p>
                         </div>
                         <div className="col-3">
-                            <p className='fw-bold mb-1'>E-mail</p>
-                            <p className='text-muted mb-0'>{email}</p>
+                            <p className='mb-0 text-dark'>{email}</p>
                         </div>
                         <div className="col">
-                            <p className='fw-bold mb-1'>Telefono</p>
-                            <p className='text-muted mb-0'>{telefono}</p>
+                            <p className='mb-0 text-dark'>{telefono}</p>
                         </div>
                     {forSelected!=""? 
                     <div className='col d-flex align-items-center'>

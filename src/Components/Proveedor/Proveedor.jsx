@@ -67,6 +67,30 @@ const Proveedor = ({forSelect,setNomProv,setOpenModal}) => {
                     </Popup>
                 </div>
                 <MDBListGroup className='w-100'>
+                <div className='container align-items-center justify-content-center pt-1 rounded' style={{backgroundColor:"black"}} >
+            <div className='row'>
+                <div className='col ms-2'>
+                  <p className='fw-bold  text-light'>Nombre</p>
+                  </div>
+                 <div className="col ps-3">
+                    <p className='fw-bold text-light'>Descripcion</p>
+         
+                  </div>
+                  <div className="col ps-5">
+                    <p className='fw-bold  text-light'>CUIT</p>
+                  
+                 </div>
+                  <div className="col ps-4">
+                   <p className='fw-bold text-white'>E-Mail</p>       
+                  </div>
+                  <div className="col ps-5 ms-3">
+                   <p className='fw-bold text-white ps-1'>Telefono</p>       
+                  </div>
+                  <div className='col d-flex align-items-center justify-content-center me-3'>
+                    <p className='fw-bold text-light'>Opciones</p>    
+                  </div>
+            </div>
+            </div>
                     <ProveedoresItem proveedores={proveedores} forSelected={forSelect} setNomProv={setNomProv} setOpenModal={setOpenModal}/>
                 </MDBListGroup>
             </div>

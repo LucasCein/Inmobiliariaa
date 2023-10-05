@@ -13,6 +13,22 @@ import ABMPagos from './ABMPagos';
 
 
 const PagosItem = ({facturas}) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = currentPage * itemsPerPage;
+    const currentfacturas = facturas.slice(startIndex, endIndex);
+
+    const handlePreviousPage = () => {
+        setCurrentPage(Math.max(currentPage - 1, 1));
+    };
+
+    const handleNextPage = () => {
+        const totalPages = Math.ceil(facturas.length / itemsPerPage);
+        setCurrentPage(Math.min(currentPage + 1, totalPages));
+    };
+
     const navigate = useNavigate();
 
     const db = getFirestore(app);
@@ -29,7 +45,7 @@ const PagosItem = ({facturas}) => {
   return (
     <>
     {
-        facturas.map(({id,nombreProveedor , monto, fecha, metodo, idDetalle }) =>
+        currentfacturas.map(({id,nombreProveedor , monto, fecha, metodo, idDetalle }) =>
             <MDBListGroupItem key={id} className='container align-items-center justify-content-center '>
                 <div className='row'>
                         <div className='col'>
@@ -55,6 +71,24 @@ const PagosItem = ({facturas}) => {
             </MDBListGroupItem>
         )  
     }
+     <div className="d-flex flex-column align-items-center m-3">
+            <p>
+        <button
+          className="btn btn-secondary"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-secondary ms-2"
+          onClick={handleNextPage}
+          disabled={endIndex >= facturas.length}
+        >
+          Next
+        </button>
+        </p>
+      </div>
     </>
   )
 }
