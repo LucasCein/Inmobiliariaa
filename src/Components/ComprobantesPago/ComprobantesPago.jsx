@@ -154,7 +154,7 @@ const ComprobantesPago = () => {
                                 </div>
                             </div>
                             <div className='d-flex gap-2 align-items-center'>
-                                <label className='text-white'>Tipo Factura:</label>
+                                <label className='text-white'>Letra Factura:</label>
                                 <select name='TipoFact' onChange={handleChange}>
                                     <option value=""></option>
                                     <option value="a">A</option>
@@ -181,7 +181,7 @@ const ComprobantesPago = () => {
 
                                     </div>
                                     <div className="col ms-4">
-                                        <p className='fw-bold  text-light'>Tipo</p>
+                                        <p className='fw-bold  text-light'>Letra</p>
 
                                     </div>
                                     <div className="col pe-4">
