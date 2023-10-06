@@ -1,8 +1,5 @@
 import Select from "react-select";
-import {
-  CountryDropdown,
-  RegionDropdown,
-} from "react-country-region-selector";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import "./AbmPropiedades.css";
 import { useEffect, useState } from "react";
 import { app, storage } from "../../FireBase/config";
@@ -51,13 +48,16 @@ const AbmPropiedades = (detailData) => {
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    return () => {
-      if (detailData.propiedades !== "") {
-        console.log("detailData", detailData.propiedad);
-        setPropiedad(detailData.propiedad);
-      }
-    };
-  }, [detailData]);
+    if (detailData.propiedad.nombre !== "") {
+      console.log("detailData", detailData.propiedad);
+      setPropiedad(detailData.propiedad);
+    }
+  }, []);
+
+  /*   if (detailData.propiedad.nombre !== "") {
+    console.log("detailData", detailData.propiedad);
+    setPropiedad(detailData.propiedad);
+  } */
 
   const optionsStatus = [
     { value: "ocupado", label: "Ocupado" },
@@ -427,6 +427,8 @@ const AbmPropiedades = (detailData) => {
       </div>
     </div>
   );
+
+  console.log(detailData);
 
   return (
     <div className="d-flex flex-column align-items-center containerAbm">

@@ -120,7 +120,28 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                 modal
               >
                 <AbmPropiedades
-                  proveedor={{ nombre: "", descripcion: "", direccion: "" }}
+                  propiedad={{
+                    id: "",
+                    nombre: "",
+                    descripcion: "",
+                    estado: "",
+                    tipo: "",
+                    pais: "",
+                    region: "",
+                    cp: "",
+                    calle: "",
+                    altura: "",
+                    piso: "",
+                    dpto: "",
+                    cantBaños: "",
+                    cantCuarto: "",
+                    area: "0",
+                    wifi: false,
+                    aire: false,
+                    estacionamiento: false,
+                    lavarropa: false,
+                    imagen: "",
+                  }}
                 ></AbmPropiedades>
               </Popup>
             </div>
