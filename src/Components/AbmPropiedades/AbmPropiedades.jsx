@@ -433,7 +433,7 @@ const AbmPropiedades = (detailData) => {
   return (
     <div className="d-flex flex-column align-items-center containerAbm">
       <h2 className="m-auto pb-5">
-        {detailData.propiedad.nombre != ""
+        {detailData.propiedad?.nombre != ""
           ? "Editar Propiedad"
           : "Agregar Propiedad"}
       </h2>
