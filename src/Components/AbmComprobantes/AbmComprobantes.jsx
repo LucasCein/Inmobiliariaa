@@ -113,7 +113,9 @@ const AbmComprobantes = () => {
       console.log("detalle has been added successfully");
       setComprobante({ ...comprobante, idDetalle: docRef.id });
       createDoc(docRef);
+      navigate("/bill")
     });
+    
   };
 
   const createDoc = (idDet) => {
@@ -147,13 +149,14 @@ const AbmComprobantes = () => {
     const partes = e.target.value.split("-");
 
     const fechaComoTimestamp = Timestamp.fromDate(
-      new Date(partes[0], partes[1], partes[2])
+      new Date(partes[0], partes[1]-1, partes[2])
     );
 
     setComprobante({ ...comprobante, Fecha: fechaComoTimestamp });
     setOriginalDate(e.target.value);
   };
   const [prodsSelec, setprodsSelec] = useState([]);
+  const [prodsSelecOr, setprodsSelecOr] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [precioF, setprecioF] = useState(0);
   const handleChangeProducto = (producto) => {
@@ -205,7 +208,14 @@ const AbmComprobantes = () => {
 
     setprecioF(newFinalPrice);
   };
-
+  useEffect(()=>{
+    console.log(prodsSelec)
+    let aux=0
+    prodsSelec.forEach((p)=>{
+      aux=aux+p.precio
+    })
+    setprecioF(aux)
+  },[prodsSelec])
   console.log(orginialDate);
   // const value=useContext(ProvContext)
   // console.log(value)
@@ -225,6 +235,7 @@ const AbmComprobantes = () => {
     setComprobante({ ...comprobante, idProp: nomProp.idProp });
   };
   console.log(prodsSelec)
+
   return (
     <Container className="containerAbm">
       <div className="containerTitulo text-white">
@@ -345,7 +356,7 @@ const AbmComprobantes = () => {
                 readOnly
               />
               <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-                {close=><Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec} close={close}></Productos>}
+                {close=><Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec} prodsSelec={prodsSelec}  close={close}></Productos>}
               </Popup>
             </div>
           </Form.Group>

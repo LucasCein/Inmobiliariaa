@@ -20,16 +20,37 @@ const ComprobantesPago = () => {
         const queryCollection = collection(dbFirestore, 'comprobantes')
         const queryCollectionFiltered = query(queryCollection, where('visible', '==', true))
         getDocs(queryCollectionFiltered)
-            .then(res => setComprobantes(res.docs.map(comprobante => ({
-                id: comprobante.id,
-                ...comprobante.data(),
-                Fecha: comprobante.data().Fecha.toDate().toLocaleDateString(),
-                nombreProveedor: '',
-                originalDate: comprobante.data().Fecha
-            }))))
+            .then(res => {
+                const newComp = res.docs.map(comprobante => ({
+                    id: comprobante.id,
+                    ...comprobante.data(),
+                    Fecha: comprobante.data().Fecha.toDate().toLocaleDateString(),
+                    nombreProveedor: '',
+                    originalDate: comprobante.data().Fecha
+                }))
+                setComprobantes(newComp)
+                setComprobantesOr(newComp)
+                return newComp
+            })
+            .then(async (newComprobantes) => {  // Recibe los comprobantes y los actualiza con la información adicional
+                const updatedComprobantes = await Promise.all(
+                    newComprobantes.map(async (comprobante) => {
+                        const proveedorInfo = await nombreProv(comprobante.idProv);
+                        const propiedadInfo = await nombreProp(comprobante.idProp);
+                        return {
+                            ...comprobante,
+                            nombreProveedor: proveedorInfo.nombre,
+                            cuitProveedor: proveedorInfo.cuit,
+                            nombrePropiedad: propiedadInfo.nombre
+                        };
+                    })
+                );
+                
+                setComprobantes(updatedComprobantes);
+                setComprobantesOr(updatedComprobantes);
+            })
             .catch(error => console.log(error))
             .finally(setIsLoading(false))
-
         const nombreProv = async (id) => {
             const dbFirestore = getFirestore();
             const proveedorCollection = collection(dbFirestore, 'proveedores');
@@ -45,28 +66,7 @@ const ComprobantesPago = () => {
             };
         }
 
-        const actualizarComprobantes = async () => {
-            const nuevosComprobantes = await Promise.all(
-                comprobantes.map(async (comprobante) => {
-                    const proveedorInfo = await nombreProv(comprobante.idProv);
-                    const propiedadInfo = await nombreProp(comprobante.idProp)
-                    return {
-                        ...comprobante,
-                        nombreProveedor: proveedorInfo.nombre,
-                        cuitProveedor: proveedorInfo.cuit,
-                        nombrePropiedad: propiedadInfo.nombre
-                    };
-                })
-            );
-
-            // Actualiza el estado de los comprobantes con los nombres de proveedores
-            setComprobantes(nuevosComprobantes);
-            setComprobantesOr(nuevosComprobantes)
-            console.log(nuevosComprobantes, "ACA");
-        }
-
-        // Llama a la función para actualizar los comprobantes
-        actualizarComprobantes();
+        
 
         const nombreProp = async (id) => {
             const dbFirestore = getFirestore()
@@ -85,49 +85,47 @@ const ComprobantesPago = () => {
         setComprobantesOr(comprobantes)
     }, [])
 
-    const handleChange = (event => {
-        let { name, value } = event.target
-        console.log(name, value)
-        if (value == "") {
-            setComprobantes(comprobantesOr)
+    const handleChange = (event) => {
+        let { name, value } = event.target;
+        let filteredComprobantes = [];
+        switch(name) {
+            case "nombreProveedor":
+                filteredComprobantes = comprobantesOr.filter(fac => fac.nombreProveedor.toLowerCase().includes(value.toLowerCase()));
+                break;
+    
+            case "fechaDesde":
+                filteredComprobantes = comprobantesOr.filter(comp => {
+                    const partsfechaComp = comp.Fecha.split("/");
+                    const reverse = partsfechaComp[2] + "-" + partsfechaComp[1] + "-" + (partsfechaComp[0].length === 1 ? '0' + partsfechaComp[0] : partsfechaComp[0]);
+                    return reverse >= value;
+                });
+                break;
+    
+            case "fechaHasta":
+                filteredComprobantes = comprobantesOr.filter(comp => {
+                    const partsfechaComp = comp.Fecha.split("/");
+                    const reverse = partsfechaComp[2] + "-" + partsfechaComp[1] + "-" + (partsfechaComp[0].length === 1 ? '0' + partsfechaComp[0] : partsfechaComp[0]);
+                    return reverse <= value;
+                });
+                break;
+    
+            case "TipoFact":
+                filteredComprobantes = comprobantesOr.filter(fac => {
+                    if (fac.Tipo === value || value === "") {
+                        return true;
+                    }
+                    return false;
+                });
+                break;
+    
+            default:
+                break;
         }
-        else {
-            if (name == "nombreProveedor") {
-                setComprobantes(comprobantesOr.filter(fac => (fac.nombreProveedor.toLowerCase().includes(value.toLowerCase()))))
-            } else if (name == "fechaDesde") {
-                setComprobantes(comprobantesOr.filter((comp) => {
-                    const partsfechaComp = comp.Fecha.split("/")
-                    const reverse = partsfechaComp[2] + "-" + partsfechaComp[1] + "-" + (partsfechaComp[0].length == 1 ? '0' + partsfechaComp[0] : partsfechaComp[0])
-                    console.log(reverse)
-                    if (reverse >= value) {
-                        return comp
-                    }
-                }))
-
-            } else if (name == "fechaHasta") {
-                setComprobantes(comprobantesOr.filter((comp1) => {
-                    const partsfechaComp1 = comp1.Fecha.split("/")
-                    const reverse1 = partsfechaComp1[2] + "-" + partsfechaComp1[1] + "-" + (partsfechaComp1[0].length == 1 ? '0' + partsfechaComp1[0] : partsfechaComp1[0])
-                    console.log(reverse1)
-                    if (reverse1 <= value) {
-                        return comp1
-                    }
-                }))
-            } else if (name == "TipoFact") {
-                setComprobantes(comprobantesOr.filter(fac => {
-                    if (fac.Tipo == value) {
-                        return fac
-                    }
-                    else if (value == "") {
-                        return fac
-                    }
-
-                }
-                ))
-            }
-        }
-
-    })
+    
+        console.log("Filtrados:", filteredComprobantes); 
+        setComprobantes(filteredComprobantes);
+    }
+    
 
     console.log(comprobantesOr)
     console.log(comprobantes)
@@ -168,6 +166,7 @@ const ComprobantesPago = () => {
                         <div className=' my-3 d-flex justify-content-end'>
                             <Link to={"/AbmComprobantes"}>
                                 <button className='btn btn-success'>Add New</button>
+
                             </Link>
                         </div>
                         <MDBListGroup style={{ minWidth: '22rem' }} light>

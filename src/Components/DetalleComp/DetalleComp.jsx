@@ -34,7 +34,7 @@ const DetalleComp = ({productos, handleDeleteProduct, handlePriceChange }) => {
                                 </div>
                                 <div className="ms-3">
                                     <p className='fw-bold mb-1'>Precio</p>
-                                    <input type="number" value={precio} onChange={(e) => handlePriceChange(id, e.target.value)}></input>
+                                    <input type="number" value={precio} disabled></input>
                                     {/* <p className='text-muted mb-0'>${precio}</p> */}
                                 </div>
                                 <div className="ms-3">
