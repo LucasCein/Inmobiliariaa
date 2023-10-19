@@ -11,6 +11,7 @@ import Pagos from './Components/Pagos/Pagos'
 import { MyProvider, ProvContext } from './Components/ProveedorContext/ProveedorContext'
 import ProveedoresItem from './Components/Proveedor/ProveedoresItem'
 import AbmComprobantes from './Components/AbmComprobantes/AbmComprobantes'
+import ABMPagos from './Components/Pagos/ABMPagos'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -72,6 +73,15 @@ function App() {
               <Header OpenSidebar={OpenSidebar} />
               <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
               <AbmComprobantes />
+            </div>
+            }
+          />
+            <Route
+            path='/ABMPagos'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <ABMPagos />
             </div>
             }
           />

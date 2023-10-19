@@ -5,10 +5,17 @@ import { updateDoc,doc,collection, getDocs, getFirestore, query, where,addDoc } 
 import Select from "react-select";
 import { MDBListGroup, MDBListGroupItem, MDBCheckbox } from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom"
+import Form from "react-bootstrap/Form";
+import Popup from 'reactjs-popup';
+import { BsSearch } from "react-icons/bs";
+import Proveedor from "../Proveedor/Proveedor";
+
+
 
 
 
 const ABMPagos = (detailData) => {
+  const [openModal, setOpenModal] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null);
     const [proveedores, setProveedores] = useState([])
     const [proveedorSeleccionado, setProveedorSeleccionado] = useState('');
@@ -25,24 +32,6 @@ const ABMPagos = (detailData) => {
     const formattedDate = `${year}-${month}-${day}`;
 
     const [selectedDate, setSelectedDate] = useState(formattedDate);
-    useEffect(() => {
-        const fetchprovee = async () =>{
-        const dbFirestore = getFirestore()
-        const queryCollection = collection(dbFirestore, 'proveedores')
-        const queryCollectionFiltered = query(queryCollection,where('Activo','==',true))
-        const res= await getDocs(queryCollectionFiltered)
-        const proveedoresData = res.docs.map(proveedor => ({
-          id:proveedor.data().id,
-          value:proveedor.data().nombre,
-          label: proveedor.data().nombre
-        }));
-        setProveedores(proveedoresData);
-        const proveDeafult= (proveedoresData.filter(prove=>prove.value == detailData.factura.nombreProveedor))
-        setProveedorSeleccionado(proveDeafult)
-
-        }
-        fetchprovee()
-    }, [])
 
     useEffect(()=>{
       const fetchComprobantes = async () =>{
@@ -58,7 +47,7 @@ const ABMPagos = (detailData) => {
           originalDate: comprobante.data().Fecha
         }));
 
-        comprobantesData = comprobantesData.filter(comprobante => comprobante.idProv == proveedorSeleccionado.id);
+        comprobantesData = comprobantesData.filter(comprobante => comprobante.idProv == proveedorSeleccionado?.idProv);
 
         const propiedadCollection = collection(dbFirestore, 'propiedades');
         const propiedadSnapshot = await getDocs(propiedadCollection);
@@ -139,32 +128,38 @@ const ABMPagos = (detailData) => {
         console.log(error)
       })
   }
+
   return (
     <div className='m-3'>
       <h1>Generar Pago</h1>
-      <div className='d-flex align-items-center'>
-      <div className='d-flex justify-content-start align-items-center'>
+      <div className='d-flex align-items-center' style={{color:'white'}}>
+      <div className='d-flex justify-content-center align-items-center'>
               <p className='m-1'>Forma de pago:</p>
                 <Select
-                className="comboCss basic-single select px-2"
+                className="w-50 px-2"
                 value={selectedOption}
                 onChange={handleChangePay}
                 options={method_Pay}
                 ></Select>
                 <p className='m-1'>Fecha de Pago:</p>
-                <input className="dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
+                <input className=" w-50 dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
                 <p className='m-2'>Proveedor:</p>
-                <Select
-                    className="comboCss basic-single select "
-                    options={proveedores}
-                    value={proveedorSeleccionado}
-                    onChange={(selectedOption) => {setProveedorSeleccionado(selectedOption)}}
-                  ></Select>
+                
+                <Form.Control
+                    className="w-10  px-2"
+                    placeholder="Nombre Proveedor"
+                    value={proveedorSeleccionado?.nomProv}
+                    disabled
+                    readOnly
+                  />
+                  <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
+                    {close => <Proveedor forSelect={"forSelect"} setNomProv={setProveedorSeleccionado} close={close}></Proveedor>}
+                  </Popup>
+  
                   </div>
             </div>
 
           <div className='mt-2'>
-         
           {comprobantes.map((comprobante) => (
           <MDBListGroupItem key={comprobante.id}>
                 <div className='row d-flex justify-content-center'>
