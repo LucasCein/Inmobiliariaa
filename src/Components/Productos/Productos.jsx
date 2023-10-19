@@ -8,7 +8,7 @@ import ProductoItem from './ProductosItems';
 
 
 
-const Productos = ({setNomProd,setprodsSelec,close}) => {
+const Productos = ({setNomProd,setprodsSelec,close,prodsSelec}) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [productos, setProductos] = useState ([])
@@ -57,7 +57,7 @@ const Productos = ({setNomProd,setprodsSelec,close}) => {
                   </Popup>
             </div>
                   <MDBListGroup className='w-100'>
-                    <ProductoItem productos={productos} setNomProd={setNomProd} setprodsSelec={setprodsSelec} close={close}></ProductoItem>
+                    <ProductoItem productos={productos} setNomProd={setNomProd} setprodsSelec={setprodsSelec} prodsSelec={prodsSelec}  close={close}></ProductoItem>
                   </MDBListGroup>
           </div>
           

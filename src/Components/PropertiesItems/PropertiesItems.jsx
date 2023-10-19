@@ -99,7 +99,7 @@ const PropertiesItems = ({
                   {estado}
                 </MDBBadge>
               </div>
-
+              {forSelect == "" ?( 
               <div className="col d-flex align-items-center">
                 <Popup
                   trigger={
@@ -139,6 +139,17 @@ const PropertiesItems = ({
                   <BsTrash></BsTrash>
                 </button>
               </div>
+              ):(<div className="col d-flex align-items-center justify-content-end me-5">
+              <button
+                onClick={() => {
+                  setNomProp({ nomProp: nombre, idProp: id }), close();
+                }}
+                className="btn btn-success"
+              >
+                Seleccionar
+              </button>
+            </div>)}
+              
             </div>
 
             {/* <div className="d-flex flex-row align-items-center gap-5">

@@ -6,7 +6,7 @@ import { doc, getFirestore, updateDoc } from 'firebase/firestore'
 import { app } from '../../FireBase/config'
 import { Checkbox } from '@mui/material';
 
-const ProductoItem = ({ productos, setNomProd, setprodsSelec,close }) => {
+const ProductoItem = ({ productos, setNomProd, setprodsSelec, close, prodsSelec, }) => {
     // const navigate = useNavigate();
 
     // const db = getFirestore(app);
@@ -31,16 +31,23 @@ const ProductoItem = ({ productos, setNomProd, setprodsSelec,close }) => {
             setCheckedItems(checkedItems.filter((item) => item !== value));
         }
     };
-    
+
     const handleClickAceptar = () => {
+        const prod =
+            checkedItems.map((id) => {
+                return productos.find((prod) => prod.id == id)
+            })
+            const filteredProd = prod.filter(p => 
+                !prodsSelec.some(existingProd => existingProd.id === p.id)
+            );
+            setprodsSelec([...prodsSelec, ...filteredProd]);
+                
+     
         // Guardar los productos seleccionados en el estado
-        setprodsSelec(checkedItems.map((id)=>{
-            return productos.find((prod)=>prod.id==id)
-          }));
-       close()
+        close()
     };
 
-   
+
     return (
         <>
             {
