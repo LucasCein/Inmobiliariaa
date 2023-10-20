@@ -131,7 +131,7 @@ const ABMPagos = (detailData) => {
 
   return (
     <div className='m-3'>
-      <h1>Generar Pago</h1>
+      <h1 className='text-light'>Generar Pago</h1>
       <div className='d-flex align-items-center' style={{color:'white'}}>
       <div className='d-flex justify-content-center align-items-center'>
               <p className='m-1'>Forma de pago:</p>
@@ -160,31 +160,52 @@ const ABMPagos = (detailData) => {
             </div>
 
           <div className='mt-2'>
+          <div className='container align-items-center justify-content-center pt-1 rounded' style={{backgroundColor:"black"}} >
+            <div className='row'>
+                <div className='col'>
+                  <p className='fw-bold  text-light'>Letra</p>
+                  </div>
+                 <div className="col">
+                    <p className='fw-bold text-light'>Fecha</p>
+         
+                  </div>
+                  <div className="col">
+                    <p className='fw-bold  text-light'>Monto</p>
+                  
+                 </div>
+                  <div className="col">
+                   <p className='fw-bold text-white ms-3'>Nombre</p>       
+                  </div>
+                  <div className="col">
+                   <p className='fw-bold text-white'>Seleccion</p>       
+                  </div>
+            </div>
+            </div>
           {comprobantes.map((comprobante) => (
-          <MDBListGroupItem key={comprobante.id}>
+          <MDBListGroupItem key={comprobante.id}  className='container align-items-center justify-content-center bg-white py-2'>
                 <div className='row d-flex justify-content-center'>
                         <div className='col'>
-                            <p className='fw-bold mb-1'>Tipo</p>
-                            <p className='text-muted mb-0'>{comprobante.Tipo}</p>
+                            <p className='text-dark mb-0 ms-4'>{comprobante.Tipo}</p>
                         </div>
                         <div className="col" >
-                            <p className='fw-bold mb-1'>Fecha</p>
-                            <p className='text-muted mb-0'>{comprobante.Fecha}</p>
+                          
+                            <p className='text-dark mb-0'>{comprobante.Fecha}</p>
                         </div>
                         <div className="col">
-                            <p className='fw-bold mb-1'>Monto</p>
-                            <p className='text-muted mb-0'>${comprobante.pTotal}</p>
+                          
+                            <p className='text-dark mb-0'>${comprobante.pTotal}</p>
                         </div>
                         <div className="col">
-                            <p className='fw-bold mb-1'>Nombre</p>
-                            <p className='text-muted mb-0'>{comprobante.nombrePropiedad}</p>
+                            
+                            <p className='text-dark mb-0'>{comprobante.nombrePropiedad}</p>
                         </div>
                        
-                          <div className='col justify-content-end align-items-end mt-3'>
-                              <MDBCheckbox onChange={()=>handleChange(comprobante)}/>
+                          <div className='col justify-content-end align-items-end'>
+                              <MDBCheckbox onChange={()=>handleChange(comprobante)} className='ms-3'/>
                           </div>
                     
             </div>
+           
           </MDBListGroupItem>
         ))}
       
@@ -192,7 +213,7 @@ const ABMPagos = (detailData) => {
         
             {comprobantesSeleccionados.length>0?
             <div>
-            <div className='d-flex align-items-start justify-content-between m-1'>
+            <div className='d-flex align-items-start justify-content-between m-1 text-light'>
               <h3 >Total: ${comprobantesSeleccionados.reduce((acc,com) =>{return acc+com.pTotal},0)}</h3>
               </div>
                 <div className='d-flex align-items-center justify-content-center pt-3'>
