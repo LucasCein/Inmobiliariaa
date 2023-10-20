@@ -212,7 +212,7 @@ const AbmComprobantes = () => {
     console.log(prodsSelec)
     let aux=0
     prodsSelec.forEach((p)=>{
-      aux=aux+p.precio
+      aux=parseInt(aux)+parseInt(p.precio)
     })
     setprecioF(aux)
   },[prodsSelec])
