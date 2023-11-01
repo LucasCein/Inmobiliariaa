@@ -104,7 +104,7 @@ const AbmPropiedades = (detailData) => {
       return { ...propiedad, ["region"]: valor };
     });
   };
-
+  
   const upload = async () => {
     if (image == null) return;
     const imageref = ref(storage, `/image/${image.name}`);
