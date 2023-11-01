@@ -139,13 +139,12 @@ const Home = () => {
 
         // Paso 3: Procesar los datos y sumar por mes
         pagos.forEach(pago => {
-          const fecha = new Date(pago.fecha); // Convertimos la cadena a objeto Date
-          const year = fecha.getFullYear();
-          const month = fecha.getMonth() + 1;
+          const [year, month, day] = pago.fecha.split("-").map(Number);
+          // const fecha = new Date(year, month - 1, day);  
           const key = `${year}-${month < 10 ? '0' + month : month}`;
-
           sumasPorMes[key] = (sumasPorMes[key] || 0) + parseInt(pago.monto, 10);
         });
+        
         const arrayResultante = Object.entries(sumasPorMes).map(([name, monto]) => ({
           name,
           monto

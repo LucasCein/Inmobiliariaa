@@ -1,14 +1,11 @@
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ComprobantesItems from '../ComprobantesItems/ComprobantesItems';
-import Popup from 'reactjs-popup';
 import { MDBListGroup } from 'mdb-react-ui-kit';
-import AbmComprobantes from '../AbmComprobantes/AbmComprobantes';
 import CustomSpinner from '../CustomSpinner/CustomSpinner';
 import './comprobantes.css'
-import Select, { components } from 'react-select'
 import { Link } from 'react-router-dom';
-import { CloseButton } from 'react-bootstrap';
+
 const ComprobantesPago = () => {
     const [comprobantes, setComprobantes] = useState([])
     const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +15,7 @@ const ComprobantesPago = () => {
 
         const dbFirestore = getFirestore()
         const queryCollection = collection(dbFirestore, 'comprobantes')
-        const queryCollectionFiltered = query(queryCollection, where('visible', '==', true))
+        const queryCollectionFiltered = query(queryCollection, where('visible', '==', true),where('pagada', '==', false))
         getDocs(queryCollectionFiltered)
             .then(res => {
                 const newComp = res.docs.map(comprobante => ({
