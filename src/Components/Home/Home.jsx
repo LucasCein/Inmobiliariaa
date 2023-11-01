@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill }
+import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill, BsHouseFill, BsCurrencyDollar }
   from 'react-icons/bs'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line }
   from 'recharts';
@@ -60,13 +60,14 @@ const Home = () => {
   const [propiedades, setPropiedades] = useState([]);
   const [propiedadesVenta, setPropiedadesVenta] = useState([]);
   const [propiedadesAlquiler, setPropiedadesAlquiler] = useState([]);
-  const [propiedadesPagos, setPropiedadesPagos] = useState([]);
+  const [clientes, setClientes] = useState([]);
   const [gastoPorMes, setGastoPorMes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const dbFirestore = getFirestore();
     const queryCollection = collection(dbFirestore, "propiedades");
     const queryCollectPagos = collection(dbFirestore, "pagoFacturas");
+    const queryClientes = collection(dbFirestore, "clientes");
     const queryCollectionFiltered = query(
       queryCollection,
       where("visible", "==", true)
@@ -85,6 +86,10 @@ const Home = () => {
     const queryCollectionPagos = query(
       queryCollectPagos,
       where("visible", "==", true)
+    );
+    const queryCollectionClientes = query(
+      queryClientes,
+      where("Activo", "==", true)
     );
     getDocs(queryCollectionFiltered)
       .then((res) =>
@@ -122,23 +127,23 @@ const Home = () => {
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
 
-      getDocs(queryCollectionPagos)
+    getDocs(queryCollectionPagos)
       .then((res) => {
         const pagos = res.docs.map(factura => ({
           id: factura.id,
           ...factura.data(),
         }));
-    
+
         // Paso 2: Crear la estructura para guardar las sumas por mes
         let sumasPorMes = {};
-    
+
         // Paso 3: Procesar los datos y sumar por mes
         pagos.forEach(pago => {
           const fecha = new Date(pago.fecha); // Convertimos la cadena a objeto Date
           const year = fecha.getFullYear();
-          const month = fecha.getMonth() + 1; 
-          const key = `${year}-${month < 10 ? '0' + month : month}`; 
-    
+          const month = fecha.getMonth() + 1;
+          const key = `${year}-${month < 10 ? '0' + month : month}`;
+
           sumasPorMes[key] = (sumasPorMes[key] || 0) + parseInt(pago.monto, 10);
         });
         const arrayResultante = Object.entries(sumasPorMes).map(([name, monto]) => ({
@@ -148,7 +153,7 @@ const Home = () => {
         arrayResultante.sort((a, b) => {
           const dateA = new Date(a.name);
           const dateB = new Date(b.name);
-        
+
           if (dateA < dateB) {
             return -1;
           }
@@ -157,12 +162,22 @@ const Home = () => {
           }
           return 0;
         });
-        
+
         setGastoPorMes(arrayResultante)
       })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
-    
+    getDocs(queryCollectionClientes)
+      .then((res) =>
+        setClientes(
+          res.docs.map((clientes) => ({
+            id: clientes.id,
+            ...clientes.data(),
+          }))
+        )
+      )
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
 
 
 
@@ -181,30 +196,30 @@ const Home = () => {
         <div className='card'>
           <div className='card-inner'>
             <h3>Propiedades</h3>
-            <BsFillArchiveFill className='card_icon' />
+            <BsHouseFill className='card_icon' />
           </div>
           <h1>{propiedades.length}</h1>
         </div>
         <div className='card'>
           <div className='card-inner'>
             <h3>VENTA</h3>
-            <BsFillGrid3X3GapFill className='card_icon' />
+            <BsCurrencyDollar className='card_icon' />
           </div>
           <h1>{propiedadesVenta.length}</h1>
         </div>
         <div className='card'>
           <div className='card-inner'>
             <h3>ALQUILER</h3>
-            <BsPeopleFill className='card_icon' />
+            <BsCurrencyDollar className='card_icon' />
           </div>
           <h1>{propiedadesAlquiler.length}</h1>
         </div>
         <div className='card'>
           <div className='card-inner'>
-            <h3>ALERTS</h3>
-            <BsFillBellFill className='card_icon' />
+            <h3>CLIENTES</h3>
+            <BsPeopleFill className='card_icon' />
           </div>
-          <h1>42</h1>
+          <h1>{clientes.length}</h1>
         </div>
       </div>
 

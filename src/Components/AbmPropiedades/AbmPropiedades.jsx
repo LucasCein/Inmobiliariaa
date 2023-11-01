@@ -3,6 +3,7 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import "./AbmPropiedades.css";
 import { useEffect, useState } from "react";
 import { app, storage } from "../../FireBase/config";
+import {NumericFormat} from 'react-number-format';
 import {
   getDownloadURL,
   ref,
@@ -42,6 +43,7 @@ const AbmPropiedades = (detailData) => {
     estacionamiento: false,
     lavarropa: false,
     imagen: "",
+    precio:""
   });
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
@@ -104,7 +106,7 @@ const AbmPropiedades = (detailData) => {
       return { ...propiedad, ["region"]: valor };
     });
   };
-  
+
   const upload = async () => {
     if (image == null) return;
     const imageref = ref(storage, `/image/${image.name}`);
@@ -179,7 +181,8 @@ const AbmPropiedades = (detailData) => {
         </div>
         <p className="my-0 mb-3">Descripcion</p>
         <p className="my-0 mb-4">Estado</p>
-        <p className="my-0 mb-10">Tipo</p>
+        <p className="my-0 mb-4">Tipo</p>
+        <p className="my-0 mb-10">Precio</p>
       </div>
       <div className="col-2">
         <input
@@ -210,7 +213,7 @@ const AbmPropiedades = (detailData) => {
           onChange={(e) => setPropiedad({ ...propiedad, estado: e.value })}
         ></Select>
         <Select
-          className="comboCss mb-10"
+          className="comboCss mb-2"
           options={optionsType}
           value={
             propiedad.tipo != ""
@@ -222,6 +225,18 @@ const AbmPropiedades = (detailData) => {
           defaultValue={""}
           onChange={(e) => setPropiedad({ ...propiedad, tipo: e.value })}
         ></Select>{" "}
+        <NumericFormat
+          value={parseFloat(propiedad.precio)}
+          thousandSeparator={true}
+          prefix={'$'}
+          decimalScale={2}
+          fixedDecimalScale={true}
+          onValueChange={(values) => {
+            const { formattedValue, value } = values;
+            setPropiedad({ ...propiedad, precio: parseInt(value) }) // 1234.56
+          }}
+          style={{ textAlign: 'right' }}
+        />
       </div>
       <div className="col-1">
         <p className=" my-0 mb-3">País</p>

@@ -69,6 +69,7 @@ const PropertiesItems = ({
           estacionamiento,
           lavarropa,
           imagen,
+          precio
         }) => (
           <MDBListGroupItem
             key={id}
@@ -77,7 +78,7 @@ const PropertiesItems = ({
             <div className="row ">
               <div className="col">
                 <img
-                  src={imagen}
+                  src={imagen || "https://camarasal.com/wp-content/uploads/2020/08/default-image-5-1.jpg"}
                   alt={imagen}
                   style={{ width: "80px", height: "80px", marginLeft: "10px" }}
                   className="rounded-circle"
@@ -99,57 +100,58 @@ const PropertiesItems = ({
                   {estado}
                 </MDBBadge>
               </div>
-              {forSelect == "" ?( 
-              <div className="col d-flex align-items-center">
-                <Popup
-                  trigger={
-                    <button className="btn btn-warning ms-5">
-                      <BsPencil></BsPencil>
-                    </button>
-                  }
-                  modal
+              {forSelect == "" ? (
+                <div className="col d-flex align-items-center">
+                  <Popup
+                    trigger={
+                      <button className="btn btn-warning ms-5">
+                        <BsPencil></BsPencil>
+                      </button>
+                    }
+                    modal
+                  >
+                    <AbmPropiedades
+                      propiedad={{
+                        id,
+                        nombre,
+                        descripcion,
+                        estado,
+                        tipo,
+                        pais,
+                        region,
+                        cp,
+                        calle,
+                        altura,
+                        piso,
+                        dpto,
+                        cantBaños,
+                        cantCuarto,
+                        area,
+                        wifi,
+                        aire,
+                        estacionamiento,
+                        lavarropa,
+                        imagen,
+                        precio
+                      }}
+                      status={"edit"}
+                    ></AbmPropiedades>
+                  </Popup>
+                  <button className="btn btn-danger ms-2">
+                    <BsTrash></BsTrash>
+                  </button>
+                </div>
+              ) : (<div className="col d-flex align-items-center justify-content-end me-5">
+                <button
+                  onClick={() => {
+                    setNomProp({ nomProp: nombre, idProp: id }), close();
+                  }}
+                  className="btn btn-success"
                 >
-                  <AbmPropiedades
-                    propiedad={{
-                      id,
-                      nombre,
-                      descripcion,
-                      estado,
-                      tipo,
-                      pais,
-                      region,
-                      cp,
-                      calle,
-                      altura,
-                      piso,
-                      dpto,
-                      cantBaños,
-                      cantCuarto,
-                      area,
-                      wifi,
-                      aire,
-                      estacionamiento,
-                      lavarropa,
-                      imagen,
-                    }}
-                    status={"edit"}
-                  ></AbmPropiedades>
-                </Popup>
-                <button className="btn btn-danger ms-2">
-                  <BsTrash></BsTrash>
+                  Seleccionar
                 </button>
-              </div>
-              ):(<div className="col d-flex align-items-center justify-content-end me-5">
-              <button
-                onClick={() => {
-                  setNomProp({ nomProp: nombre, idProp: id }), close();
-                }}
-                className="btn btn-success"
-              >
-                Seleccionar
-              </button>
-            </div>)}
-              
+              </div>)}
+
             </div>
 
             {/* <div className="d-flex flex-row align-items-center gap-5">

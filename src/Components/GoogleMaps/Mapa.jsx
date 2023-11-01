@@ -8,7 +8,6 @@ import usePlacesAutocomplete, {
 import {
   Combobox,
   ComboboxInput,
-  ComboboxPopover,
   ComboboxList,
   ComboboxOption,
 } from "@reach/combobox";
