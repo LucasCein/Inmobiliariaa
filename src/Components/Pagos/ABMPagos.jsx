@@ -7,7 +7,7 @@ import { MDBListGroup, MDBListGroupItem, MDBCheckbox } from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom"
 import Form from "react-bootstrap/Form";
 import Popup from 'reactjs-popup';
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsSlack } from "react-icons/bs";
 import Proveedor from "../Proveedor/Proveedor";
 
 
@@ -131,22 +131,27 @@ const ABMPagos = (detailData) => {
 
   return (
     <div className='m-3'>
-      <h1 className='text-light'>Generar Pago</h1>
+      <h1 className='text-light mb-4'>Generar Pago</h1>
       <div className='d-flex align-items-center' style={{color:'white'}}>
+      <div className='d-flex justify-content-center align-items-center'>
       <div className='d-flex justify-content-center align-items-center'>
               <p className='m-1'>Forma de pago:</p>
                 <Select
-                className="w-50 px-2"
+                className="px-1 text-dark"
                 value={selectedOption}
                 onChange={handleChangePay}
                 options={method_Pay}
-                ></Select>
-                <p className='m-1'>Fecha de Pago:</p>
-                <input className=" w-50 dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
-                <p className='m-2'>Proveedor:</p>
                 
+                ></Select>
+                </div>
+                <div className='d-flex justify-content-center align-items-center'>
+                <label className='m-1'>Fecha de Pago:</label>
+                <input className=" dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
+                </div>
+                <div className='d-flex justify-content-center align-items-center'>
+                <p className='m-2'>Proveedor:</p>
                 <Form.Control
-                    className="w-10  px-2"
+                    className="px-2"
                     placeholder="Nombre Proveedor"
                     value={proveedorSeleccionado?.nomProv}
                     disabled
@@ -155,11 +160,11 @@ const ABMPagos = (detailData) => {
                   <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
                     {close => <Proveedor forSelect={"forSelect"} setNomProv={setProveedorSeleccionado} close={close}></Proveedor>}
                   </Popup>
-  
                   </div>
+                </div>
             </div>
 
-          <div className='mt-2'>
+          <div className='mt-4'>
           <div className='container align-items-center justify-content-center pt-1 rounded' style={{backgroundColor:"black"}} >
             <div className='row'>
                 <div className='col'>

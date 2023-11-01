@@ -12,6 +12,7 @@ import { MyProvider, ProvContext } from './Components/ProveedorContext/Proveedor
 import ProveedoresItem from './Components/Proveedor/ProveedoresItem'
 import AbmComprobantes from './Components/AbmComprobantes/AbmComprobantes'
 import ABMPagos from './Components/Pagos/ABMPagos'
+import  Clientes  from './Components/Clientes/Clientes'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -85,6 +86,17 @@ function App() {
             </div>
             }
           />
+
+            <Route
+            path='/Clientes'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <Clientes forSelect={""} />
+            </div>
+            }
+          />
+          
           <Route
             path='*'
             element={<Navigate to="/home"></Navigate>}

@@ -1,7 +1,7 @@
 
 import 
 {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
-  BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsCashCoin,BsFileEarmarkText, BsHouse}
+  BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsCashCoin,BsFileEarmarkText, BsHouse, BsFillPersonFill}
  from 'react-icons/bs'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -41,11 +41,13 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                     <BsFileEarmarkText className='icon'/> Facturas
                 </NavLink>
             </li>
+
             <li className='sidebar-list-item'>
-                <a href="">
-                    <BsListCheck className='icon'/> Inventory
-                </a>
+                <NavLink to={"/Clientes"}>
+                    <BsFillPersonFill className='icon'/> Clientes
+                </NavLink>
             </li>
+
             <li className='sidebar-list-item'>
                 <a href="">
                     <BsMenuButtonWideFill className='icon'/> Reports
