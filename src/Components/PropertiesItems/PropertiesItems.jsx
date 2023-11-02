@@ -84,11 +84,14 @@ const PropertiesItems = ({
                   className="rounded-circle"
                 />
               </div>
-              <div className="col">
+              <div className="col ms-4">
                 <p className="mb-0 text-dark">{nombre}</p>
               </div>
-              <div className="col">
+              <div className="col ms-5">
                 <p className="mb-0 text-dark">{descripcion}</p>
+              </div>
+              <div className="col ms-5">
+                <p className="mb-0 text-dark">{tipo}</p>
               </div>
               <div className="col ms-3">
                 <MDBBadge

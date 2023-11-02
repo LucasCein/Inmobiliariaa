@@ -13,6 +13,8 @@ import ProveedoresItem from './Components/Proveedor/ProveedoresItem'
 import AbmComprobantes from './Components/AbmComprobantes/AbmComprobantes'
 import ABMPagos from './Components/Pagos/ABMPagos'
 import  Clientes  from './Components/Clientes/Clientes'
+import Ventas from './Components/Ventas/Ventas'
+import ABMVentas from './Components/Ventas/ABMVentas'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -87,12 +89,32 @@ function App() {
             }
           />
 
+          <Route
+            path='/ABMVentas'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <ABMVentas />
+            </div>
+            }
+          />
+
             <Route
             path='/Clientes'
             element={<div className='grid-container'>
               <Header OpenSidebar={OpenSidebar} />
               <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
               <Clientes forSelect={""} />
+            </div>
+            }
+          />
+
+          <Route
+            path='/Ventas'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <Ventas/>
             </div>
             }
           />

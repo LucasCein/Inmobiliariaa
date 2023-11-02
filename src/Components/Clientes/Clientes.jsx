@@ -8,7 +8,7 @@ import { MDBListGroup } from 'mdb-react-ui-kit';
 import ClientesItem from './ClientesItem';
 
 
-const Clientes = ({forSelect}) => {
+const Clientes = ({forSelect,setNomCli,setOpenModal,close}) => {
     const [clientes, setClientes] = useState([])
     const [clientes_og, setClientesOg] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -86,7 +86,7 @@ return (
                   </div>
             </div>
             </div>
-            <ClientesItem clientes={clientes} forSelected={forSelect} />
+            <ClientesItem clientes={clientes} forSelected={forSelect} setNomCli={setNomCli} setOpenModal={setOpenModal} close={close} />
             </MDBListGroup>
             </div>   
     </>}

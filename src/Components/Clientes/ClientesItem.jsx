@@ -9,7 +9,7 @@ import {doc, getFirestore, updateDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 
 
-const ClientesItem = ({clientes}) => {
+const ClientesItem = ({clientes,forSelected,setNomCli,setOpenModal,close}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
@@ -38,7 +38,6 @@ const ClientesItem = ({clientes}) => {
           console.log(error.message)
         })
       }
-      console.log(clientes)
   return (
     <>
     {
@@ -57,12 +56,17 @@ const ClientesItem = ({clientes}) => {
                         <div className="col ps-5 ms-5">
                             <p className='mb-0 text-dark'>{telefono}</p>
                         </div>
-                        <div className='col ms-2'>
-                        <Popup trigger={<button  className='btn btn-warning ms-2'><BsPencil ></BsPencil></button>} modal>
-                            <ABMClienets cliente={{id,nombre,CUIT, email, telefono}}></ABMClienets>
+
+                        {forSelected!=""? 
+                    <div className='col d-flex align-items-center'>
+                      <button onClick={()=>{setNomCli({nomCli:nombre,idCli:id}),close()}} className='btn btn-success' >Seleccionar</button>
+                    </div>
+                    :<div className='col d-flex align-items-center'>
+                        <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
+                        <ABMClienets cliente={{id,nombre,CUIT, email, telefono}}></ABMClienets>
                         </Popup>
                         <button className='btn btn-danger ms-2' onClick={()=>deleteDoc(id)}><BsTrash></BsTrash></button>
-                    </div>
+                    </div>}
               </div>
             
             </MDBListGroupItem>

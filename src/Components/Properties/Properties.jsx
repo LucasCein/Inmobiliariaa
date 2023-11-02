@@ -151,16 +151,19 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                 style={{ backgroundColor: "black" }}
               >
                 <div className="row">
-                  <div className="col ms-5">
+                  <div className="col ms-4">
                     <p className="fw-bold  text-light">Imagen</p>
                   </div>
-                  <div className="col ms-2">
+                  <div className="col">
                     <p className="fw-bold  text-light">Nombre</p>
                   </div>
-                  <div className="col ps-3">
+                  <div className="col">
                     <p className="fw-bold text-light">Descripcion</p>
                   </div>
-                  <div className="col ps-2">
+                  <div className="col ms-3">
+                    <p className="fw-bold  text-light">Tipo</p>
+                  </div>
+                  <div className="col pe-5">
                     <p className="fw-bold  text-light">Estado</p>
                   </div>
                   <div className="col d-flex align-items-center justify-content-center me-3">
