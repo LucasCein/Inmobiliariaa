@@ -297,7 +297,7 @@ const AbmComprobantes = () => {
                   )}
                 />
               </div>
-              <div className="me-3 flex-grow-1">
+              <div className="me-3 flex-grow-1 ">
                 <Form.Label className="text-white">Proveedor</Form.Label>
                 <div className="d-flex gap-1">
                   <Form.Control
@@ -325,7 +325,7 @@ const AbmComprobantes = () => {
                   )}
                 /> */}
               </div>
-              <div className="me-3 flex-grow-1">
+              <div className="me-3 flex-grow-1 overflow-auto">
                 <Form.Label className="text-white">Propiedad</Form.Label>
                 <div className="d-flex gap-1">
                   <Form.Control
