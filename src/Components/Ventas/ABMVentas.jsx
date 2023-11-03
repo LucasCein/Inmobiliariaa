@@ -12,6 +12,7 @@ import { MDBListGroup, MDBListGroupItem } from 'mdb-react-ui-kit';
 import { NumericFormat } from 'react-number-format';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import ABMCargo from './ABMCargo';
 
 const ABMVentas = () => {
 
@@ -51,6 +52,10 @@ const ABMVentas = () => {
       setPropiedad(propiedadList);
     }
     fetchPropiedades()
+    
+    setPropiedadSeleccionados([])
+  }, [clienteSeleccionado])
+  useEffect(() => {
     const fetchCargos = async () => {
       const dbFirestore = getFirestore()
 
@@ -64,16 +69,14 @@ const ABMVentas = () => {
       setCargos(cargosList);
     }
     fetchCargos()
-    setPropiedadSeleccionados([])
-  }, [clienteSeleccionado])
-
+  },[cargos])
   useEffect(() => {
     // Calcula el precio final sumando los precios de todos los cargos seleccionados
     const nuevoFinalPrice = cargosSeleccionados.reduce((total, cargo) => parseInt(total) + parseInt(cargo.precio), 0);
     setFinalPrice(nuevoFinalPrice);
   }, [cargosSeleccionados]);
 
- 
+
   const handleCheckboxChange = (id) => {
     setCargosSeleccionados(prevCargosSeleccionados => {
       // Busca el índice del cargo con el ID especificado
@@ -139,14 +142,14 @@ const ABMVentas = () => {
     const dbRef = collection(db, "venta");
     addDoc(dbRef, carg)
       .then(() => {
-        
-        
+
+
       })
       .catch((error) => {
         console.log(error);
       });
     const examcollref = doc(db, "propiedades", nomProp.idProp);
-    updateDoc(examcollref, {vendido:true})
+    updateDoc(examcollref, { vendido: true })
       .then(() => {
         const MySwal = withReactContent(Swal)
 
@@ -166,8 +169,8 @@ const ABMVentas = () => {
 
   return (
     <div className='m-3'>
-      <h1 className='text-light mb-4'>Generar Venta</h1>
-      <div className='d-flex flex-column align-items-center' style={{ color: 'white' }}>
+      <h1 className='text-light mb-4 text-center'>Generar Venta</h1>
+      <div className='d-flex flex-column ' style={{ color: 'white' }}>
         <div className='d-flex justify-content-center align-items-center gap-3'>
           <div className='d-flex justify-content-center align-items-center'>
             <p className='m-1'>Forma de pago:</p>
@@ -183,7 +186,7 @@ const ABMVentas = () => {
             <label className='m-1'>Fecha de Venta:</label>
             <input className=" dateInp" type="date" name='Fecha' value={venta.fecha} onChange={handleDateChange} />
           </div>
-          <div className='d-flex justify-content-center align-items-center'>
+          <div className='d-flex justify-content-center align-items-center gap-1'>
             <p className='m-2'>Cliente:</p>
             <Form.Control
               className="px-2"
@@ -196,19 +199,27 @@ const ABMVentas = () => {
               {close => <Clientes forSelect={"forSelect"} setNomCli={setclienteSeleccionado} close={close}></Clientes>}
             </Popup>
           </div>
-          <Form.Control
-            className="w-50"
-            placeholder="Nombre Propiedad"
-            value={nomProp?.nomProp}
-            disabled
-            readOnly
-          />
-          <Popup open={modalProp} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-            {close => <Properties forSelect={"forSelect"} setNomProp={setNomProp} close={close}></Properties>}
+          <div className='d-flex justify-content-center align-items-center gap-1'>
+            <p className='m-2'>Propiedad:</p>
+            <Form.Control
+              className="w-50"
+              placeholder="Nombre Propiedad"
+              value={nomProp?.nomProp}
+              disabled
+              readOnly
+            />
+            <Popup open={modalProp} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
+              {close => <Properties forSelect={"forSelect"} setNomProp={setNomProp} close={close}></Properties>}
+            </Popup>
+          </div>
+        </div>
+        <div className='mt-5 d-flex justify-content-end ' style={{ marginRight: "10%" }}>
+          <Popup open={modalProp} className='popPupCompb' trigger={<button className='btn btn-success '>Añadir Cargo</button>} modal>
+            {close => <ABMCargo close={close}></ABMCargo>}
           </Popup>
         </div>
         <div>
-          <MDBListGroup style={{ minWidth: '50rem' }} className='mt-5' light>
+          <MDBListGroup style={{ minWidth: '50rem' }} className='mt-3' light>
             <div className='container align-items-center justify-content-center pt-3 rounded' style={{ backgroundColor: "black" }} >
               <div className='row align-items-center'>
                 <div className='col mx-2'>
@@ -257,7 +268,7 @@ const ABMVentas = () => {
 
           </MDBListGroup>
         </div>
-        <div>
+        <div className='d-flex justify-content-center mt-2'>
           <button className='btn btn-success mt-5' onClick={() => { createDetVenta() }} >Registrar Venta</button>
         </div>
       </div>

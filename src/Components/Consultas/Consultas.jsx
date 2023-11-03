@@ -1,19 +1,24 @@
-import { collection, doc, getDoc, getDocs, getFirestore } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import CustomSpinner from "../CustomSpinner/CustomSpinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
 import { app } from "../../FireBase/config";
-
+import { BsArchiveFill } from "react-icons/bs";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 const Consultas = () => {
     const [consultas, setConsultas] = useState([])
     const [isLoading, setIsLoading] = useState(true);
     const [consultasConPropiedad, setConsultasConPropiedad] = useState([]);
-    useEffect(() => {
-        const dbFirestore = getFirestore();
-        const queryCollection = collection(dbFirestore, "consulta");
+    const dbFirestore = getFirestore();
+    const navigate = useNavigate()
 
-        getDocs(queryCollection)
+    useEffect(() => {
+
+        const queryCollection = collection(dbFirestore, "consulta");
+        const queryCollectionFiltered = query(queryCollection, where('visible', '==', true))
+        getDocs(queryCollectionFiltered)
             .then((res) =>
                 setConsultas(
                     res.docs.map((consultas) => ({
@@ -28,7 +33,7 @@ const Consultas = () => {
     useEffect(() => {
         if (consultas.length > 0) {
             setIsLoading(true);
-            const dbFirestore = getFirestore(app);
+
             const updateConsultas = async () => {
                 const updatedConsultas = await Promise.all(consultas.map(async (consulta) => {
                     const docRef = doc(dbFirestore, "propiedades", consulta.idPropiedad);
@@ -41,7 +46,23 @@ const Consultas = () => {
             updateConsultas();
         }
     }, [consultas]);
+    const deleteDoc = (id) => {
+        console.log(id)
+        const examcollref = doc(dbFirestore, 'consulta', id)
+        updateDoc(examcollref, { visible: false }).then(() => {
+            const MySwal = withReactContent(Swal)
 
+            MySwal.fire({
+                title: <strong>Se ha eliminado con Exito!</strong>,
+                icon: 'success',
+                preConfirm: () => {
+                    navigate(0)
+                }
+            })
+        }).catch(error => {
+            console.log(error.message)
+        })
+    }
     return (
         <section>
             {isLoading ? (
@@ -49,11 +70,7 @@ const Consultas = () => {
             ) : (
                 <div className='d-flex flex-column '>
                     <h1 className='text-white fw-bold mt-4 text-center'>Consultas</h1>
-                    <div className=' mt-5 d-flex align-self-end' style={{ marginRight: "10%" }}>
-                        <Link to={"/ABMVentas"}>
-                            <button className='btn btn-success'>Add New</button>
-                        </Link>
-                    </div>
+
                     <div>
                         <MDBListGroup style={{ minWidth: '50rem' }} className='mt-5' light>
                             <div className='container align-items-center justify-content-center pt-3 rounded' style={{ backgroundColor: "black" }} >
@@ -71,7 +88,9 @@ const Consultas = () => {
                                     <div className="col pe-4">
                                         <p className='fw-bold text-white'>Propiedad</p>
                                     </div>
-
+                                    <div className="col pe-4">
+                                        <p className='fw-bold text-white'>Eliminar</p>
+                                    </div>
                                 </div>
                             </div>
                             {consultasConPropiedad?.map((consulta) => (
@@ -89,7 +108,9 @@ const Consultas = () => {
                                         <div className="d-flex gap-2 col">
                                             <p className='text-dark mb-0'>{consulta.nombre_Prop}</p>
                                         </div>
-
+                                        <div className="d-flex gap-2 col">
+                                            <button className="btn btn-danger" onClick={() => deleteDoc(consulta.id)}><BsArchiveFill></BsArchiveFill></button>
+                                        </div>
                                     </div>
                                 </MDBListGroupItem>
                             ))}

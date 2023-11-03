@@ -38,6 +38,7 @@ const ClientesItem = ({clientes,forSelected,setNomCli,setOpenModal,close}) => {
           console.log(error.message)
         })
       }
+
   return (
     <>
     {
@@ -62,9 +63,10 @@ const ClientesItem = ({clientes,forSelected,setNomCli,setOpenModal,close}) => {
                       <button onClick={()=>{setNomCli({nomCli:nombre,idCli:id}),close()}} className='btn btn-success' >Seleccionar</button>
                     </div>
                     :<div className='col d-flex align-items-center'>
-                        <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
+                      <button  className='btn btn-warning' onClick={()=>navigate("/ABMClientes",{state:{detailData:{id,nombre,CUIT, email, telefono}}})}><BsPencil ></BsPencil></button>
+                        {/* <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
                         <ABMClienets cliente={{id,nombre,CUIT, email, telefono}}></ABMClienets>
-                        </Popup>
+                        </Popup> */}
                         <button className='btn btn-danger ms-2' onClick={()=>deleteDoc(id)}><BsTrash></BsTrash></button>
                     </div>}
               </div>

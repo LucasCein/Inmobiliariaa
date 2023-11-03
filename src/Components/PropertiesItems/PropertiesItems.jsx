@@ -52,7 +52,7 @@ const PropertiesItems = ({
       console.log(error.message)
     })
   }
-
+  const nav=useNavigate()
   return (
     <>
       {currentItems.map(
@@ -113,7 +113,10 @@ const PropertiesItems = ({
               </div>
               {forSelect == "" ? (
                 <div className="col d-flex align-items-center">
-                  <Popup
+                  <button className="btn btn-warning ms-5" onClick={()=>nav("/AbmPropiedades",{state:{detailData:{id,nombre,descripcion,estado,tipo,pais,region,cp,calle,altura,piso,dpto,cantBaños,cantCuarto,area,wifi,aire,estacionamiento,lavarropa,imagen,precio}}})}>
+                        <BsPencil></BsPencil>
+                  </button>
+                  {/* <Popup
                     trigger={
                       <button className="btn btn-warning ms-5">
                         <BsPencil></BsPencil>
@@ -147,7 +150,7 @@ const PropertiesItems = ({
                       }}
                       status={"edit"}
                     ></AbmPropiedades>
-                  </Popup>
+                  </Popup> */}
                   <button className="btn btn-danger ms-2" onClick={() => deleteDoc(id)}>
                     <BsTrash></BsTrash>
                   </button>

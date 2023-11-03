@@ -81,9 +81,10 @@ const ProveedoresItem = ({ proveedores, forSelected, setNomProv, setOpenModal, c
                   <button onClick={() => { setNomProv({ nomProv: nombre, idProv: id }), close() }} className='btn btn-success' >Seleccionar</button>
                 </div>
                 : <div className='col d-flex align-items-center'>
-                  <Popup trigger={<button className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
+                  <button className='btn btn-warning' onClick={()=>navigate("/ABMProveedor",{state:{detailData:{id,nombre,descripcion,CUIT,email,telefono}}})}><BsPencil ></BsPencil></button>
+                  {/* <Popup trigger={<button className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
                     <ABMProveedor proveedor={{ id, nombre, descripcion, CUIT, email, telefono }}></ABMProveedor>
-                  </Popup>
+                  </Popup> */}
                   <button className='btn btn-danger ms-2' onClick={() => deleteDoc(id)}><BsTrash></BsTrash></button>
                 </div>}
             </div>

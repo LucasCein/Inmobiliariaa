@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { app, storage } from '../../FireBase/config'
 import { getDownloadURL, ref, updateMetadata, uploadBytes, uploadBytesResumable } from 'firebase/storage'
 import { addDoc, collection, doc, getFirestore, updateDoc } from 'firebase/firestore'
-import { useNavigate } from 'react-router-dom'
-
-const ABMProveedor = (detailData) => {
+import { useLocation, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const ABMProveedor = () => {
     const [proveedor, setProveedor] = useState({})
-
+    const location=useLocation()
+    const {detailData}=location.state
+    console.log(detailData)
     const db = getFirestore(app);
     const navigate = useNavigate();
     let empty={
@@ -39,10 +42,17 @@ const ABMProveedor = (detailData) => {
 
     const editDoc = () => {
       if (empty.value == 0){
-      const examcollref = doc(db, 'proveedores', detailData.proveedor.id)
+      const examcollref = doc(db, 'proveedores', detailData.id)
       updateDoc(examcollref, proveedor).then(() => {
-        alert("Updated")
-        navigate(0)
+        const MySwal = withReactContent(Swal)
+
+            MySwal.fire({
+                title: <strong>Se ha modificado con Exito!</strong>,
+                icon: 'success',
+                preConfirm: () => {
+                    navigate("/proveedores")
+                }
+            })
       }).catch(error => {
         console.log(error.message)
       })
@@ -56,8 +66,15 @@ const ABMProveedor = (detailData) => {
         const prov={...proveedor,Activo:true}
         const dbRef = collection(db, "proveedores");
         addDoc(dbRef, prov).then((savedDoc) => {
-        console.log("Document has been added successfully")
-        navigate(0)
+          const MySwal = withReactContent(Swal)
+
+          MySwal.fire({
+              title: <strong>Se ha agregado con Exito!</strong>,
+              icon: 'success',
+              preConfirm: () => {
+                  navigate("/proveedores")
+              }
+          })
         updateDoc(doc(db, 'proveedores', savedDoc.id), { id: savedDoc.id });
         })
         .catch(error => {
@@ -67,36 +84,36 @@ const ABMProveedor = (detailData) => {
     
   return (
     <div className='d-flex flex-column align-items-center'>
-         <h2 className="m-auto">{detailData.proveedor.nombre !== ""? "Editar":"Agregar" } Proveedor</h2>
+         <h2 className="mt-5 mb-5 text-light fw-bold">{detailData.nombre !== ""? "Editar":"Agregar" } Proveedor</h2>
          <div className="container mt-3">
          <form name="form">
          <div className="row">
                 <div className="col-md-6 mb-3">
-                    <label  className="form-label">Nombre:</label>
-                    <input type="text" className="form-control" defaultValue={detailData.proveedor.nombre} name="nombre" onChange={handleChange}></input>
+                    <label  className="form-label text-light">Nombre:</label>
+                    <input type="text" className="form-control" defaultValue={detailData.nombre} name="nombre" onChange={handleChange}></input>
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label  className="form-label">Descripción:</label>
-                    <input defaultValue={detailData.proveedor.descripcion} type="text" className="form-control" id="descripcion" name="descripcion" onChange={handleChange}></input>
+                    <label  className="form-label text-light">Descripción:</label>
+                    <input defaultValue={detailData.descripcion} type="text" className="form-control" id="descripcion" name="descripcion" onChange={handleChange}></input>
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label  className="form-label">Telefono:</label>
-                    <input defaultValue={detailData.proveedor.telefono} type="text" className="form-control" name="telefono" onChange={handleChange}></input>
+                    <label  className="form-label text-light">Telefono:</label>
+                    <input defaultValue={detailData.telefono} type="text" className="form-control" name="telefono" onChange={handleChange}></input>
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label className="form-label">Email:</label>
-                    <input defaultValue={detailData.proveedor.email} type="email" className="form-control" name="email" onChange={handleChange}></input>
+                    <label className="form-label text-light">Email:</label>
+                    <input defaultValue={detailData.email} type="email" className="form-control" name="email" onChange={handleChange}></input>
                 </div>
                 <div className="col mb-3">
-                    <label className="form-label">CUIT:</label>
-                    <input defaultValue={detailData.proveedor.CUIT} type="number" className="form-control" name="CUIT" placeholder='Solo números' onChange={handleChange}></input>
+                    <label className="form-label text-light">CUIT:</label>
+                    <input defaultValue={detailData.CUIT} type="number" className="form-control" name="CUIT" placeholder='Solo números' onChange={handleChange}></input>
                 </div>
             </div>
         </form>
         </div>
         <div className='d-flex gap-4 mt-2 mb-2 '>
-          <button className='btn btn-success' onClick={detailData.proveedor.nombre != ''?editDoc:createDoc}>{detailData.proveedor.nombre != '' ? 'Editar' : 'Agregar'}</button>
-          <button className='btn btn-danger' onClick={() => navigate(0)}>Cancelar</button>
+          <button className='btn btn-success' onClick={detailData.nombre != ''?editDoc:createDoc}>{detailData.nombre != '' ? 'Editar' : 'Agregar'}</button>
+          <button className='btn btn-danger' onClick={() => navigate("/proveedores")}>Cancelar</button>
         </div>
     </div>
     

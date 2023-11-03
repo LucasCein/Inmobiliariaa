@@ -8,6 +8,7 @@ import 'reactjs-popup/dist/index.css';
 import React from 'react'
 import ABMProveedor from './ABMProveedor';
 import { getValueFromValueOptions } from '@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils';
+import { useNavigate } from 'react-router-dom';
  
 const Proveedor = ({forSelect,setNomProv,setOpenModal,close}) => {
     const [proveedores, setProveedores] = useState([])
@@ -38,7 +39,8 @@ const Proveedor = ({forSelect,setNomProv,setOpenModal,close}) => {
             setProveedores(proveedores.filter(proveedor=>(proveedor[name].toLowerCase().includes(value.toLowerCase()))))
         }
       })
-
+      const nav=useNavigate()
+      const detailData={nombre:"", descripcion:"",direccion:""}
    return (
         <section>
             {isLoading ? <CustomSpinner></CustomSpinner> :
@@ -62,9 +64,10 @@ const Proveedor = ({forSelect,setNomProv,setOpenModal,close}) => {
                 </div>    
             </div>
                 <div className=' my-3 d-flex justify-content-end'>
-                    <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
+                    <button type="button" className="btn btn-success" onClick={() => nav('/ABMProveedor',{state:{detailData}})}>Add New</button>
+                    {/* <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
                         <ABMProveedor proveedor={{nombre:"", descripcion:"",direccion:""}}></ABMProveedor>
-                    </Popup>
+                    </Popup> */}
                 </div>
                 <MDBListGroup className='w-100'>
                 <div className='container align-items-center justify-content-center pt-1 rounded' style={{backgroundColor:"black"}} >

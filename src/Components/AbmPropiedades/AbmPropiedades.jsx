@@ -3,7 +3,7 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import "./AbmPropiedades.css";
 import { useEffect, useState } from "react";
 import { app, storage } from "../../FireBase/config";
-import {NumericFormat} from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 import {
   getDownloadURL,
   ref,
@@ -17,10 +17,14 @@ import {
   getFirestore,
   updateDoc,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
-
-const AbmPropiedades = (detailData) => {
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const AbmPropiedades = () => {
   /* const [currentPage, setCurrentPage] = useState(1); */
+  const location=useLocation()
+  const {detailData}=location.state
+  console.log(detailData)
   const navigate = useNavigate();
   const [propiedad, setPropiedad] = useState({
     id: "",
@@ -43,16 +47,16 @@ const AbmPropiedades = (detailData) => {
     estacionamiento: false,
     lavarropa: false,
     imagen: "",
-    precio:""
+    precio: ""
   });
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    if (detailData.propiedad.nombre !== "") {
-      console.log("detailData", detailData.propiedad);
-      setPropiedad(detailData.propiedad);
+    if (detailData.nombre !== "") {
+      console.log("detailData", detailData);
+      setPropiedad(detailData);
     }
   }, []);
 
@@ -128,15 +132,21 @@ const AbmPropiedades = (detailData) => {
       const prop = {
         ...propiedad,
         visible: true,
-        vendido:false
+        vendido: false
       };
       console.log("prop", prop);
       const dbRef = collection(db, "propiedades");
       addDoc(dbRef, prop)
         .then((savedDoc) => {
-          console.log("Document has been added successfully");
-          alert(`Documento creado: ${savedDoc.id}`);
-          navigate(0);
+          const MySwal = withReactContent(Swal)
+
+            MySwal.fire({
+                title: <strong>Se ha agregado con Exito!</strong>,
+                icon: 'success',
+                preConfirm: () => {
+                    navigate("/properties")
+                }
+            })
           updateDoc(doc(db, "propiedades", savedDoc.id), { id: savedDoc.id });
         })
         .catch((error) => {
@@ -150,8 +160,15 @@ const AbmPropiedades = (detailData) => {
     const examcollref = doc(db, "propiedades", propiedad.id);
     updateDoc(examcollref, propiedad)
       .then(() => {
-        alert("Updated");
-        navigate(0);
+        const MySwal = withReactContent(Swal)
+
+            MySwal.fire({
+                title: <strong>Se ha editado con Exito!</strong>,
+                icon: 'success',
+                preConfirm: () => {
+                    navigate("/properties")
+                }
+            })
       })
       .catch((error) => {
         console.log(error.message);
@@ -178,12 +195,12 @@ const AbmPropiedades = (detailData) => {
     <div className="d-flex flex-wrap w-100 justify-content-center">
       <div className="col-1 w-5">
         <div className="row">
-          <p className="my-0 mb-3">Nombre</p>
+          <p className="my-0 mb-3 text-light">Nombre</p>
         </div>
-        <p className="my-0 mb-3">Descripcion</p>
-        <p className="my-0 mb-4">Estado</p>
-        <p className="my-0 mb-4">Tipo</p>
-        <p className="my-0 mb-10">Precio</p>
+        <p className="my-0 mb-3 text-light">Descripcion</p>
+        <p className="my-0 mb-4 text-light">Estado</p>
+        <p className="my-0 mb-4 text-light">Tipo</p>
+        <p className="my-0 mb-10 text-light">Precio</p>
       </div>
       <div className="col-2">
         <input
@@ -240,14 +257,14 @@ const AbmPropiedades = (detailData) => {
         />
       </div>
       <div className="col-1">
-        <p className=" my-0 mb-3">País</p>
-        <p className=" my-0 mb-2">Región</p>
-        <p className=" my-0 mb-3">CP</p>
-        <p className=" my-0 mb-3">Calle</p>
-        <p className=" my-0 mb-3">Altura</p>
-        <p className=" my-0 mb-3">Piso</p>
-        <p className=" my-0 mb-3">Dpto.</p>
-        <p className="my-0">Imagen</p>
+        <p className=" my-0 mb-3 text-light">País</p>
+        <p className=" my-0 mb-2 text-light">Región</p>
+        <p className=" my-0 mb-3 text-light">CP</p>
+        <p className=" my-0 mb-3 text-light">Calle</p>
+        <p className=" my-0 mb-3 text-light">Altura</p>
+        <p className=" my-0 mb-3 text-light">Piso</p>
+        <p className=" my-0 mb-3 text-light">Dpto.</p>
+        <p className="my-0 text-light">Imagen</p>
       </div>
       <div className="col-2">
         <CountryDropdown
@@ -312,15 +329,26 @@ const AbmPropiedades = (detailData) => {
         <button onClick={upload} className="btn btn-success mt-3">
           Subir
         </button>
+        <div className="d-flex gap-4 mt-5 ">
+          <button
+            className="btn btn-success"
+            onClick={detailData.nombre != "" ? editDoc : createDoc}
+          >
+            {detailData.nombre != "" ? "Editar" : "Agregar"}
+          </button>
+          <button className="btn btn-danger" onClick={() => navigate("/properties")}>
+            Cancelar
+          </button>
+        </div>
       </div>
       <div className="col-2">
-        <p className="my-0 mb-4">Baños:</p>
-        <p className="my-0 mb-3">Cuartos:</p>
-        <p className=" my-0 mb-4">Area cubierta</p>
-        <p className="my-0 mb-2">WiFi:</p>
-        <p className="my-0 mb-2">Aire Acondicionado:</p>
-        <p className="my-0 mb-2">Estacionamiento:</p>
-        <p className="my-0 mb-2">Lavarropas:</p>
+        <p className="my-0 mb-4 text-light">Baños:</p>
+        <p className="my-0 mb-3 text-light">Cuartos:</p>
+        <p className=" my-0 mb-4 text-light">Area cubierta</p>
+        <p className="my-0 mb-2 text-light">WiFi:</p>
+        <p className="my-0 mb-2 text-light">Aire Acondicionado:</p>
+        <p className="my-0 mb-2 text-light">Estacionamiento:</p>
+        <p className="my-0 mb-2 text-light">Lavarropas:</p>
       </div>
       <div className="col-2">
         {/*         <Select
@@ -422,34 +450,16 @@ const AbmPropiedades = (detailData) => {
           onChange={handleChange}
         />
       </div>
-      <div className="d-flex gap-4 mt-3 ">
-        <button
-          className="btn btn-success"
-          onClick={detailData.propiedad.nombre != "" ? editDoc : createDoc}
-        >
-          {detailData.propiedad.nombre != "" ? "Editar" : "Agregar"}
-        </button>
-        <button className="btn btn-danger" onClick={() => navigate(0)}>
-          Cancelar
-        </button>
-        <button
-          className={
-            detailData.propiedad.nombre != "" ? "btn btn-dark" : "d-none"
-          }
-          onClick={deleteDoc}
-        >
-          Eliminar
-        </button>
-      </div>
+
     </div>
   );
 
   console.log(detailData);
 
   return (
-    <div className="d-flex flex-column align-items-center containerAbm">
-      <h2 className="m-auto pb-5">
-        {detailData.propiedad?.nombre != ""
+    <div className="d-flex flex-column align-items-center ">
+      <h2 className="mt-5 mb-5 text-light fw-bold">
+        {detailData?.nombre != ""
           ? "Editar Propiedad"
           : "Agregar Propiedad"}
       </h2>

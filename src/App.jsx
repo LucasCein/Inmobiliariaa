@@ -12,10 +12,13 @@ import { MyProvider, ProvContext } from './Components/ProveedorContext/Proveedor
 import ProveedoresItem from './Components/Proveedor/ProveedoresItem'
 import AbmComprobantes from './Components/AbmComprobantes/AbmComprobantes'
 import ABMPagos from './Components/Pagos/ABMPagos'
-import  Clientes  from './Components/Clientes/Clientes'
+import Clientes from './Components/Clientes/Clientes'
 import Ventas from './Components/Ventas/Ventas'
 import ABMVentas from './Components/Ventas/ABMVentas'
 import Consultas from './Components/Consultas/Consultas'
+import AbmPropiedades from './Components/AbmPropiedades/AbmPropiedades'
+import ABMProveedor from './Components/Proveedor/ABMProveedor'
+import ABMClienets from './Components/Clientes/ABMClienets'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -42,6 +45,24 @@ function App() {
               <Header OpenSidebar={OpenSidebar} />
               <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
               <Properties forSelect={""} />
+            </div>
+            }
+          />
+          <Route
+            path='/AbmPropiedades'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <AbmPropiedades />
+            </div>
+            }
+          />
+          <Route
+            path='/ABMProveedor'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <ABMProveedor />
             </div>
             }
           />
@@ -80,7 +101,7 @@ function App() {
             </div>
             }
           />
-            <Route
+          <Route
             path='/ABMPagos'
             element={<div className='grid-container'>
               <Header OpenSidebar={OpenSidebar} />
@@ -100,7 +121,7 @@ function App() {
             }
           />
 
-            <Route
+          <Route
             path='/Clientes'
             element={<div className='grid-container'>
               <Header OpenSidebar={OpenSidebar} />
@@ -109,13 +130,21 @@ function App() {
             </div>
             }
           />
-
+          <Route
+            path='/ABMClientes'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <ABMClienets  />
+            </div>
+            }
+          />
           <Route
             path='/Ventas'
             element={<div className='grid-container'>
               <Header OpenSidebar={OpenSidebar} />
               <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
-              <Ventas/>
+              <Ventas />
             </div>
             }
           />
@@ -124,7 +153,7 @@ function App() {
             element={<div className='grid-container'>
               <Header OpenSidebar={OpenSidebar} />
               <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
-              <Consultas/>
+              <Consultas />
             </div>
             }
           />
