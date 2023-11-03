@@ -10,14 +10,15 @@ import { BsArchiveFill, BsSearch, BsSlack } from "react-icons/bs";
 import Properties from "../Properties/Properties";
 import { MDBListGroup, MDBListGroupItem } from 'mdb-react-ui-kit';
 import { NumericFormat } from 'react-number-format';
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const ABMVentas = () => {
 
   const [openModal, setOpenModal] = useState(false)
   const [selectedOption, setSelectedOption] = useState(null);
   const [clienteSeleccionado, setclienteSeleccionado] = useState('');
-  const [comprobantes, setPropiedad] = useState([])
+  const [propiedad, setPropiedad] = useState([])
   const [propiedadesSeleccionados, setPropiedadSeleccionados] = useState([]);
   const [nomProp, setNomProp] = useState()
   const [modalProp, setModalProp] = useState(false)
@@ -71,13 +72,13 @@ const ABMVentas = () => {
     const nuevoFinalPrice = cargosSeleccionados.reduce((total, cargo) => parseInt(total) + parseInt(cargo.precio), 0);
     setFinalPrice(nuevoFinalPrice);
   }, [cargosSeleccionados]);
-  
 
+ 
   const handleCheckboxChange = (id) => {
     setCargosSeleccionados(prevCargosSeleccionados => {
       // Busca el índice del cargo con el ID especificado
       const index = prevCargosSeleccionados.findIndex(cargo => cargo.id === id);
-  
+
       if (index !== -1) {
         // Si el cargo ya está en la lista, elimínalo (desmarcar el checkbox)
         return [
@@ -104,11 +105,12 @@ const ABMVentas = () => {
   };
 
   const handleDateChange = (event) => {
+    console.log(event.target.value)
     setVenta({ ...venta, fecha: event.target.value });
   };
 
   const createDetVenta = () => {
-    const carg={cargosSeleccionados}
+    const carg = { cargosSeleccionados }
     const dbRef = collection(db, "detalleVenta");
     addDoc(dbRef, carg).then((docRef) => {
       console.log("detalle has been added successfully");
@@ -137,12 +139,29 @@ const ABMVentas = () => {
     const dbRef = collection(db, "venta");
     addDoc(dbRef, carg)
       .then(() => {
-        console.log("Document has been added successfully");
-        navigate(0);
+        
+        
       })
       .catch((error) => {
         console.log(error);
       });
+    const examcollref = doc(db, "propiedades", nomProp.idProp);
+    updateDoc(examcollref, {vendido:true})
+      .then(() => {
+        const MySwal = withReactContent(Swal)
+
+        MySwal.fire({
+          title: <strong>Se ha creado con Exito!</strong>,
+          icon: 'success',
+          preConfirm: () => {
+            navigate(0)
+          }
+        })
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+
   };
 
   return (
@@ -162,7 +181,7 @@ const ABMVentas = () => {
           </div>
           <div className='d-flex justify-content-center align-items-center'>
             <label className='m-1'>Fecha de Venta:</label>
-            <input className=" dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
+            <input className=" dateInp" type="date" name='Fecha' value={venta.fecha} onChange={handleDateChange} />
           </div>
           <div className='d-flex justify-content-center align-items-center'>
             <p className='m-2'>Cliente:</p>

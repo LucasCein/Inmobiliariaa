@@ -15,6 +15,7 @@ import ABMPagos from './Components/Pagos/ABMPagos'
 import  Clientes  from './Components/Clientes/Clientes'
 import Ventas from './Components/Ventas/Ventas'
 import ABMVentas from './Components/Ventas/ABMVentas'
+import Consultas from './Components/Consultas/Consultas'
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false)
 
@@ -118,7 +119,15 @@ function App() {
             </div>
             }
           />
-          
+          <Route
+            path='/Consultas'
+            element={<div className='grid-container'>
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <Consultas/>
+            </div>
+            }
+          />
           <Route
             path='*'
             element={<Navigate to="/home"></Navigate>}

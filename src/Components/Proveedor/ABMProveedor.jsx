@@ -57,7 +57,6 @@ const ABMProveedor = (detailData) => {
         const dbRef = collection(db, "proveedores");
         addDoc(dbRef, prov).then((savedDoc) => {
         console.log("Document has been added successfully")
-        alert(`Documento creado`)
         navigate(0)
         updateDoc(doc(db, 'proveedores', savedDoc.id), { id: savedDoc.id });
         })

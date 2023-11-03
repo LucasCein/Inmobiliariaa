@@ -7,7 +7,8 @@ import { BsPencil } from "react-icons/bs";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { app } from "../../FireBase/config";
 import { BsTrash } from "react-icons/bs";
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 const PropertiesItems = ({
   propiedades,
   forSelect,
@@ -34,16 +35,23 @@ const PropertiesItems = ({
     setCurrentPage(Math.min(currentPage + 1, totalPages));
   };
 
-  /*   const deleteDoc=(id)=>{
-        console.log(id)
-        const examcollref = doc(db, 'propiedades',id)
-        updateDoc(examcollref, {Activo:false}).then(() => {
-          alert("Deleted")
+  const deleteDoc = (id) => {
+    console.log(id)
+    const examcollref = doc(db, 'propiedades', id)
+    updateDoc(examcollref, { visible: false }).then(() => {
+      const MySwal = withReactContent(Swal)
+
+      MySwal.fire({
+        title: <strong>Se ha eliminado con Exito!</strong>,
+        icon: 'success',
+        preConfirm: () => {
           navigate(0)
-        }).catch(error => {
-          console.log(error.message)
-        })
-      } */
+        }
+      })
+    }).catch(error => {
+      console.log(error.message)
+    })
+  }
 
   return (
     <>
@@ -140,7 +148,7 @@ const PropertiesItems = ({
                       status={"edit"}
                     ></AbmPropiedades>
                   </Popup>
-                  <button className="btn btn-danger ms-2">
+                  <button className="btn btn-danger ms-2" onClick={() => deleteDoc(id)}>
                     <BsTrash></BsTrash>
                   </button>
                 </div>

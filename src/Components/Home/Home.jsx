@@ -62,12 +62,17 @@ const Home = () => {
   const [propiedadesAlquiler, setPropiedadesAlquiler] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [gastoPorMes, setGastoPorMes] = useState([]);
+  const [ingresosPorMes, setIngresosPorMes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [resumenPorMes, setResumenPorMes] = useState([]);
+
   useEffect(() => {
     const dbFirestore = getFirestore();
     const queryCollection = collection(dbFirestore, "propiedades");
     const queryCollectPagos = collection(dbFirestore, "pagoFacturas");
     const queryClientes = collection(dbFirestore, "clientes");
+    const queryIngresos = collection(dbFirestore, "venta");
+    
     const queryCollectionFiltered = query(
       queryCollection,
       where("visible", "==", true)
@@ -91,6 +96,7 @@ const Home = () => {
       queryClientes,
       where("Activo", "==", true)
     );
+   
     getDocs(queryCollectionFiltered)
       .then((res) =>
         setPropiedades(
@@ -133,7 +139,7 @@ const Home = () => {
           id: factura.id,
           ...factura.data(),
         }));
-
+        console.log(pagos)
         // Paso 2: Crear la estructura para guardar las sumas por mes
         let sumasPorMes = {};
 
@@ -144,7 +150,7 @@ const Home = () => {
           const key = `${year}-${month < 10 ? '0' + month : month}`;
           sumasPorMes[key] = (sumasPorMes[key] || 0) + parseInt(pago.monto, 10);
         });
-        
+
         const arrayResultante = Object.entries(sumasPorMes).map(([name, monto]) => ({
           name,
           monto
@@ -179,12 +185,88 @@ const Home = () => {
       .finally(() => setIsLoading(false));
 
 
+    getDocs(queryIngresos)
+      .then((res) => {
+        const ingresos = res.docs.map(venta => ({
+          id: venta.id,
+          ...venta.data(),
+        }));
+        console.log(ingresos)
+        // Paso 2: Crear la estructura para guardar las sumas por mes
+        let sumasPorMes = {};
 
+        // Paso 3: Procesar los datos y sumar por mes
+        ingresos.forEach(ingreso => {
+          const [year, month, day] = ingreso.fecha.split("-").map(Number);
+          // const fecha = new Date(year, month - 1, day);  
+          const key = `${year}-${month < 10 ? '0' + month : month}`;
+          sumasPorMes[key] = (sumasPorMes[key] || 0) + parseInt(ingreso.precio, 10);
+        });
 
+        const arrayResultante = Object.entries(sumasPorMes).map(([name, precio]) => ({
+          name,
+          precio
+        }));
+        arrayResultante.sort((a, b) => {
+          const dateA = new Date(a.name);
+          const dateB = new Date(b.name);
+
+          if (dateA < dateB) {
+            return -1;
+          }
+          if (dateA > dateB) {
+            return 1;
+          }
+          return 0;
+        });
+
+        setIngresosPorMes(arrayResultante)
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
+    //me gustaria juntar los estados gastosPorMes e IngresosPorMes en un solo estado con la forma [{name: '2023-01', gasto:1000, ingreso: 1000}]
+    // Asume que ya tienes gastoPorMes e ingresosPorMes definidos y llenos de datos
+    
   }, []);
   console.log(propiedades.length)
-  console.log(gastoPorMes)
-
+  console.log(resumenPorMes)
+  useEffect(() => {
+    // Este useEffect se ejecutará cada vez que gastoPorMes o ingresosPorMes cambien.
+    const combinarEstados = () => {
+      let combinedData = {};
+  
+      gastoPorMes.forEach(gasto => {
+        const { name, monto } = gasto;
+        combinedData[name] = {
+          ...combinedData[name],
+          name,
+          gasto: monto
+        };
+      });
+  
+      ingresosPorMes.forEach(ingreso => {
+        const { name, precio } = ingreso;
+        combinedData[name] = {
+          ...combinedData[name],
+          name,
+          ingreso: precio
+        };
+      });
+  
+      let finalArray = Object.values(combinedData).map(item => ({
+        name: item.name,
+        gasto: item.gasto || 0,
+        ingreso: item.ingreso || 0
+      }));
+  
+      setResumenPorMes(finalArray);
+    };
+  
+    if (gastoPorMes.length > 0 && ingresosPorMes.length > 0) {
+      combinarEstados();
+    }
+  }, [gastoPorMes, ingresosPorMes]);
+  
   return (
     <main className='main-container'>
       <div className='main-title'>
@@ -227,7 +309,7 @@ const Home = () => {
           <BarChart
             width={500}
             height={300}
-            data={gastoPorMes}
+            data={resumenPorMes}
             margin={{
               top: 5,
               right: 30,
@@ -240,8 +322,8 @@ const Home = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="monto" name="Gastos por mes" fill="#8884d8" />
-            {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
+            <Bar dataKey="gasto" name="Gastos por mes" fill="#8884d8" />
+            <Bar dataKey="ingreso" name="Ingresos por mes" fill="#82ca9d" />
           </BarChart>
         </ResponsiveContainer>
 
@@ -249,7 +331,7 @@ const Home = () => {
           <LineChart
             width={500}
             height={300}
-            data={gastoPorMes}
+            data={resumenPorMes}
             margin={{
               top: 5,
               right: 30,
@@ -262,8 +344,8 @@ const Home = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="monto" name='Gastos' stroke="#8884d8" activeDot={{ r: 8 }} />
-            {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
+            <Line type="monotone" dataKey="gasto" name='Gastos' stroke="#8884d8" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="ingreso" name="Ingresos" stroke="#82ca9d" />
           </LineChart>
         </ResponsiveContainer>
 

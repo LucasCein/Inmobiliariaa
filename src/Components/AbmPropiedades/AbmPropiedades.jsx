@@ -128,6 +128,7 @@ const AbmPropiedades = (detailData) => {
       const prop = {
         ...propiedad,
         visible: true,
+        vendido:false
       };
       console.log("prop", prop);
       const dbRef = collection(db, "propiedades");

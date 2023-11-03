@@ -37,7 +37,8 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
 
     const queryCollectionFiltered = query(
       queryCollection,
-      where("visible", "==", true)
+      where("visible", "==", true),
+      where("vendido", "==", false)
     );
 
     getDocs(queryCollectionFiltered)

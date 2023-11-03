@@ -5,7 +5,7 @@ import { NumericFormat } from 'react-number-format';
 import { Link } from 'react-router-dom';
 import CustomSpinner from '../CustomSpinner/CustomSpinner';
 import Popup from 'reactjs-popup';
-import { BsPencil } from 'react-icons/bs';
+import { BsEyeFill, BsPencil } from 'react-icons/bs';
 import ABMVentas from './ABMVentas';
 import DetalleVenta from './DetalleVenta';
 
@@ -43,18 +43,18 @@ const Ventas = () => {
         <div>
           <MDBListGroup style={{ minWidth: '50rem' }} className='mt-5' light>
             <div className='container align-items-center justify-content-center pt-3 rounded' style={{ backgroundColor: "black" }} >
-              <div className='row align-items-center'>
-                <div className='col mx-2'>
+              <div className='row align-items-center jus'>
+                <div className='col mx-2 d-flex justify-content-center'>
                   <p className='fw-bold  text-light'>Fecha</p>
                 </div>
-                <div className="col ps-4" >
+                <div className="col ps-4 d-flex justify-content-center" >
                   <p className='fw-bold text-light'>Forma de Pago</p>
 
                 </div>
-                <div className="col pe-4">
+                <div className="col pe-4 d-flex justify-content-center">
                   <p className='fw-bold text-white'>Precio</p>
                 </div>
-                <div className='col d-flex align-items-center ps-5'>
+                <div className='col d-flex align-items-center justify-content-center ps-5'>
                   <p className='fw-bold text-light'>Visualizar</p>
                 </div>
               </div>
@@ -71,12 +71,10 @@ const Ventas = () => {
                   <div className="d-flex gap-2 col justify-content-center">
                     <p className='text-dark mb-0'>${venta.precio}</p>
                   </div>
-                  <div className='col'>
+                  <div className='col d-flex align-items-center justify-content-center'>
                   <Popup
                     trigger={
-                      <button className="btn btn-warning ms-5">
-                        <BsPencil></BsPencil>
-                      </button>
+                      <button className='btn btn-info '><BsEyeFill></BsEyeFill></button>
                     }
                     modal
                   >

@@ -1,7 +1,7 @@
 
 import 
 {BsCart3, BsGrid1X2Fill, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, 
-  BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsCashCoin,BsFileEarmarkText, BsHouse, BsFillPersonFill,BsCurrencyDollar}
+  BsListCheck, BsMenuButtonWideFill, BsFillGearFill,BsCashCoin,BsFileEarmarkText, BsHouse, BsFillPersonFill,BsCurrencyDollar, BsQuestionCircle}
  from 'react-icons/bs'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -54,9 +54,9 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </NavLink>
             </li>
             <li className='sidebar-list-item'>
-                <a href="../Properties/Properties.jsx">
-                    <BsFillGearFill className='icon'/> Setting
-                </a>
+                <NavLink to={"/Consultas"}>
+                    <BsQuestionCircle className='icon'/> Consultas
+                </NavLink>
             </li>
         </ul>
     </aside>
