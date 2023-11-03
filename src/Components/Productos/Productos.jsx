@@ -51,11 +51,7 @@ const Productos = ({setNomProd,setprodsSelec,close,prodsSelec}) => {
         {isLoading ? <CustomSpinner></CustomSpinner>:
         <div className='mx-auto w-100 m-1 p-3' style={{ marginTop: '20px' }}>
           <h1 className='mb-4' style={{color: "black"}}>Productos</h1>  
-            <div className=' my-3 d-flex justify-content-end'>
-                  <Popup trigger={<button type="button" className="btn btn-success">Add New</button>} modal>
-                    <AbmProds ></AbmProds>
-                  </Popup>
-            </div>
+            
                   <MDBListGroup className='w-100'>
                     <ProductoItem productos={productos} setNomProd={setNomProd} setprodsSelec={setprodsSelec} prodsSelec={prodsSelec}  close={close}></ProductoItem>
                   </MDBListGroup>

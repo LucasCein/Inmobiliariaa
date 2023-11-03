@@ -1,6 +1,9 @@
+import { addDoc, collection, doc, getFirestore, updateDoc } from "firebase/firestore"
 import { useState } from "react"
-
-const AbmProds = () => {
+import { useNavigate } from "react-router-dom"
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const AbmProds = ({close}) => {
     const [productos, setProductos] = useState({ nombre: "", descripcion: "", precio: 0 })
     const handleChange = (event) => {
         let { name, value } = event.target
@@ -9,6 +12,29 @@ const AbmProds = () => {
         }
         setProductos({ ...productos, [name]: value })
     }
+    const db=getFirestore();
+    const navigate=useNavigate();
+    const createDoc = () => {
+        
+          const dbRef = collection(db, "productos");
+          addDoc(dbRef, {...productos,visible:true})
+            .then((savedDoc) => {
+              const MySwal = withReactContent(Swal)
+    
+                MySwal.fire({
+                    title: <strong>Se ha agregado con Exito!</strong>,
+                    icon: 'success',
+                    preConfirm: () => {
+                        close()
+                    }
+                })
+              updateDoc(doc(db, "propiedades", savedDoc.id), { id: savedDoc.id });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+      
+      };
     return (
         <div>
             <h2>Agregar Producto</h2>
@@ -25,7 +51,8 @@ const AbmProds = () => {
                 <p className='my-0'>Precio</p>
                 <input type="number" name='precio' value={productos.precio} onChange={(handleChange)} />
             </div>
-            <button className="btn btn-success">Agregar</button>
+            <button className="btn btn-success" onClick={createDoc}>Agregar</button>
+            <button className="btn btn-danger" onClick={() => close()}>Cancelar</button>
         </div>
     )
 }

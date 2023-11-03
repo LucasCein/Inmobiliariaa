@@ -27,6 +27,7 @@ import { ProvContext } from "../ProveedorContext/ProveedorContext";
 import { useUpdateContext } from "../../Context/updateContext";
 import Properties from "../Properties/Properties";
 import Productos from "../Productos/Productos"
+import AbmProds from "../AbmProds/AbmProds";
 const AbmComprobantes = () => {
 
   const db = getFirestore(app);
@@ -34,7 +35,7 @@ const AbmComprobantes = () => {
   const [comprobante, setComprobante] = useState({
     Fecha: "",
     Suc: "",
-    numComp:"",
+    numComp: "",
     Tipo: "",
     idProv: "",
     idProp: "",
@@ -115,7 +116,7 @@ const AbmComprobantes = () => {
       createDoc(docRef);
       navigate("/bill")
     });
-    
+
   };
 
   const createDoc = (idDet) => {
@@ -149,7 +150,7 @@ const AbmComprobantes = () => {
     const partes = e.target.value.split("-");
 
     const fechaComoTimestamp = Timestamp.fromDate(
-      new Date(partes[0], partes[1]-1, partes[2])
+      new Date(partes[0], partes[1] - 1, partes[2])
     );
 
     setComprobante({ ...comprobante, Fecha: fechaComoTimestamp });
@@ -208,14 +209,14 @@ const AbmComprobantes = () => {
 
     setprecioF(newFinalPrice);
   };
-  useEffect(()=>{
+  useEffect(() => {
     console.log(prodsSelec)
-    let aux=0
-    prodsSelec.forEach((p)=>{
-      aux=parseInt(aux)+parseInt(p.precio)
+    let aux = 0
+    prodsSelec.forEach((p) => {
+      aux = parseInt(aux) + parseInt(p.precio)
     })
     setprecioF(aux)
-  },[prodsSelec])
+  }, [prodsSelec])
   console.log(orginialDate);
   // const value=useContext(ProvContext)
   // console.log(value)
@@ -336,8 +337,8 @@ const AbmComprobantes = () => {
                     readOnly
                     onChange={handleChangeProp}
                   />
-                  <Popup open={modalProp} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-                    {close=><Properties forSelect={"forSelect"} setNomProp={setNomProp} close={close}></Properties>}
+                  <Popup open={modalProp} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success" ><BsSearch></BsSearch></button>} modal>
+                    {close => <Properties forSelect={"forSelect"} setNomProp={setNomProp} close={close}></Properties>}
                   </Popup>
                 </div>
               </div>
@@ -356,8 +357,13 @@ const AbmComprobantes = () => {
                 readOnly
               />
               <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
-                {close=><Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec} prodsSelec={prodsSelec}  close={close}></Productos>}
+                {close => <Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec} prodsSelec={prodsSelec} close={close}></Productos>}
               </Popup>
+
+               <Popup trigger={<button type="button" className="btn btn-success w-75">Add New</button>} modal>
+                {close=><AbmProds close={close}></AbmProds>}
+              </Popup>
+              
             </div>
           </Form.Group>
         </Row>
