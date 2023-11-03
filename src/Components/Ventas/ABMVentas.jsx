@@ -200,7 +200,7 @@ const ABMVentas = () => {
 
                 </div>
                 <div className="col pe-4">
-                  <p className='fw-bold text-white'>Precio</p>
+                  <p className='fw-bold text-white '>Precio</p>
                 </div>
                 <div className='col d-flex align-items-center ps-5'>
                   <p className='fw-bold text-light'>Seleccionar</p>

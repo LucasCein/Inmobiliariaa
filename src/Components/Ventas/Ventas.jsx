@@ -32,8 +32,10 @@ const Ventas = () => {
     <section>
       {isLoading ? (
         <CustomSpinner></CustomSpinner>
-      ) : (<div className='d-flex flex-column '>
-        <div className=' mt-5 me-5 d-flex align-self-end'>
+      ) : (
+      <div className='d-flex flex-column '>
+        <h1 className='text-white fw-bold mt-4 text-center'>Ventas</h1>
+        <div className=' mt-5 d-flex align-self-end' style={{marginRight:"10%"}}>
           <Link to={"/ABMVentas"}>
             <button className='btn btn-success'>Add New</button>
           </Link>
