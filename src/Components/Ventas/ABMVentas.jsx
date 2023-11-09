@@ -149,7 +149,7 @@ const ABMVentas = () => {
         console.log(error);
       });
     const examcollref = doc(db, "propiedades", nomProp.idProp);
-    updateDoc(examcollref, { vendido: true })
+    updateDoc(examcollref, { vendido: true, estado:"ocupada" })
       .then(() => {
         const MySwal = withReactContent(Swal)
 

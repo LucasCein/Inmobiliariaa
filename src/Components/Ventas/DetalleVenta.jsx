@@ -54,7 +54,9 @@ const DetalleVenta = ({ detalle_id, venta }) => {
                             </section>
                             <section className="d-flex gap-2 align-items-center">
                                 <p>Precio:</p>
-                                <p>{venta.precio}</p>
+                                <p>{venta.precio.toLocaleString('en-US', {
+                      style: 'currency',currency: 'USD',
+                      })}</p>
                             </section>
                         </section>
                     </section>
@@ -85,7 +87,8 @@ const DetalleVenta = ({ detalle_id, venta }) => {
                                             <p className='text-dark mb-0'>{cargo.descripcion}</p>
                                         </div>
                                         <div className="col">
-                                        <p className='text-dark mb-0 text-end'>${cargo.precio}</p>
+                                        <p className='text-dark mb-0 text-end'>{parseFloat(cargo.precio).toLocaleString('en-US', {
+                                                                                style: 'currency',currency: 'USD',})}</p>
                                         </div>
                                         
                                     </div>
