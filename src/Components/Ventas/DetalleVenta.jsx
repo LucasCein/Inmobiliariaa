@@ -44,7 +44,7 @@ const DetalleVenta = ({ detalle_id, venta }) => {
             <section className="d-flex flex-column ms-5">
               <section className="d-flex gap-2 align-items-center">
                 <p>Cliente:</p>
-                <p>{cliente.nombre}</p>
+                <p>{cliente.Nombre}</p>
               </section>
               <section className="d-flex gap-2 align-items-center">
                 <p>Propiedad:</p>
@@ -58,7 +58,10 @@ const DetalleVenta = ({ detalle_id, venta }) => {
               </section>
               <section className="d-flex gap-2 align-items-center">
                 <p>Precios:</p>
-                <p>$ {parseFloat(venta.precio).toFixed(2)}</p>
+                <p> {parseFloat(venta.precio).toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })}</p>
               </section>
             </section>
           </section>
@@ -93,7 +96,10 @@ const DetalleVenta = ({ detalle_id, venta }) => {
                       <p className="text-dark mb-0">{cargo.descripcion}</p>
                     </div>
                     <div className="col">
-                      <p className="text-dark mb-0 text-end">${cargo.precio}</p>
+                      <p className="text-dark mb-0 text-end">{parseInt(cargo.precio).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                      })}</p>
                     </div>
                   </div>
                 </MDBListGroupItem>

@@ -113,7 +113,10 @@ const ComprobantesItems = ({ comprobantes }) => {
                 <p className='text-dark  mb-0 ms-3'>{Tipo}</p>
               </div>
               <div className="col">
-                <p className='text-dark  mb-0 '>${pTotal}</p>
+                <p className='text-dark  mb-0 '>{pTotal.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })}</p>
               </div>
               <div className="d-flex gap-2 col">
                 <button className="btn btn-danger" onClick={() => deleteDoc(id)} ><BsArchiveFill></BsArchiveFill></button>

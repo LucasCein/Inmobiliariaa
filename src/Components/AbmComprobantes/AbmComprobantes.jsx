@@ -28,6 +28,9 @@ import { useUpdateContext } from "../../Context/updateContext";
 import Properties from "../Properties/Properties";
 import Productos from "../Productos/Productos"
 import AbmProds from "../AbmProds/AbmProds";
+import { NumericFormat } from "react-number-format";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 const AbmComprobantes = () => {
 
   const db = getFirestore(app);
@@ -111,10 +114,9 @@ const AbmComprobantes = () => {
     const prop = { prodsSelec };
     const dbRef = collection(db, "detalleComprobante");
     addDoc(dbRef, prop).then((docRef) => {
-      console.log("detalle has been added successfully");
       setComprobante({ ...comprobante, idDetalle: docRef.id });
       createDoc(docRef);
-      navigate("/bill")
+
     });
 
   };
@@ -132,8 +134,14 @@ const AbmComprobantes = () => {
     const dbRef = collection(db, "comprobantes");
     addDoc(dbRef, prop)
       .then(() => {
-        console.log("Document has been added successfully");
-        navigate(0);
+        const MySwal = withReactContent(Swal)
+        MySwal.fire({
+          title: <strong>Se ha Agregado con Exito!</strong>,
+          icon: 'success',
+          preConfirm: () => {
+            navigate("/bill")
+          }
+        })
       })
       .catch((error) => {
         console.log(error);
@@ -360,10 +368,10 @@ const AbmComprobantes = () => {
                 {close => <Productos forSelect={"forSelect"} setNomProd={setNomProd} setOpenModal={setOpenModal} setprodsSelec={setprodsSelec} prodsSelec={prodsSelec} close={close}></Productos>}
               </Popup>
 
-               <Popup trigger={<button type="button" className="btn btn-success w-75">Add New</button>} modal>
-                {close=><AbmProds close={close}></AbmProds>}
+              <Popup trigger={<button type="button" className="btn btn-success w-75">Add New</button>} modal>
+                {close => <AbmProds close={close}></AbmProds>}
               </Popup>
-              
+
             </div>
           </Form.Group>
         </Row>
@@ -383,13 +391,25 @@ const AbmComprobantes = () => {
               <td>{producto.nombre}</td>
               <td>{producto.descripcion}</td>
               <td>
-                <input
+                {/* <input
                   type="number"
                   value={producto.precio}
                   onChange={(e) =>
                     handlePriceChange(producto.id, e.target.value)
                   }
-                ></input>
+                ></input> */}
+                <NumericFormat
+                  value={parseFloat(producto.precio)}
+                  thousandSeparator={true}
+                  prefix={"$"}
+                  decimalScale={2}
+                  fixedDecimalScale={true}
+                  onValueChange={(values) => {
+                    const { formattedValue, value } = values;
+                    handlePriceChange(producto.id, value) // 1234.56
+                  }}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td className="text-center">
                 {" "}
@@ -412,7 +432,10 @@ const AbmComprobantes = () => {
       </MDBListGroup> */}
       <div className="ms-3">
         <p className="fw-bold mb-1 text-white">Precio Total</p>
-        <p className="text-white mb-0 ">${precioF}</p>
+        <p className="text-white mb-0 ">{precioF.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        })}</p>
       </div>
       <div className="d-flex justify-content-center gap-4 mt-1 mb-5  ">
         <button className="btn btn-success h-50" onClick={createDetComp}>

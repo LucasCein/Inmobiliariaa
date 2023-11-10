@@ -1,15 +1,16 @@
 
 import React, { useState, useEffect } from 'react'
 import { app } from '../../FireBase/config'
-import { updateDoc, doc, collection, getDocs, getFirestore, query, where, addDoc } from 'firebase/firestore';
+import { updateDoc, doc, collection, getDocs, getFirestore, query, where, addDoc, getDoc } from 'firebase/firestore';
 import Select from "react-select";
 import { MDBListGroup, MDBListGroupItem, MDBCheckbox } from 'mdb-react-ui-kit';
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Form from "react-bootstrap/Form";
 import Popup from 'reactjs-popup';
 import { BsSearch, BsSlack } from "react-icons/bs";
 import Proveedor from "../Proveedor/Proveedor";
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 
 
@@ -21,8 +22,7 @@ const ABMPagos = (detailData) => {
   const [proveedorSeleccionado, setProveedorSeleccionado] = useState('');
   const [comprobantes, setComprobantes] = useState([])
   const [comprobantesSeleccionados, setComprobantesSeleccionados] = useState([]);
-
-
+  console.log(detailData)
   const db = getFirestore(app);
   const navigate = useNavigate();
   const today = new Date();
@@ -32,7 +32,7 @@ const ABMPagos = (detailData) => {
   const formattedDate = `${year}-${month}-${day}`;
 
   const [selectedDate, setSelectedDate] = useState(formattedDate);
-
+  const hasDetailData = detailData && Object.keys(detailData).length > 0;
   useEffect(() => {
     const fetchComprobantes = async () => {
       const dbFirestore = getFirestore()
@@ -69,9 +69,77 @@ const ABMPagos = (detailData) => {
 
       setComprobantes(comprobantesData);
     }
-    fetchComprobantes()
-    setComprobantesSeleccionados([])
-  }, [proveedorSeleccionado])
+    
+    if (hasDetailData) {
+      setComprobantesSeleccionados([{
+        id: detailData.factura.id,
+        nombrePropiedad: detailData.factura.nombreProveedor, // Asumiendo que hay un campo equivalente
+        pTotal: detailData.factura.monto,
+        Fecha: detailData.factura.fecha,
+        Tipo: detailData.factura.metodo, // Asumiendo que hay un campo equivalente
+        // Agrega aquí el resto de los campos necesarios
+      }]);
+      setSelectedDate(detailData.factura.fecha);
+      setSelectedOption(method_Pay.find(option => option.value === detailData.factura.metodo));
+      setProveedorSeleccionado({ idProv: detailData.factura.proveedor, nomProv: detailData.factura.nombreProveedor })
+
+      const db = getFirestore(app);
+      const docRef = doc(db, "detallePagoFacturas", detailData.factura.idDetalle);
+
+      getDoc(docRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          const comprobantesIds = docSnap.data().idComp;
+          const comprobantesPromises = comprobantesIds.map((compId) => {
+            return getDoc(doc(db, "comprobantes", compId));
+          });
+
+          Promise.all(comprobantesPromises).then((comprobantesDocs) => {
+            const propiedadesPromises = comprobantesDocs.map((comDoc) => {
+              if (comDoc.exists()) {
+                const comprobanteData = comDoc.data();
+                const propRef = doc(db, "propiedades", comprobanteData.idProp);
+                return getDoc(propRef).then((propSnap) => {
+                  if (propSnap.exists()) {
+                    // Agregamos el nombre de la propiedad al objeto de comprobante
+                    comprobanteData.nombrePropiedad = propSnap.data().nombre;
+                  } else {
+                    comprobanteData.nombrePropiedad = "Propiedad no encontrada";
+                  }
+                  return {
+                    id: comDoc.id,
+                    ...comprobanteData,
+                    Fecha: comprobanteData.Fecha.toDate().toLocaleDateString(),
+                  };
+                });
+              } else {
+                return Promise.resolve(null);
+              }
+            }).filter(Boolean); // Filtramos los comprobantes que no existen
+
+            // Esperamos todas las promesas de las propiedades para completar los datos de comprobantes
+            Promise.all(propiedadesPromises).then((comprobantesConPropiedades) => {
+              // Filtramos los nulos por si algún comprobante no existía y actualizamos el estado
+              const comprobantesValidos = comprobantesConPropiedades.filter(Boolean);
+              setComprobantes(comprobantesValidos);
+            });
+          }).catch((error) => {
+            console.error("Error al obtener los comprobantes: ", error);
+          });
+        } else {
+          console.log("No se encontró el detalle de pago");
+        }
+      }).catch((error) => {
+        console.error("Error al obtener el detalle de pago: ", error);
+      });
+
+
+
+    }
+    else {
+      fetchComprobantes()
+      setComprobantesSeleccionados([])
+    }
+  }, [detailData, proveedorSeleccionado]);
 
   const handleChange = (comprobanteCheq) => {
     if (comprobantesSeleccionados.some(comprobante => comprobanteCheq.id == comprobante.id)) {
@@ -108,7 +176,7 @@ const ABMPagos = (detailData) => {
       console.log("detalle has been added successfully")
       createPag(docRef)
     })
-    
+
   }
 
   const createPag = (idDet) => {
@@ -123,35 +191,42 @@ const ABMPagos = (detailData) => {
     console.log(prop)
     const dbRef = collection(db, "pagoFacturas");
     addDoc(dbRef, prop).then(() => {
-      console.log("Document has been added successfully")
-      navigate(0)
+      const MySwal = withReactContent(Swal)
+
+      MySwal.fire({
+        title: <strong>Se ha Agregado con Exito!</strong>,
+        icon: 'success',
+        preConfirm: () => {
+          navigate("/pagos")
+        }
+      })
     })
       .catch(error => {
         console.log(error)
       })
   }
-
+  console.log(comprobantes)
   return (
     <div className='m-3'>
-      <h1 className='text-light mb-4'>Generar Pago</h1>
+      <h1 className={!hasDetailData ? 'text-light mb-4 text-center' : ' mb-4 text-center'}>{!hasDetailData ? 'Registrar Pago' : 'Visualizar Pago'}</h1>
       <div className='d-flex align-items-center' style={{ color: 'white' }}>
         <div className='d-flex justify-content-center align-items-center'>
           <div className='d-flex justify-content-center align-items-center'>
-            <p className='m-1'>Forma de pago:</p>
+            <p className={!detailData.factura ?'m-1 text-light': 'm-1 text-dark'}>Forma de pago:</p>
             <Select
               className="px-1 text-dark"
               value={selectedOption}
               onChange={handleChangePay}
               options={method_Pay}
-
+              isDisabled={!!hasDetailData}
             ></Select>
           </div>
           <div className='d-flex justify-content-center align-items-center'>
-            <label className='m-1'>Fecha de Pago:</label>
-            <input className=" dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} />
+            <label className={!detailData.factura ?'m-1 text-light': 'm-1 text-dark'}>Fecha de Pago:</label>
+            <input className=" dateInp" type="date" name='Fecha' value={selectedDate} onChange={handleDateChange} readOnly={!!hasDetailData} />
           </div>
           <div className='d-flex justify-content-center align-items-center'>
-            <p className='m-2'>Proveedor:</p>
+            <p className={!hasDetailData ?'m-2 text-light': 'm-2 text-dark'}>Proveedor:</p>
             <Form.Control
               className="px-2"
               placeholder="Nombre Proveedor"
@@ -159,9 +234,9 @@ const ABMPagos = (detailData) => {
               disabled
               readOnly
             />
-            <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
+            {!hasDetailData && <Popup open={openModal} className='popPupCompb' trigger={<button onClick={() => setOpenModal(true)} type="button" className="btn btn-success"><BsSearch></BsSearch></button>} modal>
               {close => <Proveedor forSelect={"forSelect"} setNomProv={setProveedorSeleccionado} close={close}></Proveedor>}
-            </Popup>
+            </Popup>}
           </div>
         </div>
       </div>
@@ -183,9 +258,9 @@ const ABMPagos = (detailData) => {
             <div className="col">
               <p className='fw-bold text-white ms-3'>Nombre</p>
             </div>
-            <div className="col">
+            {!hasDetailData && <div className="col">
               <p className='fw-bold text-white'>Seleccion</p>
-            </div>
+            </div>}
           </div>
         </div>
         {comprobantes.map((comprobante) => (
@@ -200,16 +275,19 @@ const ABMPagos = (detailData) => {
               </div>
               <div className="col">
 
-                <p className='text-dark mb-0'>${comprobante.pTotal}</p>
+                <p className='text-dark mb-0 text-end pe-4'>{comprobante.pTotal.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })}</p>
               </div>
               <div className="col">
 
                 <p className='text-dark mb-0'>{comprobante.nombrePropiedad}</p>
               </div>
 
-              <div className='col justify-content-end align-items-end'>
+              {!hasDetailData && <div className='col justify-content-end align-items-end'>
                 <MDBCheckbox onChange={() => handleChange(comprobante)} className='ms-3' />
-              </div>
+              </div>}
 
             </div>
 
@@ -220,8 +298,11 @@ const ABMPagos = (detailData) => {
 
       {comprobantesSeleccionados.length > 0 ?
         <div>
-          <div className='d-flex align-items-start justify-content-between m-1 text-light'>
-            <h3 >Total: ${comprobantesSeleccionados.reduce((acc, com) => { return acc + com.pTotal }, 0)}</h3>
+          <div className={!hasDetailData ? 'd-flex align-items-start justify-content-between m-1 mt-3 text-light' : 'd-flex align-items-start justify-content-between m-1 mt-3'}>
+            <h3 >Total: {(comprobantesSeleccionados.reduce((acc, com) => { return acc + com.pTotal }, 0)).toLocaleString('en-US', {
+              style: 'currency',
+              currency: 'USD',
+            })}</h3>
           </div>
           <div className='d-flex align-items-center justify-content-center pt-3'>
             <button className='btn btn-success' onClick={createDetPag}>{detailData.length > 0 ? 'Actualizar' : 'Pagar'}</button>

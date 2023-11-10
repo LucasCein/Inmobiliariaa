@@ -39,7 +39,10 @@ const DetalleComprobante = ({ item }) => {
                 <MDBListGroup className='prodsDesc' style={{ minWidth: '22rem' }} light>
                     <DetalleComp productos={products} />
                 </MDBListGroup>
-                <p className='fw-bold pTotName'>Precio Total: ${item.pTotal}</p>
+                <p className='fw-bold pTotName'>Precio Total: {item.pTotal.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })}</p>
             
 
             </div>

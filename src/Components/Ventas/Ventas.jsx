@@ -40,8 +40,7 @@ const Ventas = () => {
           // Obtener información de cliente
           const clienteRef = doc(dbFirestore, "clientes", clienteId);
           const clienteSnapshot = await getDoc(clienteRef);
-          const clienteNombre = clienteSnapshot.data().nombre;
-
+          const clienteNombre = clienteSnapshot.data().Nombre;
           console.log(propiedadNombre)
           return {
             id: venta.id,
@@ -90,7 +89,7 @@ const Ventas = () => {
       }
     }
     })
-  
+  console.log(currentventas)
   return (
     <section>
       {isLoading ? (

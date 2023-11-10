@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom"
 import { doc, getFirestore, updateDoc } from 'firebase/firestore'
 import { app } from '../../FireBase/config'
 import Popup from 'reactjs-popup';
-import { BsPencil, BsTrash } from "react-icons/bs";
+import { BsEyeFill, BsPencil, BsTrash } from "react-icons/bs";
 import ABMPagos from './ABMPagos';
 
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 
 
@@ -36,8 +37,15 @@ const PagosItem = ({ facturas }) => {
     console.log(id)
     const examcollref = doc(db, 'pagoFacturas', id)
     updateDoc(examcollref, { visible: false }).then(() => {
-      alert("Deleted")
-      navigate(0)
+      const MySwal = withReactContent(Swal)
+
+      MySwal.fire({
+        title: <strong>Se ha eliminado con Exito!</strong>,
+        icon: 'success',
+        preConfirm: () => {
+          navigate(0)
+        }
+      })
     }).catch(error => {
       console.log(error.message)
     })
@@ -52,7 +60,10 @@ const PagosItem = ({ facturas }) => {
                 <p className='mb-0 text-dark'>{nombreProveedor}</p>
               </div>
               <div className="col" >
-                <p className=' mb-0 text-dark'>${monto}</p>
+                <p className=' mb-0 text-dark text-end pe-4'>{monto.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                })}</p>
               </div>
               <div className="col">
                 <p className=' mb-0 text-dark'>{fecha}</p>
@@ -61,9 +72,9 @@ const PagosItem = ({ facturas }) => {
                 <p className='mb-0 text-dark'>{metodo}</p>
               </div>
               <div className='col d-flex align-items-center justify-content-center'>
-                {/* <Popup trigger={<button  className='btn btn-warning'><BsPencil ></BsPencil></button>} modal>
-                            <ABMPagos factura={{id,nombreProveedor,monto,fecha,metodo,idDetalle}}></ABMPagos>
-                        </Popup> */}
+                <Popup trigger={<button className='btn btn-info '><BsEyeFill></BsEyeFill></button>} modal>
+                  <ABMPagos factura={{ id, nombreProveedor, monto, fecha, metodo, idDetalle }}></ABMPagos>
+                </Popup>
                 <button className='btn btn-danger ms-2' onClick={() => deleteDoc(id)}><BsTrash></BsTrash></button>
               </div>
             </div>

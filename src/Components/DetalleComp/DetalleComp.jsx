@@ -35,8 +35,12 @@ const DetalleComp = ({ productos, handleDeleteProduct, handlePriceChange }) => {
                 </div>
                 <div className="ms-3">
                   <p className="fw-bold mb-1">Precio</p>
-                  <input type="number" value={precio} disabled></input>
-                  {/* <p className='text-muted mb-0'>${precio}</p> */}
+                  {/* <input type="number" value={precio} disabled></input> */}
+                  {console.log(precio)}
+                  <p className='text-muted mb-0 text-end'>{parseInt(precio).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                  })}</p>
                 </div>
                 <div className="ms-3">
                   <p className="fw-bold mb-1">Eliminar</p>

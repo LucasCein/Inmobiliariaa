@@ -52,7 +52,7 @@ const ABMVentas = () => {
       setPropiedad(propiedadList);
     }
     fetchPropiedades()
-    
+
     setPropiedadSeleccionados([])
   }, [clienteSeleccionado])
   useEffect(() => {
@@ -69,7 +69,7 @@ const ABMVentas = () => {
       setCargos(cargosList);
     }
     fetchCargos()
-  },[cargos])
+  }, [cargos])
   useEffect(() => {
     // Calcula el precio final sumando los precios de todos los cargos seleccionados
     const nuevoFinalPrice = cargosSeleccionados.reduce((total, cargo) => parseInt(total) + parseInt(cargo.precio), 0);
@@ -149,7 +149,7 @@ const ABMVentas = () => {
         console.log(error);
       });
     const examcollref = doc(db, "propiedades", nomProp.idProp);
-    updateDoc(examcollref, { vendido: true, estado:"ocupada" })
+    updateDoc(examcollref, { vendido: true, estado: "ocupada" })
       .then(() => {
         const MySwal = withReactContent(Swal)
 
@@ -267,9 +267,13 @@ const ABMVentas = () => {
             ))}
 
           </MDBListGroup>
+          <h4 style={{ marginLeft: "10%" }} className='mt-4'>Monto Total: {parseInt(finalPrice).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          })}</h4>
         </div>
         <div className='d-flex justify-content-center mt-2'>
-          <button className='btn btn-success mt-5' onClick={() => { createDetVenta() }} >Registrar Venta</button>
+          <button className='btn btn-success mt-3' onClick={() => { createDetVenta() }} >Registrar Venta</button>
         </div>
       </div>
     </div>

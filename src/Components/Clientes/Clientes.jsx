@@ -29,8 +29,10 @@ const Clientes = ({ forSelect, setNomCli, setOpenModal, close }) => {
             .finally(() => setIsLoading(false))
 
     }, [])
+    console.log(clientes)
     const handleChange = (event => {
         let { name, value } = event.target
+        console.log(name, value)
         if (value == "") {
             setClientes(clientes_og)
         }
@@ -50,7 +52,7 @@ const Clientes = ({ forSelect, setNomCli, setOpenModal, close }) => {
                             <div className='col d-flex align-items-center justify-content-start'>
                                 <div className='mb-3'>
                                     <label className={forSelect != "" ? 'me-2 text-dark' : 'me-2 text-white'}>Nombre:</label>
-                                    <input type='text' name='nombre' onChange={handleChange} placeholder='Filtrar' />
+                                    <input type='text' name='Nombre' onChange={handleChange} placeholder='Filtrar' />
                                 </div>
                                 <div className='mb-3 ms-4'>
                                     <label className={forSelect != "" ? 'me-2 text-dark' : 'me-2 text-white'}>Telefono:</label>

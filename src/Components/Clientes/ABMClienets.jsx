@@ -20,7 +20,7 @@ const ABMClienets = () => {
     if (value == "") {
       empty = {
         value: 1,
-        nombre: name
+        Nombre: name
       }
     }
     else {
@@ -60,7 +60,7 @@ const ABMClienets = () => {
       })
     }
     else {
-      alert("Completar datos de " + empty.nombre)
+      alert("Completar datos de " + empty.Nombre)
     }
   }
 
@@ -83,16 +83,16 @@ const ABMClienets = () => {
         console.log(error)
       })
   }
-  console.log(detailData.CUIT)
+  console.log(detailData.Nombre)
   return (
     <div className='d-flex flex-column align-items-center'>
-      <h2 className="mt-5 mb-5 text-light fw-bold">{detailData.nombre !== "" ? "Editar" : "Agregar"} Cliente</h2>
+      <h2 className="mt-5 mb-5 text-light fw-bold">{detailData.Nombre !== "" ? "Editar" : "Agregar"} Cliente</h2>
       <div className="container mt-3">
         <form name="form">
           <div className="row">
             <div className="col-md-6 mb-3">
-              <label className="form-label text-light">nombre:</label>
-              <input type="text" className="form-control" defaultValue={detailData.nombre} name="nombre" onChange={handleChange}></input>
+              <label className="form-label text-light">Nombre:</label>
+              <input type="text" className="form-control" defaultValue={detailData.Nombre} name="Nombre" onChange={handleChange}></input>
             </div>
             <div className="col-md-6 mb-3">
               <label className="form-label text-light">Telefono:</label>
@@ -110,7 +110,7 @@ const ABMClienets = () => {
         </form>
       </div>
       <div className='d-flex gap-4 mt-2 mb-2 '>
-        <button className='btn btn-success' onClick={detailData.nombre != '' ? editDoc : createDoc}>{detailData.nombre != '' ? 'Editar' : 'Agregar'}</button>
+        <button className='btn btn-success' onClick={detailData.Nombre != '' ? editDoc : createDoc}>{detailData.Nombre != '' ? 'Editar' : 'Agregar'}</button>
         <button className='btn btn-danger' onClick={() => navigate("/Clientes")}>Cancelar</button>
       </div>
     </div>

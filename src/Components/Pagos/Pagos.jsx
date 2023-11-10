@@ -7,7 +7,7 @@ import ABMPagos from './ABMPagos';
 import PagosItem from './PagosItem';
 import { dark } from '@mui/material/styles/createPalette';
 import { red } from '@mui/material/colors';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -119,6 +119,7 @@ const Pagos = () => {
             <Link to={"/ABMPagos"}>
               <button className='btn btn-success'>Add New</button>
             </Link>
+
           </div>
           <MDBListGroup className='w-100'>
             <div className='container align-items-center justify-content-center pt-1 rounded' style={{ backgroundColor: "black" }} >
