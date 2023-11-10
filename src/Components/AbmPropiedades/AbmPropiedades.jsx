@@ -3,7 +3,7 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import "./AbmPropiedades.css";
 import { useEffect, useState } from "react";
 import { app, storage } from "../../FireBase/config";
-import { NumericFormat } from 'react-number-format';
+import { NumericFormat } from "react-number-format";
 import {
   getDownloadURL,
   ref,
@@ -18,13 +18,13 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const AbmPropiedades = () => {
   /* const [currentPage, setCurrentPage] = useState(1); */
-  const location=useLocation()
-  const {detailData}=location.state
-  console.log(detailData)
+  const location = useLocation();
+  const { detailData } = location.state;
+  console.log(detailData);
   const navigate = useNavigate();
   const [propiedad, setPropiedad] = useState({
     id: "",
@@ -47,7 +47,7 @@ const AbmPropiedades = () => {
     estacionamiento: false,
     lavarropa: false,
     imagen: "",
-    precio: ""
+    precio: "",
   });
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
@@ -123,6 +123,7 @@ const AbmPropiedades = () => {
     };
     await updateMetadata(imageref, newMetadata);
     const publicImageUrl = await getDownloadURL(imageref);
+    console.log(imageref);
     setPropiedad({ ...propiedad, imagen: publicImageUrl });
   };
   const db = getFirestore(app);
@@ -132,21 +133,21 @@ const AbmPropiedades = () => {
       const prop = {
         ...propiedad,
         visible: true,
-        vendido: false
+        vendido: false,
       };
       console.log("prop", prop);
       const dbRef = collection(db, "propiedades");
       addDoc(dbRef, prop)
         .then((savedDoc) => {
-          const MySwal = withReactContent(Swal)
+          const MySwal = withReactContent(Swal);
 
-            MySwal.fire({
-                title: <strong>Se ha agregado con Exito!</strong>,
-                icon: 'success',
-                preConfirm: () => {
-                    navigate("/properties")
-                }
-            })
+          MySwal.fire({
+            title: <strong>Se ha agregado con Exito!</strong>,
+            icon: "success",
+            preConfirm: () => {
+              navigate("/properties");
+            },
+          });
           updateDoc(doc(db, "propiedades", savedDoc.id), { id: savedDoc.id });
         })
         .catch((error) => {
@@ -160,15 +161,15 @@ const AbmPropiedades = () => {
     const examcollref = doc(db, "propiedades", propiedad.id);
     updateDoc(examcollref, propiedad)
       .then(() => {
-        const MySwal = withReactContent(Swal)
+        const MySwal = withReactContent(Swal);
 
-            MySwal.fire({
-                title: <strong>Se ha editado con Exito!</strong>,
-                icon: 'success',
-                preConfirm: () => {
-                    navigate("/properties")
-                }
-            })
+        MySwal.fire({
+          title: <strong>Se ha editado con Exito!</strong>,
+          icon: "success",
+          preConfirm: () => {
+            navigate("/properties");
+          },
+        });
       })
       .catch((error) => {
         console.log(error.message);
@@ -246,14 +247,14 @@ const AbmPropiedades = () => {
         <NumericFormat
           value={parseFloat(propiedad.precio)}
           thousandSeparator={true}
-          prefix={'$'}
+          prefix={"$"}
           decimalScale={2}
           fixedDecimalScale={true}
           onValueChange={(values) => {
             const { formattedValue, value } = values;
-            setPropiedad({ ...propiedad, precio: parseInt(value) }) // 1234.56
+            setPropiedad({ ...propiedad, precio: parseInt(value) }); // 1234.56
           }}
-          style={{ textAlign: 'right' }}
+          style={{ textAlign: "right" }}
         />
       </div>
       <div className="col-1">
@@ -336,7 +337,10 @@ const AbmPropiedades = () => {
           >
             {detailData.nombre != "" ? "Editar" : "Agregar"}
           </button>
-          <button className="btn btn-danger" onClick={() => navigate("/properties")}>
+          <button
+            className="btn btn-danger"
+            onClick={() => navigate("/properties")}
+          >
             Cancelar
           </button>
         </div>
@@ -450,7 +454,6 @@ const AbmPropiedades = () => {
           onChange={handleChange}
         />
       </div>
-
     </div>
   );
 
@@ -459,9 +462,7 @@ const AbmPropiedades = () => {
   return (
     <div className="d-flex flex-column align-items-center ">
       <h2 className="mt-5 mb-5 text-light fw-bold">
-        {detailData?.nombre != ""
-          ? "Editar Propiedad"
-          : "Agregar Propiedad"}
+        {detailData?.nombre != "" ? "Editar Propiedad" : "Agregar Propiedad"}
       </h2>
       {renderPageFour()}
     </div>
