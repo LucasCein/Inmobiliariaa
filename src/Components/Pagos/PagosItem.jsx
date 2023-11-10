@@ -73,7 +73,7 @@ const PagosItem = ({ facturas }) => {
               </div>
               <div className='col d-flex align-items-center justify-content-center'>
                 <Popup trigger={<button className='btn btn-info '><BsEyeFill></BsEyeFill></button>} modal>
-                  <ABMPagos factura={{ id, nombreProveedor, monto, fecha, metodo, idDetalle }}></ABMPagos>
+                  <ABMPagos factura={{ id, nombreProveedor, monto, fecha, metodo, idDetalle }} ></ABMPagos>
                 </Popup>
                 <button className='btn btn-danger ms-2' onClick={() => deleteDoc(id)}><BsTrash></BsTrash></button>
               </div>

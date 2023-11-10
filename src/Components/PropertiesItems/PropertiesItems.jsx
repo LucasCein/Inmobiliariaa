@@ -101,6 +101,11 @@ const PropertiesItems = ({
               <div className="col ms-5">
                 <p className="mb-0 text-dark">{tipo}</p>
               </div>
+              <div className="col ms-5">
+                <p className="mb-0 text-dark">{precio.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD'})}</p>
+              </div>
               <div className="col ms-3">
                 <MDBBadge
                   pill
