@@ -304,9 +304,9 @@ const ABMPagos = (detailData) => {
               currency: 'USD',
             })}</h3>
           </div>
-          <div className='d-flex align-items-center justify-content-center pt-3'>
+          {!hasDetailData && <div className='d-flex align-items-center justify-content-center pt-3'>
             <button className='btn btn-success' onClick={createDetPag}>{detailData.length > 0 ? 'Actualizar' : 'Pagar'}</button>
-          </div>
+          </div>}
         </div>
         : ''}
 

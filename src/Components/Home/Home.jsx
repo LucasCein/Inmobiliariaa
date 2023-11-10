@@ -75,17 +75,20 @@ const Home = () => {
     
     const queryCollectionFiltered = query(
       queryCollection,
-      where("visible", "==", true)
+      where("visible", "==", true),
+      where("vendido","==",false)
     );
     const queryCollectionVenta = query(
       queryCollection,
       where("tipo", "==", 'venta'),
-      where("visible", "==", true)
+      where("visible", "==", true),
+      where("vendido","==",false)
     );
     const queryCollectionAlquiler = query(
       queryCollection,
       where("tipo", "==", 'alquiler'),
-      where("visible", "==", true)
+      where("visible", "==", true),
+      where("vendido","==",false)
     );
 
     const queryCollectionPagos = query(
