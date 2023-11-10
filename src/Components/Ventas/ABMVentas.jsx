@@ -140,6 +140,7 @@ const ABMVentas = () => {
       f_pago: selectedOption.value, fecha: venta.fecha, cliente_id: clienteSeleccionado.idCli, propiedad_id: nomProp.idProp, precio: finalPrice, detalle_id: idDet
     };
     const dbRef = collection(db, "venta");
+    const vendidoValue = nomProp.tipo === 'venta' ? true : false;
     addDoc(dbRef, carg)
       .then(() => {
 
@@ -149,7 +150,7 @@ const ABMVentas = () => {
         console.log(error);
       });
     const examcollref = doc(db, "propiedades", nomProp.idProp);
-    updateDoc(examcollref, { vendido: true, estado: "ocupada" })
+    updateDoc(examcollref, { vendido: vendidoValue, estado: "ocupada" })
       .then(() => {
         const MySwal = withReactContent(Swal)
 

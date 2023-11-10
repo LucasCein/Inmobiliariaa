@@ -52,7 +52,7 @@ const PropertiesItems = ({
       console.log(error.message)
     })
   }
-  const nav=useNavigate()
+  const nav = useNavigate()
   return (
     <>
       {currentItems.map(
@@ -103,14 +103,18 @@ const PropertiesItems = ({
               </div>
               <div className="col ms-5">
                 <p className="mb-0 text-dark">{precio.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD'})}</p>
+                  style: 'currency',
+                  currency: 'USD'
+                })}</p>
               </div>
-              
+              <div className="col ms-5">
+                <p className="mb-0 text-dark">{estado}</p>
+              </div>
+
               {forSelect == "" ? (
                 <div className="col d-flex align-items-center">
-                  <button className="btn btn-warning ms-5" onClick={()=>nav("/AbmPropiedades",{state:{detailData:{id,nombre,descripcion,estado,tipo,pais,region,cp,calle,altura,piso,dpto,cantBaños,cantCuarto,area,wifi,aire,estacionamiento,lavarropa,imagen,precio}}})}>
-                        <BsPencil></BsPencil>
+                  <button className="btn btn-warning ms-5" onClick={() => nav("/AbmPropiedades", { state: { detailData: { id, nombre, descripcion, estado, tipo, pais, region, cp, calle, altura, piso, dpto, cantBaños, cantCuarto, area, wifi, aire, estacionamiento, lavarropa, imagen, precio } } })}>
+                    <BsPencil></BsPencil>
                   </button>
                   {/* <Popup
                     trigger={
