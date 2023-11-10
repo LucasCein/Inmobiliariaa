@@ -235,7 +235,8 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                     (checkDisponible == true
                       ? propiedad.estado == "disponible"
                       : propiedad.estado == "disponible" ||
-                        propiedad.estado == "ocupada") &&
+                        propiedad.estado == "ocupada" ||
+                        propiedad.estado == "ocupado") &&
                     (checkVenta == true
                       ? propiedad.tipo == "venta"
                       : propiedad.tipo == "venta" ||
