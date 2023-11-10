@@ -47,8 +47,8 @@ const Clientes = ({ forSelect, setNomCli, setOpenModal, close }) => {
             {isLoading ? <CustomSpinner></CustomSpinner> :
                 <>
                     <div className='mx-auto w-100 m-1 p-3 text-white' style={{ marginTop: '20px' }}>
-                        <h1 className={forSelect != "" ? 'mb-4 text-dark' : 'mb-4 text-white'}>Clientes</h1>
-                        <div className='row align-items-center justify-content-center'>
+                        <h1 className={forSelect != "" ? 'mb-4 text-dark text-center' : 'mb-4 text-white text-center'}>Clientes</h1>
+                        <div className='row align-items-center justify-content-center '>
                             <div className='col d-flex align-items-center justify-content-start'>
                                 <div className='mb-3'>
                                     <label className={forSelect != "" ? 'me-2 text-dark' : 'me-2 text-white'}>Nombre:</label>

@@ -96,7 +96,7 @@ const Ventas = () => {
         <CustomSpinner></CustomSpinner>
       ) : (
         <div className='mx-auto w-100 m-1 p-3' style={{ marginTop: '20px' }}>
-          <h1 className='mb-4' style={{ color: "white" }}>Ventas</h1>
+          <h1 className='mb-4 text-center mt-4' style={{ color: "white" }}>Ventas</h1>
           <div className='row align-items-center justify-content-center'>
             <div className='col d-flex align-items-center justify-content-start'>
           <div>

@@ -46,7 +46,7 @@ const Proveedor = ({forSelect,setNomProv,setOpenModal,close}) => {
             {isLoading ? <CustomSpinner></CustomSpinner> :
             <>
             <div className='mx-auto w-100 m-1 p-3' style={{ marginTop: '20px' }}>
-            <h1 className={forSelect!=""?'mb-4 text-dark':'mb-4 text-white'}>Proveedores</h1>
+            <h1 className={forSelect!=""?'mb-4 text-dark text-center':'mb-4 text-white text-center'}>Proveedores</h1>
             <div className='row align-items-center justify-content-center'>
                 <div className='col d-flex align-items-center justify-content-start'>
                     <div className='mb-3'>

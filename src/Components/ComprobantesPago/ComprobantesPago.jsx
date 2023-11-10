@@ -130,7 +130,7 @@ const ComprobantesPago = () => {
         <>
             {isLoading ? <CustomSpinner></CustomSpinner> :
                 <div className='d-flex flex-column align-items-center mt-3'>
-                    <h2 className='text-light'>Facturas</h2>
+                    <h1 className='text-light'>Facturas</h1>
                     <div className='mx-auto w-75 mt-2'>
                         <div className='d-flex flex-column gap-4'>
                             <div className='d-flex gap-5'>
