@@ -37,12 +37,12 @@ const ProductoItem = ({ productos, setNomProd, setprodsSelec, close, prodsSelec,
             checkedItems.map((id) => {
                 return productos.find((prod) => prod.id == id)
             })
-            const filteredProd = prod.filter(p => 
-                !prodsSelec.some(existingProd => existingProd.id === p.id)
-            );
-            setprodsSelec([...prodsSelec, ...filteredProd]);
-                
-     
+        const filteredProd = prod.filter(p =>
+            !prodsSelec.some(existingProd => existingProd.id === p.id)
+        );
+        setprodsSelec([...prodsSelec, ...filteredProd]);
+
+
         // Guardar los productos seleccionados en el estado
         close()
     };
@@ -64,7 +64,10 @@ const ProductoItem = ({ productos, setNomProd, setprodsSelec, close, prodsSelec,
                             </div>
                             <div className="col">
                                 <p className='fw-bold mb-1'>Precio</p>
-                                <p className='text-muted mb-0'>${precio}</p>
+                                <p className='text-muted mb-0 text-end pe-5'>{parseInt(precio).toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD'
+                                })}</p>
                             </div>
                             <div className='col d-flex align-items-center justify-content-end me-5'>
                                 <Checkbox
