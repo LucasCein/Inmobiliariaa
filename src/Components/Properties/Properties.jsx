@@ -75,8 +75,8 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
     estacionamiento: false,
     lavarropa: false,
     imagen: "",
-  }
-  const nav=useNavigate()
+  };
+  const nav = useNavigate();
   return (
     <section>
       {isLoading ? (
@@ -126,18 +126,20 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                     onChange={(e) => setCheckEstacionamiento(e.target.checked)}
                   />
                 </div>
-                <div className="d-flex flex-row">
-                  <label className="text-white me-4 row justify-content-center align-items-center">
-                    Estado
-                  </label>
-                  <Select options={optionsStatus}></Select>
-                </div>
               </div>
             </div>
-            <div className=" my-3 d-flex justify-content-end" style={{ marginRight: "10%" }}>
-
-              <button className='btn btn-success' onClick={()=>nav("/AbmPropiedades",{state:{detailData}})}>Add New</button>
-
+            <div
+              className=" my-3 d-flex justify-content-end"
+              style={{ marginRight: "10%" }}
+            >
+              <button
+                className="btn btn-success"
+                onClick={() =>
+                  nav("/AbmPropiedades", { state: { detailData } })
+                }
+              >
+                Add New
+              </button>
 
               {/* <Popup
                 trigger={
@@ -215,15 +217,15 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                     (checkDisponible == true
                       ? propiedad.estado == "disponible"
                       : propiedad.estado == "disponible" ||
-                      propiedad.estado == "ocupado") &&
+                        propiedad.estado == "ocupado") &&
                     (checkVenta == true
                       ? propiedad.tipo == "venta"
                       : propiedad.tipo == "venta" ||
-                      propiedad.tipo == "alquiler") &&
+                        propiedad.tipo == "alquiler") &&
                     (checkEstacionamiento == true
                       ? propiedad.estacionamiento == true
                       : propiedad.estacionamiento == true ||
-                      propiedad.estacionamiento == false)
+                        propiedad.estacionamiento == false)
                 )}
               />
             </MDBListGroup>
