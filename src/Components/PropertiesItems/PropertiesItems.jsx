@@ -106,16 +106,7 @@ const PropertiesItems = ({
                 style: 'currency',
                 currency: 'USD'})}</p>
               </div>
-              <div className="col ms-3">
-                <MDBBadge
-                  pill
-                  light
-                  color={estado == "ocupado" ? "danger" : "success"}
-                  className="me-5"
-                >
-                  {estado}
-                </MDBBadge>
-              </div>
+              
               {forSelect == "" ? (
                 <div className="col d-flex align-items-center">
                   <button className="btn btn-warning ms-5" onClick={()=>nav("/AbmPropiedades",{state:{detailData:{id,nombre,descripcion,estado,tipo,pais,region,cp,calle,altura,piso,dpto,cantBaños,cantCuarto,area,wifi,aire,estacionamiento,lavarropa,imagen,precio}}})}>

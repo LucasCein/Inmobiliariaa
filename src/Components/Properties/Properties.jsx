@@ -197,9 +197,7 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                   <div className="col">
                     <p className="fw-bold  text-light">Precio</p>
                   </div>
-                  <div className="col pe-5">
-                    <p className="fw-bold  text-light">Estado</p>
-                  </div>
+                  
                   <div className="col d-flex align-items-center justify-content-center me-3">
                     <p className="fw-bold text-light">Opciones</p>
                   </div>
