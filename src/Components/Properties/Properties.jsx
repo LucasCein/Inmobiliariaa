@@ -43,14 +43,20 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
     );
 
     getDocs(queryCollectionFiltered)
-      .then((res) =>
+      .then((res) => {
         setPropiedades(
           res.docs.map((propiedades) => ({
             id: propiedades.id,
             ...propiedades.data(),
           }))
-        )
-      )
+        );
+        console.log(
+          res.docs.map((propiedades) => ({
+            id: propiedades.id,
+            ...propiedades.data(),
+          }))
+        );
+      })
       .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
   }, []);
@@ -83,7 +89,15 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
         <CustomSpinner></CustomSpinner>
       ) : (
         <>
-          <h1 className={forSelect!=""?'mb-4 text-dark text-center mt-4':'mb-4 text-white text-center mt-4'}>Propiedades</h1>
+          <h1
+            className={
+              forSelect != ""
+                ? "mb-4 text-dark text-center mt-4"
+                : "mb-4 text-white text-center mt-4"
+            }
+          >
+            Propiedades
+          </h1>
           <div className="mx-auto w-100 m-1 p-3" style={{ marginTop: "20px" }}>
             <div className="mx-auto w-75 ">
               <div className="w-100 h-100">
@@ -221,7 +235,7 @@ const Properties = ({ forSelect, setNomProp, setModalProp, close }) => {
                     (checkDisponible == true
                       ? propiedad.estado == "disponible"
                       : propiedad.estado == "disponible" ||
-                        propiedad.estado == "ocupado") &&
+                        propiedad.estado == "ocupada") &&
                     (checkVenta == true
                       ? propiedad.tipo == "venta"
                       : propiedad.tipo == "venta" ||
